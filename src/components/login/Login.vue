@@ -16,6 +16,10 @@
     <div class="login-right">
       <LoginForm/>
     </div>
+    <div class="beian">
+      <!--Copyright © 2020 By Tandy. All rights Reserved.-->
+      <a href="http://www.beian.miit.gov.cn/">冀IPC备20004420号-1</a>
+    </div>
   </div>
 </template>
 
@@ -35,6 +39,7 @@ export default {
     height: 100vh;
     background-color: #3BB878;
     border-bottom-right-radius: 45%;
+    position: relative;
   }
   .login-top {
     text-align: right;
@@ -68,5 +73,13 @@ export default {
     position: absolute;
     top: 28vh;
     right: 15vw;
+  }
+  .beian {
+    position: absolute;
+    bottom: 15px;
+    right: 15px;
+  }
+  .beian a {
+    color: #666666;
   }
 </style>

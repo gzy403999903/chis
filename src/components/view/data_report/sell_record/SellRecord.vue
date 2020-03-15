@@ -36,7 +36,7 @@
       shadow="never"
       body-style="padding: 0;">
       <el-table
-        :height="$store.getters.dataGridHeight - 30"
+        :height="$store.getters.dataGridHeight"
         :data="dataGrid.data"
         stripe
         size="mini">
@@ -85,6 +85,7 @@
         <el-table-column prop="cashierName" label="收银员" width="100" show-overflow-tooltip/>
         <el-table-column prop="sysClinicName" label="机构名称" min-width="400" show-overflow-tooltip/>
       </el-table>
+      <!--
       <div class="total-div">
         <el-row>
           <el-col :span="4">含税成本:</el-col>
@@ -95,6 +96,7 @@
           <el-col :span="4">无税毛利:</el-col>
         </el-row>
       </div>
+      -->
       <el-pagination
         :page-size="pagination.pageSize"
         :total="pagination.total"

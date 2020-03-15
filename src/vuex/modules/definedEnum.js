@@ -55,7 +55,10 @@ export default {
       CHINESE_DRUGS_INVENTORY: 2, // 药材库
       HYGIENIC_MATERIAL_INVENTORY: 3, // 物资库
       SUBTRACT_INVENTORY: 4 // 退货库
-    }
+    },
+
+    // 总部ID  headquarters ID
+    HQID: 1
   },
 
   /**
@@ -93,6 +96,10 @@ export default {
 
     inventoryType: (state) => {
       return state.inventoryType
+    },
+
+    HQID: (state) => {
+      return state.HQID
     }
   },
 

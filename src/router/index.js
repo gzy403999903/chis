@@ -101,6 +101,10 @@ import AllSellRecord from '../components/view/data_report/sell_record/AllSellRec
 import SelfUsedRecord from '../components/view/data_report/self_used_record/SelfUsedRecord'
 import LossRecord from '../components/view/data_report/loss_record/LossRecord'
 import AllVisitRecord from '../components/view/data_report/visit_record/AllVisitRecord'
+import AllBillingTypeReport from '../components/view/data_report/billing_type_report/AllBillingTypeReport'
+import ClinicBillingTypeReport from '../components/view/data_report/billing_type_report/ClinicBillingTypeReport'
+import AllPaymentRecordReport from '../components/view/data_report/payment_record_report/AllPaymentRecordReport'
+import ClinicPaymentRecordReport from '../components/view/data_report/payment_record_report/ClinicPaymentRecordReport'
 
 // system_management
 import Clinic from '../components/view/system_management/sys_setup/Clinic'
@@ -535,6 +539,22 @@ export default new Router({
         {
           path: 'allVisitRecord',
           component: AllVisitRecord
+        },
+        {
+          path: 'allBillingTypeReport',
+          component: AllBillingTypeReport
+        },
+        {
+          path: 'clinicBillingTypeReport',
+          component: ClinicBillingTypeReport
+        },
+        {
+          path: 'allPaymentRecordReport',
+          component: AllPaymentRecordReport
+        },
+        {
+          path: 'clinicPaymentRecordReport',
+          component: ClinicPaymentRecordReport
         }
       ]
     },

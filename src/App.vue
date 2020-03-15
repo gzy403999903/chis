@@ -37,6 +37,7 @@ export default {
     width: 100%;
     font-size: 14px;
   }
+
   .el-table .warning-row {
     background: rgb(252, 248, 227);
   }

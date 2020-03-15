@@ -11,9 +11,13 @@
       active-text-color="#FFFFFF">
       <div class="system-logo">
         <img src="../../assets/images/system-logo.png"/>
-        <div v-show="!isFoldLeftBar">雨思社区卫生信息系统</div>
+        <div v-show="!isFoldLeftBar">
+          <!--{{payload.clinicName}}-->
+          <div>雨思社区卫生信息系统</div>
+          <div>Community Health Information System</div>
+        </div>
       </div>
-      <hr style="background-color: #FFFFFF; border: none; height: 2px; margin-bottom: 5px;"/>
+      <hr style="background-color: #FFFFFF; border: none; height: 1px; margin-bottom: 5px;"/>
       <!------------------------------------------------医生工作站------------------------------------------------------>
       <template v-if="moduleName==='doctorWorkstation'">
         <el-menu-item index="/main/doctorWorkstation/registrationList">
@@ -358,11 +362,11 @@
             <i class="el-icon-tickets"></i>
             <span slot="title">运营报表</span>
           </template>
-          <el-menu-item index="/main/dataReport/clinicSellRecord">本机构销售明细</el-menu-item>
-          <el-menu-item index="/main/dataReport/allSellRecord">各机构销售明细</el-menu-item>
-          <el-menu-item index="/main/dataReport/selfUsedRecord">各机构领用明细</el-menu-item>
-          <el-menu-item index="/main/dataReport/lossRecord">各机构报损明细</el-menu-item>
-          <el-menu-item index="/main/dataReport/allVisitRecord">各机构回访情况</el-menu-item>
+          <el-menu-item index="/main/dataReport/clinicSellRecord" v-if="!hqReport">销售明细</el-menu-item>
+          <el-menu-item index="/main/dataReport/allSellRecord" v-if="hqReport">销售明细*</el-menu-item>
+          <el-menu-item index="/main/dataReport/selfUsedRecord" v-if="hqReport">领用明细*</el-menu-item>
+          <el-menu-item index="/main/dataReport/lossRecord" v-if="hqReport">报损明细*</el-menu-item>
+          <el-menu-item index="/main/dataReport/allVisitRecord" v-if="hqReport">回访情况*</el-menu-item>
         </el-submenu>
         <el-submenu index="/dataReport-2">
           <template slot="title">
@@ -383,8 +387,11 @@
            <i class="el-icon-tickets"></i>
            <span slot="title">财务报表</span>
          </template>
+         <el-menu-item index="/main/dataReport/allPaymentRecordReport" v-if="hqReport">收费方式汇总*</el-menu-item>
+         <el-menu-item index="/main/dataReport/clinicPaymentRecordReport" v-if="!hqReport">收费方式汇总</el-menu-item>
+         <el-menu-item index="/main/dataReport/allBillingTypeReport" v-if="hqReport">计费类型汇总*</el-menu-item>
+         <el-menu-item index="/main/dataReport/clinicBillingTypeReport" v-if="!hqReport">计费类型汇总</el-menu-item>
          <!--
-         <el-menu-item index="/main/error/404#82-1">本机构提成查询</el-menu-item>
          <el-menu-item index="/main/error/404#82-2">全机构提成查询</el-menu-item>
          <el-menu-item index="/main/error/404#82-3">收款明细查询</el-menu-item>
          <el-menu-item index="/main/error/404#82-4">收款汇总查询(按门店)</el-menu-item>
@@ -492,11 +499,12 @@
 
 <script>
 import PubSub from 'pubsub-js'
-
+import jwtDecode from 'jwt-decode'
 export default {
   data () {
     return {
-      defaultActivePath: this.$route.path
+      defaultActivePath: this.$route.path,
+      payload: jwtDecode(this.$store.getters.token)
     }
   },
   mounted () {
@@ -510,6 +518,9 @@ export default {
     },
     moduleName: function () {
       return this.$store.getters.leftBarMenuName
+    },
+    hqReport: function () {
+      return this.$store.getters.HQID === this.payload.clinicId
     }
   },
 
@@ -523,20 +534,24 @@ export default {
 
 <style scoped>
   .left-bar .system-logo {
-    background-color: #3BB878;
+    width: 210px;
     text-align: center;
-    padding: 10px 0 5px 0;
+    padding: 5px;
   }
   .left-bar .system-logo img {
     width: 40%;
     min-width: 35px;
   }
   .left-bar .system-logo div {
-    width: 210px;
-    padding: 5px 0;
-    font-size: 14px;
-    font-weight: 900;
+    font-weight: 600;
     color: white;
+  }
+  .left-bar .system-logo div:first-child {
+    font-size: 14px;
+  }
+  .left-bar .system-logo div:nth-child(2) {
+    padding-top: 5px;
+    font-size: 10px;
   }
   /* 取消侧边栏边框 */
   .el-menu {

@@ -18,11 +18,8 @@
             end-placeholder="结束日期"
             :picker-options="pickerOptions"/>
         </el-form-item>
-        <el-form-item label="流水号" prop="lsh">
-          <el-input v-model.trim="queryForm.lsh" placeholder="流水号" style="width: 210px;"/>
-        </el-form-item>
-        <el-form-item label="操作人" prop="creatorName">
-          <el-input v-model.trim="queryForm.creatorName" placeholder="姓名 / 助记码"/>
+        <el-form-item label="机构名称" prop="sysClinicName" v-if="action === 'all'">
+          <el-input v-model.trim="queryForm.sysClinicName" placeholder="机构名称 / 助记码"/>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" round icon="el-icon-search"  @click="dataGridLoadData">查询</el-button>
@@ -44,24 +41,19 @@
         highlight-current-row
         size="mini">
         <el-table-column fixed="left" type="index" width="50"/>
-        <el-table-column prop="creationDate" label="单据日期" width="160" show-overflow-tooltip/>
-        <el-table-column prop="lsh" label="流水号" width="220" show-overflow-tooltip/>
-        <el-table-column prop="cash" label="现金" width="85" show-overflow-tooltip/>
-        <el-table-column prop="memberBalance" label="会员卡" width="85" show-overflow-tooltip/>
-        <el-table-column prop="unionpay" label="银联" width="85" show-overflow-tooltip/>
-        <el-table-column prop="alipay" label="支付宝" width="85" show-overflow-tooltip/>
-        <el-table-column prop="wechatpay" label="微信" width="85" show-overflow-tooltip/>
-        <el-table-column prop="sysPaymentWayName" label="其他方式" width="100" show-overflow-tooltip/>
-        <el-table-column prop="sysPaymentWayAmount" label="其他金额" width="85" show-overflow-tooltip/>
-        <el-table-column label="应收金额" width="85" show-overflow-tooltip>
-          <template slot-scope="props">
-            {{(props.row.actualAmount - props.row.disparityAmount).toFixed(2)}}
-          </template>
-        </el-table-column>
-        <el-table-column prop="actualAmount" label="实收金额" width="85" show-overflow-tooltip/>
-        <el-table-column prop="disparityAmount" label="差额" width="85" show-overflow-tooltip/>
-        <el-table-column prop="creatorName" label="操作人" min-width="100" show-overflow-tooltip/>
-        <!--<el-table-column prop="sysClinicName" label="机构名称" min-width="400" show-overflow-tooltip/>-->
+        <el-table-column prop="creationDate" label="单据日期" width="120" show-overflow-tooltip/>
+        <el-table-column prop="xyf" label="西药费" width="100" show-overflow-tooltip/>
+        <el-table-column prop="zyf" label="中药费" width="100" show-overflow-tooltip/>
+        <el-table-column prop="zcyf" label="中成药费" width="100" show-overflow-tooltip/>
+        <el-table-column prop="jcf" label="检查费" width="100" show-overflow-tooltip/>
+        <el-table-column prop="hyf" label="化验费" width="100" show-overflow-tooltip/>
+        <el-table-column prop="llf" label="理疗费" width="100" show-overflow-tooltip/>
+        <el-table-column prop="fwf" label="服务费" width="100" show-overflow-tooltip/>
+        <el-table-column prop="ghf" label="挂号费" width="100" show-overflow-tooltip/>
+        <el-table-column prop="zlf" label="治疗费" width="100" show-overflow-tooltip/>
+        <el-table-column prop="czf" label="出诊费" width="100" show-overflow-tooltip/>
+        <el-table-column prop="clf" label="材料费" width="100" show-overflow-tooltip/>
+        <el-table-column prop="sysClinicName" label="机构名称" min-width="400" show-overflow-tooltip/>
       </el-table>
       <el-pagination
         :page-size="pagination.pageSize"
@@ -74,12 +66,18 @@
         @current-change="paginationCurrentChange">
       </el-pagination>
     </el-card>
-
   </div>
 </template>
 
 <script>
 export default {
+  props: {
+    action: {
+      type: String,
+      required: true
+    }
+  }, // end props
+
   data () {
     return {
       pickerOptions: {
@@ -89,8 +87,7 @@ export default {
       },
       queryForm: {
         creationDate: null,
-        lsh: null,
-        creatorName: null
+        sysClinicName: null
       },
       dataGrid: {
         data: []
@@ -149,7 +146,11 @@ export default {
      */
     dataGridLoadData () {
       this.$loading()
-      let url = '/chisAPI/paymentRecord/getClinicListByCriteria'
+      let url = (
+        this.action === 'all'
+          ? '/chisAPI/sellRecordReport/getBillingTypeGroupListByCriteria'
+          : '/chisAPI/sellRecordReport/getClinicBillingTypeGroupListByCriteria'
+      )
       let params = this.queryForm
       params.pageNum = this.pagination.currentPage
       params.pageSize = this.pagination.pageSize
