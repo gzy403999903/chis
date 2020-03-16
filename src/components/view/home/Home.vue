@@ -67,9 +67,19 @@ export default {
   mounted () {
     // 获取肺炎疫情状况
     this.getEpidemicSituations()
+    // 获取推送消息
+    this.getMessageList()
   }, // end mounted
 
   methods: {
+    /**
+     * 解析时间戳
+     * @param timestamp
+     */
+    parseTimestamp (timestamp) {
+      return moment(timestamp).format('YYYY-MM-DD HH:mm:ss')
+    },
+
     /**
      * 获取肺炎疫情状况
      * 取消该功能后需在 main.js 中的 axios拦截器中删除对应的代码(对以下 url 不添加请求头)
@@ -94,11 +104,15 @@ export default {
     },
 
     /**
-     * 解析时间戳
-     * @param timestamp
+     * 获取推送消息
      */
-    parseTimestamp (timestamp) {
-      return moment(timestamp).format('YYYY-MM-DD HH:mm:ss')
+    getMessageList () {
+      const url = `/chisAPI/messager/getMessageList`
+      this.$http.get(url).then((res) => {
+        res.data.forEach(msg => {
+          this.$notify({type: msg.type, duration: 10000, dangerouslyUseHTMLString: true, title: msg.sender, message: msg.content})
+        })
+      })
     }
 
   } // end methods

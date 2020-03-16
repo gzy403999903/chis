@@ -9,7 +9,7 @@
           <el-radio-button label="goodsManagement"><i class="el-icon-qn-label_fill">商品管理</i></el-radio-button>
           <el-radio-button label="purchaseManagement"><i class="el-icon-qn-publishgoods_fill">采购管理</i></el-radio-button>
           <el-radio-button label="inventoryManagement"><i class="el-icon-qn-workbench_fill">库存管理</i></el-radio-button>
-          <el-radio-button label="itemsManagement"><i class="el-icon-qn-transaction_fill">收费项目</i></el-radio-button>
+          <el-radio-button label="itemsManagement"><i class="el-icon-qn-transaction_fill">医疗服务项目</i></el-radio-button>
           <el-radio-button label="financialManagement"><i class="el-icon-qn-coupons_fill">财务管理</i></el-radio-button>
           <!--<el-radio-button label="marketingManagement"><i class="el-icon-qn-integral_fill">营销管理</i></el-radio-button>-->
           <el-radio-button label="dataReport"><i class="el-icon-s-data">数据报表</i></el-radio-button>
@@ -75,7 +75,7 @@ export default {
 
     // 显示消息
     showMessage () {
-      this.$notify.info({title: '消息推送功能', message: '开发中.......'})
+      // this.$notify.info({title: '消息推送功能', message: '开发中.......'})
     },
 
     // 显示主页

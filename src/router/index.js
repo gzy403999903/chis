@@ -105,6 +105,8 @@ import AllBillingTypeReport from '../components/view/data_report/billing_type_re
 import ClinicBillingTypeReport from '../components/view/data_report/billing_type_report/ClinicBillingTypeReport'
 import AllPaymentRecordReport from '../components/view/data_report/payment_record_report/AllPaymentRecordReport'
 import ClinicPaymentRecordReport from '../components/view/data_report/payment_record_report/ClinicPaymentRecordReport'
+import AllExpirydateWarning from '../components/view/data_report/expirydate_warning/AllExpirydateWarning'
+import ClinicExpirydateWarning from '../components/view/data_report/expirydate_warning/ClinicExpirydateWarning'
 
 // system_management
 import Clinic from '../components/view/system_management/sys_setup/Clinic'
@@ -555,6 +557,14 @@ export default new Router({
         {
           path: 'clinicPaymentRecordReport',
           component: ClinicPaymentRecordReport
+        },
+        {
+          path: 'allExpirydateWarning',
+          component: AllExpirydateWarning
+        },
+        {
+          path: 'clinicExpirydateWarning',
+          component: ClinicExpirydateWarning
         }
       ]
     },

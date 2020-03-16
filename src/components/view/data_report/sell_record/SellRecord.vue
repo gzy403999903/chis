@@ -171,7 +171,7 @@ export default {
      */
     dataGridLoadData () {
       this.$loading()
-      let url = `/chisAPI/sellRecord/${this.action}`
+      let url = `/chisAPI/sellRecordReport/${this.action}`
       let params = this.queryForm
       params.pageNum = this.pagination.currentPage
       params.pageSize = this.pagination.pageSize

@@ -266,14 +266,6 @@
           <i class="el-icon-tickets"></i>
           <span slot="title">库存盘点</span>
         </el-menu-item>
-        <el-menu-item index="/main/error/404#inventoryManagement-7">
-          <i class="el-icon-tickets"></i>
-          <span slot="title">效期预警</span>
-        </el-menu-item>
-        <el-menu-item index="/main/error/404#inventoryManagement-8">
-          <i class="el-icon-tickets"></i>
-          <span slot="title">库存预警</span>
-        </el-menu-item>
       </template>
       <!-------------------------------------------------收费项目------------------------------------------------------->
       <template v-if="moduleName==='itemsManagement'">
@@ -367,22 +359,14 @@
           <el-menu-item index="/main/dataReport/selfUsedRecord" v-if="hqReport">领用明细*</el-menu-item>
           <el-menu-item index="/main/dataReport/lossRecord" v-if="hqReport">报损明细*</el-menu-item>
           <el-menu-item index="/main/dataReport/allVisitRecord" v-if="hqReport">回访情况*</el-menu-item>
-        </el-submenu>
-        <el-submenu index="/dataReport-2">
-          <template slot="title">
-            <i class="el-icon-tickets"></i>
-            <span slot="title">分析报表</span>
-          </template>
+          <el-menu-item index="/main/dataReport/allExpirydateWarning" v-if="hqReport">效期预警*</el-menu-item>
+          <el-menu-item index="/main/dataReport/ClinicExpirydateWarning" v-if="!hqReport">效期预警</el-menu-item>
           <!--
-          <el-menu-item index="/main/error/404#81-1">本机构进货分析</el-menu-item>
-          <el-menu-item index="/main/error/404#81-2">各机构进货分析</el-menu-item>
-          <el-menu-item index="/main/error/404#81-3">本机构滞销商品</el-menu-item>
-          <el-menu-item index="/main/error/404#81-4">各机构滞销商品</el-menu-item>
-          <el-menu-item index="/main/error/404#81-5">各机构商品动销比</el-menu-item>
-          <el-menu-item index="/main/error/404#81-6">各机构商品动销比</el-menu-item>
+          <el-menu-item index="/main/error/404#81-1">库存预警*</el-menu-item>
+          <el-menu-item index="/main/error/404#81-2">库存预警</el-menu-item>
           -->
-       </el-submenu>
-       <el-submenu index="/dataReport-3">
+        </el-submenu>
+       <el-submenu index="/dataReport-2">
          <template slot="title">
            <i class="el-icon-tickets"></i>
            <span slot="title">财务报表</span>
@@ -534,15 +518,15 @@ export default {
 
 <style scoped>
   .left-bar .system-logo {
-    width: 210px;
     text-align: center;
     padding: 5px;
   }
   .left-bar .system-logo img {
     width: 40%;
-    min-width: 35px;
+    min-width: 32px;
   }
   .left-bar .system-logo div {
+    width: 200px; /* 减去父元素的 左右内边距 5px (210 -10 = 200)*/
     font-weight: 600;
     color: white;
   }
@@ -551,7 +535,7 @@ export default {
   }
   .left-bar .system-logo div:nth-child(2) {
     padding-top: 5px;
-    font-size: 10px;
+    font-size: 4px;
   }
   /* 取消侧边栏边框 */
   .el-menu {
