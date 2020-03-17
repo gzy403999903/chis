@@ -1,57 +1,62 @@
 <template>
-  <div id="print-body" style="display: none;">
-    <div style="text-align: center; font-size: 28px;">收费小票(补打)</div>
-    <div style="padding-top: 35px;"></div>
-    <div>流水号: {{sellRecordList.length > 0 ? sellRecordList[0].lsh : ''}}</div>
-    <div>消费日期: {{sellRecordList.length > 0 ? sellRecordList[0].creationDate : ''}}</div>
-    <div>补打日期: {{getReprintDate()}}</div>
-    <div>会员姓名: {{sellRecordList.length > 0 ? sellRecordList[0].mrmMemberName : ''}}</div>
-    <div>联系电话: {{sellRecordList.length > 0 ? sellRecordList[0].phone : ''}}</div>
-    <div style="border-bottom: #222222 1px solid; margin-top: 5px;"></div>
-    <div>
-      <div style="float: left; width: 40mm;">收费名称</div>
-      <div style="float: left; text-align: center; width: 20mm;">实收单价</div>
-      <div style="float: left; text-align: center; width: 20mm;">数量</div>
-      <div style="float: left; text-align: center; width: 15mm;">小计/元</div>
+  <div id="printContent" style="display: none;">
+    <div style="width: 95mm; padding: 0 2mm; font-size: 18px;">
+      <div style="text-align: center; font-size: 24px; font-weight: 600;">收费小票(补打)</div>
+      <div style="margin-top: 20px;">
+        <div>流水号: {{sellRecordList.length > 0 ? sellRecordList[0].lsh : ''}}</div>
+        <div>消费日期: {{sellRecordList.length > 0 ? sellRecordList[0].creationDate : ''}}</div>
+        <div>补打日期: {{getReprintDate()}}</div>
+        <div>会员姓名: {{sellRecordList.length > 0 ? sellRecordList[0].mrmMemberName : ''}}</div>
+        <div>联系电话: {{sellRecordList.length > 0 ? sellRecordList[0].phone : ''}}</div>
+      </div>
+      <div style="margin: 5px 0; border-bottom: black 1px solid;"></div>
+      <div style="display: flex; flex-direction: row; justify-content: space-between;">
+        <div>收费名称</div>
+        <div>实收单价</div>
+        <div>数量</div>
+        <div>小计/元</div>
+      </div>
+      <div style="margin: 5px 0; border-bottom: black 1px solid;"></div>
+      <div v-for="(item, index) in sellRecordList" :key="index"
+           style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-between;">
+        <div style="width: 95mm;">{{item.entityName}}</div>
+        <div style="padding-left: 30mm;">{{item.actualRetailPrice}}</div>
+        <div>{{item.quantity + item.unitsName}}</div>
+        <div>{{(item.actualRetailPrice * item.quantity).toFixed(2)}}</div>
+      </div>
+      <div style="margin: 5px 0; border-bottom: black 1px solid;"></div>
+      <div style="display: flex; flex-direction: row; justify-content: space-between;">
+        <div>消费合计: {{sumRetailPrice()}}</div>
+        <div>优惠金额: {{(sumRetailPrice() - sumActualRetailPrice()).toFixed(2)}}</div>
+      </div>
+      <div style="margin: 5px 0; border-bottom: black 1px dashed;"></div>
+      <div style="display: flex; flex-direction: row; justify-content: space-between;">
+        <div>本次积分: {{points}}</div>
+        <div>应收合计: {{sumActualRetailPrice()}}</div>
+      </div>
+      <div style="margin: 5px 0; border-bottom: black 1px dashed;"></div>
+      <div style="line-height: 25px;">
+        <div v-if="paymentRecord.cash > 0">现金: {{paymentRecord.cash}}</div>
+        <div v-if="paymentRecord.cashBackAmount > 0">现金找零: {{paymentRecord.cashBackAmount}}</div>
+        <div v-if="paymentRecord.memberBalance > 0">会员卡: {{paymentRecord.memberBalance}}</div>
+        <div v-if="paymentRecord.unionpay > 0">银联: {{paymentRecord.unionpay}}</div>
+        <div v-if="paymentRecord.alipay > 0">支付宝: {{paymentRecord.alipay}}</div>
+        <div v-if="paymentRecord.wechatpay > 0">微信: {{paymentRecord.wechatpay}}</div>
+        <div v-if="paymentRecord.sysPaymentWayAmount > 0">其他方式: {{paymentRecord.sysPaymentWayAmount}}</div>
+      </div>
+      <div style="margin: 5px 0; border-bottom: black 1px dashed;"></div>
+      <div style="display: flex; flex-direction: row; justify-content: space-between;">
+        <div>收银员: {{paymentRecord.creatorName}}</div>
+        <div>实收合计: {{paymentRecord.actualAmount}}</div>
+      </div>
+      <div style="margin: 5px 0; border-bottom: black 1px solid;"></div>
+      <div>门诊: {{payload.clinicName}}</div>
+      <div>电话: {{payload.clinicTel}}</div>
+      <div>地址: {{payload.clinicAddress}}</div>
+      <div style="margin-top: 20px; text-align: center; font-size: 24px;">国药乐仁堂&nbsp;&nbsp;&nbsp;祝您身体健康</div>
+      <div style="margin-top: 10px; text-align: center;">凭本小票索取发票(仅当日有效)</div>
     </div>
-    <div style="clear: both;"></div>
-    <div style="border-bottom: #222222 1px solid;"></div>
-    <div v-for="(item, index) in sellRecordList" :key="index" style="line-height: 25px;">
-      <div style="float: left; width: 40mm;">{{item.entityName}}</div>
-      <div style="float: left; text-align: center; width: 20mm;">{{item.actualRetailPrice}}</div>
-      <div style="float: left; text-align: center; width: 20mm;">{{item.quantity + item.unitsName}}</div>
-      <div style="float: left; text-align: center; width: 15mm;">{{(item.actualRetailPrice * item.quantity).toFixed(2)}}</div>
-      <div style="clear: both;"></div>
-    </div>
-    <div style="border-bottom: #222222 1px solid; margin-top: 5px;"></div>
-    <div style="float: left;">消费合计: {{sumRetailPrice()}}</div>
-    <div style="text-align: right;">优惠金额: {{(sumRetailPrice() - sumActualRetailPrice()).toFixed(2)}}</div>
-    <div style="border-bottom: #222222 1px solid;"></div>
-    <div style="clear: both;"></div>
-    <div style="float: left;">本次积分: {{points}}</div>
-    <div style="text-align: right;">应收合计: {{sumActualRetailPrice()}}</div>
-    <div style="clear: both;"></div>
-    <div style="border-bottom: #222222 1px solid; margin-bottom: 5px;"></div>
-    <div style="line-height: 25px;">
-      <div v-if="paymentRecord.cash > 0">现金: {{paymentRecord.cash}}</div>
-      <div v-if="paymentRecord.cashBackAmount > 0">现金找零: {{paymentRecord.cashBackAmount}}</div>
-      <div v-if="paymentRecord.memberBalance > 0">会员卡: {{paymentRecord.memberBalance}}</div>
-      <div v-if="paymentRecord.unionpay > 0">银联: {{paymentRecord.unionpay}}</div>
-      <div v-if="paymentRecord.alipay > 0">支付宝: {{paymentRecord.alipay}}</div>
-      <div v-if="paymentRecord.wechatpay > 0">微信: {{paymentRecord.wechatpay}}</div>
-      <div v-if="paymentRecord.sysPaymentWayAmount > 0">其他: {{paymentRecord.sysPaymentWayAmount}}</div>
-    </div>
-    <div style="border-bottom: #222222 1px solid; margin-top: 5px;"></div>
-    <div style="float: left;">收银员: {{paymentRecord.creatorName}}</div>
-    <div style="text-align: right;">实收合计: {{paymentRecord.actualAmount}}</div>
-    <div style="clear: both;"></div>
-    <div style="border-bottom: #222222 1px solid; margin-bottom: 5px;"></div>
-    <div>门诊: {{payload.clinicName}}</div>
-    <div>电话: {{payload.clinicTel}}</div>
-    <div>地址: {{payload.clinicAddress}}</div>
-    <div style="margin-top: 25px; text-align: center; font-size: 22px;">国药乐仁堂&nbsp;&nbsp;&nbsp;祝您身体健康</div>
-    <div style="text-align: center;">凭本小票索取发票&nbsp;&nbsp;&nbsp;仅当日有效</div>
-  </div> <!-- end print-body -->
+  </div> <!-- end printBody -->
 </template>
 
 <script>
@@ -105,7 +110,9 @@ export default {
     printPage () {
       let LODOP = getLodop()
       LODOP.PRINT_INIT('收费小票(补打)')
-      LODOP.ADD_PRINT_HTM(0, 0, '10cm', '100cm', document.getElementById('print-body').innerHTML) // ADD_PRINT_HTM(上边距(不写单位默认为px) 左边距 打印区域宽度 打印区域高度 打印内容)
+      // let bodyStyle = '<style>' + document.getElementById('bodyStyle').innerHTML + '</style>'
+      // let printHtml = bodyStyle + '<body>' + document.getElementById('bodyContent').innerHTML + '</body>'
+      LODOP.ADD_PRINT_HTM(0, 0, '100%', '100%', document.getElementById('printContent').innerHTML) // ADD_PRINT_HTM(上边距(不写单位默认为px) 左边距 打印区域宽度 打印区域高度 打印内容)
       // LODOP.PRINT()
       // LODOP.PRINTA()
       LODOP.PREVIEW()
@@ -143,5 +150,5 @@ export default {
 }
 </script>
 
-<style scoped>
+<style scoped >
 </style>

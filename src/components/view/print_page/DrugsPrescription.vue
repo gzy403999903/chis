@@ -1,23 +1,24 @@
 <template>
   <div id="print-body" style="display: none;">
     <div style="width: 91.5%; margin: 20px;">
-      <div style="text-align: center; font-size: 20px; font-weight: 600; padding: 0 20%;">{{payload.clinicName}}处方笺</div>
-      <div style="margin-top: 25px;">
+      <div style="text-align: center; font-size: 20px; font-weight: 600;">{{payload.clinicName}}</div>
+      <div style="text-align: center; font-size: 20px; font-weight: 600;">处方笺</div>
+      <div style="margin-top: 15px;">
         <div style="float: left; width: 39%;">处方号: {{prescriptionList.length > 0 ? prescriptionList[0].lsh : ''}}</div>
-        <div style="float: left; width: 32%;">处方日期: {{prescriptionList.length > 0 ? prescriptionList[0].creationDate : ''}}</div>
+        <div style="float: left; width: 31%;">处方日期: {{prescriptionList.length > 0 ? prescriptionList[0].creationDate : ''}}</div>
         <div>科别: {{prescriptionList.length > 0 ? prescriptionList[0].sysClinicRoomName : ''}}</div>
       </div>
       <div style="clear: both;"></div>
       <div style="margin-top: 5px;">
-        <div style="float: left; width: 15%;">姓名: {{prescriptionList.length > 0 ? prescriptionList[0].mrmMemberName : ''}}</div>
-        <div style="float: left; width: 12%;">性别: {{prescriptionList.length > 0 ? prescriptionList[0].genderName : ''}}</div>
-        <div style="float: left; width: 12%;">年龄: {{prescriptionList.length > 0 ? prescriptionList[0].age : ''}}</div>
-        <div style="float: left; width: 22%;">电话: {{prescriptionList.length > 0 ? prescriptionList[0].phone : ''}}</div>
+        <div style="float: left; width: 19%;">姓名: {{prescriptionList.length > 0 ? prescriptionList[0].mrmMemberName : ''}}</div>
+        <div style="float: left; width: 10%;">性别: {{prescriptionList.length > 0 ? prescriptionList[0].genderName : ''}}</div>
+        <div style="float: left; width: 10%;">年龄: {{prescriptionList.length > 0 ? prescriptionList[0].age : ''}}</div>
+        <div style="float: left; width: 20%;">电话: {{prescriptionList.length > 0 ? prescriptionList[0].phone : ''}}</div>
         <div>住址: {{prescriptionList.length > 0 ? prescriptionList[0].address : ''}}</div>
       </div>
       <div style="clear: both;"></div>
       <div style="margin-top: 5px;">临床诊断: {{getDiagnoseStr()}}</div>
-      <div style="margin-top: 5px; border: black 2px solid; height: 85mm; padding-left: 20px; position: relative;">
+      <div style="margin-top: 10px; border: black 2px solid; height: 85mm; padding-left: 20px; position: relative;">
         <div style="font-size: 28px; padding: 10px 0;">
           <div style="float: left;">R</div>
           <div style="float: left; position: relative; top: 10px;">P</div>
@@ -123,7 +124,7 @@ export default {
           let sig = JSON.parse(row.sigJson)
           let rp = row.name + '&nbsp;&nbsp;' + row.quantity + row.unitsName + (sig.drugsPrepareMethodName ? (' [' + sig.drugsPrepareMethodName + ']') : '')
           // 拼接返回中药处方
-          detail = detail + '<div style="margin-left: 20px; margin-top: 10px; width: 20%; float: left;">' + rp + '</div>'
+          detail = detail + '<div style="margin-top: 10px; width: 25%; float: left;">' + rp + '</div>'
         }
       }
 
