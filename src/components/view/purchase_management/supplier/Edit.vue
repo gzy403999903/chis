@@ -167,26 +167,31 @@
       <el-row>
         <el-col :span="12">
           <el-form-item label="经营范围" prop="businessScope">
-            <el-input v-model.trim="editForm.businessScope" ref="businessScope"
+            <el-input type="textarea" v-model.trim="editForm.businessScope" ref="businessScope"
+                      resize="none" :rows="4"
                       @keyup.enter.native="editFormValidateField('businessScope', 'remarks')"/>
           </el-form-item>
         </el-col>
 
         <el-col :span="12">
-          <el-form-item label="备注" prop="remarks">
-            <el-input v-model.trim="editForm.remarks" ref="remarks"/>
-          </el-form-item>
-        </el-col>
-      </el-row>
+          <el-row>
+            <el-col :span="24">
+              <el-form-item label="备注" prop="remarks">
+                <el-input v-model.trim="editForm.remarks" ref="remarks"/>
+              </el-form-item>
+            </el-col>
+          </el-row>
 
-      <el-row>
-        <el-col :span="6">
-          <el-form-item label="启用状态" prop="state">
-            <el-radio-group v-model="editForm.state">
-              <el-radio :label="true">启用</el-radio>
-              <el-radio :label="false">禁用</el-radio>
-            </el-radio-group>
-          </el-form-item>
+          <el-row>
+            <el-col :span="24">
+              <el-form-item label="启用状态" prop="state">
+                <el-radio-group v-model="editForm.state">
+                  <el-radio :label="true">启用</el-radio>
+                  <el-radio :label="false">禁用</el-radio>
+                </el-radio-group>
+              </el-form-item>
+            </el-col>
+          </el-row>
         </el-col>
       </el-row>
 
@@ -561,19 +566,36 @@ export default {
           {max: 30, message: '长度不合法[1-30]'}
         ],
         accountLicence: [
+          {required: true, message: '不能为空'},
           {max: 30, message: '长度不合法[1-30]'}
         ],
         bankName: [
+          {required: true, message: '不能为空'},
           {max: 30, message: '长度不合法[1-30]'}
         ],
         cardNo: [
+          {required: true, message: '不能为空'},
           {max: 30, message: '长度不合法[1-30]'},
           {validator: numberValidate, trigger: 'blur'}
         ],
+        invoiceTypeId: [
+          {required: true, message: '不能为空'}
+        ],
+        paymentTypeId: [
+          {required: true, message: '不能为空'}
+        ],
+        arrearagesLimit: [
+          {required: true, message: '不能为空'}
+        ],
+        arrearagesDays: [
+          {required: true, message: '不能为空'}
+        ],
         legalPerson: [
+          {required: true, message: '不能为空'},
           {max: 10, message: '长度不合法[1-10]'}
         ],
         tel: [
+          {required: true, message: '不能为空'},
           {max: 15, message: '长度不合法[1-15]'}
           /* {validator: numberValidate, trigger: 'blur'} */
         ],
@@ -582,26 +604,32 @@ export default {
           /* {validator: numberValidate, trigger: 'blur'} */
         ],
         contacter: [
+          {required: true, message: '不能为空'},
           {max: 10, message: '长度不合法[1-10]'}
         ],
         contacterPhone: [
+          {required: true, message: '不能为空'},
           {max: 15, message: '长度不合法[1-15]'}
           /* {validator: numberValidate, trigger: 'blur'} */
         ],
         address: [
+          {required: true, message: '不能为空'},
           {max: 50, message: '长度不合法[1-50]'}
         ],
         businessScope: [
-          {max: 100, message: '长度不合法[1-100]'}
+          {required: true, message: '不能为空'},
+          {max: 300, message: '长度不合法[1-300]'}
         ],
         remarks: [
           {max: 100, message: '长度不合法[1-100]'}
         ],
         businessLicence: [
+          {required: true, message: '不能为空'},
           {max: 30, message: '长度不合法[1-30]'},
           {validator: businessLicenceValidate, trigger: 'blur'}
         ],
         blExpiryDate: [
+          {required: true, message: '不能为空'},
           {validator: blExpiryDateValidate, trigger: 'blur'}
         ],
         productionLicence: [

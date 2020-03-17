@@ -35,6 +35,9 @@
         <el-form-item label="项目名称" prop="cimItemName">
           <el-input v-model.trim="queryForm.cimItemName" placeholder="项目名称 / 助记码"/>
         </el-form-item>
+        <el-form-item label="只显示本机构医嘱" prop="onlyClinic">
+          <el-switch v-model="queryForm.onlyClinic" active-color="#13ce66" inactive-color="#ff4949"/>
+        </el-form-item>
         <el-form-item label="显示剩余次数为0" prop="showZero">
           <el-switch v-model="queryForm.showZero" active-color="#13ce66" inactive-color="#ff4949"/>
         </el-form-item>
@@ -96,6 +99,7 @@ export default {
       queryForm: {
         mrmMemberId: null,
         cimItemName: null,
+        onlyClinic: true,
         showZero: false
       },
       dataGrid: {
