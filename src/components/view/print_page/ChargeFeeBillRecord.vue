@@ -1,7 +1,7 @@
 <template>
   <div id="printContent" style="display: none;">
-    <div style="width: 76mm; padding: 0 2mm; font-size: 16px;">
-      <div style="text-align: center; font-size: 22px; font-weight: 600;">收费小票(补打)</div>
+    <div style="width: 62mm; padding: 0 5mm; font-size: 12px;">
+      <div style="text-align: center; font-size: 18px; font-weight: 600;">收费小票(补打)</div>
       <div style="margin-top: 20px;">
         <div>流水号: {{sellRecordList.length > 0 ? sellRecordList[0].lsh : ''}}</div>
         <div>消费日期: {{sellRecordList.length > 0 ? sellRecordList[0].creationDate : ''}}</div>
@@ -19,8 +19,8 @@
       <div style="margin: 5px 0; border-bottom: black 1px solid;"></div>
       <div v-for="(item, index) in sellRecordList" :key="index"
            style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-between;">
-        <div style="width: 76mm;">{{item.entityName}}</div>
-        <div style="padding-left: 25mm; width: 15mm;">{{item.actualRetailPrice}}</div>
+        <div style="width: 62mm;">{{item.entityName}}</div>
+        <div style="padding-left: 20mm; min-width: 10mm;">{{item.actualRetailPrice}}</div>
         <div>{{item.quantity + item.unitsName}}</div>
         <div>{{(item.actualRetailPrice * item.quantity).toFixed(2)}}</div>
       </div>
@@ -35,7 +35,7 @@
         <div>应收合计: {{sumActualRetailPrice()}}</div>
       </div>
       <div style="margin: 5px 0; border-bottom: black 1px dashed;"></div>
-      <div style="line-height: 25px;">
+      <div>
         <div v-if="paymentRecord.cash > 0">现金: {{paymentRecord.cash}}</div>
         <div v-if="paymentRecord.cashBackAmount > 0">现金找零: {{paymentRecord.cashBackAmount}}</div>
         <div v-if="paymentRecord.memberBalance > 0">会员卡: {{paymentRecord.memberBalance}}</div>
@@ -53,7 +53,7 @@
       <div>门诊: {{payload.clinicName}}</div>
       <div>电话: {{payload.clinicTel}}</div>
       <div>地址: {{payload.clinicAddress}}</div>
-      <div style="margin-top: 20px; text-align: center; font-size: 20px;">国药乐仁堂&nbsp;&nbsp;&nbsp;祝您身体健康</div>
+      <div style="margin-top: 20px; text-align: center; font-size: 14px;">国药乐仁堂&nbsp;&nbsp;&nbsp;祝您身体健康</div>
       <div style="margin-top: 10px; text-align: center;">凭本小票索取发票(仅当日有效)</div>
     </div>
   </div> <!-- end printBody -->
