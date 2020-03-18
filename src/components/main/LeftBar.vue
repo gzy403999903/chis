@@ -13,8 +13,8 @@
         <img src="../../assets/images/system-logo.png"/>
         <div v-show="!isFoldLeftBar">
           <!--{{payload.clinicName}}-->
-          <div>雨思社区卫生信息系统</div>
-          <div>Community Health Information System</div>
+          <div class="system-cn-name">雨思社区卫生信息系统</div>
+          <div class="system-en-name">Community Health Information System</div>
         </div>
       </div>
       <hr style="background-color: #FFFFFF; border: none; height: 1px; margin-bottom: 5px;"/>
@@ -230,6 +230,11 @@
           <el-menu-item index="/main/inventoryManagement/clinicPhInventory">本机构批号库存</el-menu-item>
           <el-menu-item index="/main/inventoryManagement/allPhInventory">各机构批号库存</el-menu-item>
         </el-submenu>
+        <el-menu-item index="/main/inventoryManagement/inventoryAllotApply">
+          <i class="el-icon-copy-document"></i>
+          <span slot="title">库存调拨</span>
+        </el-menu-item>
+        <!--
         <el-submenu index="/inventoryManagement-2">
           <template slot="title">
             <i class="el-icon-copy-document"></i>
@@ -238,6 +243,7 @@
           <el-menu-item index="/main/inventoryManagement/inventoryAllotApply">库房调拨</el-menu-item>
           <el-menu-item index="/main/inventoryManagement/inventoryAllotApprove">调拨审批</el-menu-item>
         </el-submenu>
+        -->
         <el-submenu index="/inventoryManagement-3">
           <template slot="title">
             <i class="el-icon-copy-document"></i>
@@ -530,12 +536,15 @@ export default {
     font-weight: 600;
     color: white;
   }
-  .left-bar .system-logo div:first-child {
+  .left-bar .system-logo .system-cn-name {
     font-size: 14px;
   }
-  .left-bar .system-logo div:nth-child(2) {
-    padding-top: 5px;
-    font-size: 4px;
+  .left-bar .system-logo .system-en-name {
+    margin-left: -10px;
+    white-space : nowrap;
+    display:block;
+    font-size: 12px;
+    -webkit-transform:scale(0.8);
   }
   /* 取消侧边栏边框 */
   .el-menu {

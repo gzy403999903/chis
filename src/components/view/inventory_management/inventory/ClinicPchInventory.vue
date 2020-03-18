@@ -58,7 +58,7 @@
         <el-table-column prop="gsmGoodsOid" label="商品编码" width="100" show-overflow-tooltip/>
         <el-table-column prop="gsmGoodsName" label="商品名称" width="150" show-overflow-tooltip/>
         <el-table-column prop="gsmGoodsSpecs" label="整装规格" width="150" show-overflow-tooltip/>
-        <el-table-column prop="splitQuantity" label="拆分系数" width="100" show-overflow-tooltip/>
+        <!--<el-table-column prop="splitQuantity" label="拆分系数" width="100" show-overflow-tooltip/>-->
         <el-table-column prop="goodsUnitsName" label="单位" width="70" show-overflow-tooltip/>
         <el-table-column prop="retailPrice" label="零售价" width="100" show-overflow-tooltip/>
         <el-table-column prop="quantity" label="库存数量" width="100" show-overflow-tooltip/>
@@ -68,6 +68,7 @@
         <el-table-column prop="expiryDate" label="有效期至" width="100" show-overflow-tooltip/>
         <el-table-column prop="originName" label="产地" width="120" show-overflow-tooltip/>
         <el-table-column prop="manufacturerName" label="生产厂家" width="300" show-overflow-tooltip/>
+        <el-table-column prop="pemSupplierName" label="供应商" width="250" show-overflow-tooltip/>
         <el-table-column prop="sysClinicName" label="机构名称" width="400" show-overflow-tooltip/>
         <el-table-column/>
       </el-table>

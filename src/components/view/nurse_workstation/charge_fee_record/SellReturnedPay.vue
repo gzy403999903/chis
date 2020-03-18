@@ -344,7 +344,9 @@ export default {
         let paymentRecord = {}
         for (let key in this.editForm) {
           if (this.editForm.hasOwnProperty(key)) {
-            if (key !== 'sysPaymentWayId') {
+            if (key === 'sysPaymentWayId') {
+              paymentRecord[key] = this.editForm[key]
+            } else {
               paymentRecord[key] = this.editForm[key] * -1
             }
           }

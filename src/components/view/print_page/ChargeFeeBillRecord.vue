@@ -1,6 +1,6 @@
 <template>
   <div id="printContent" style="display: none;">
-    <div style="width: 72mm; padding: 0; font-size: 12px;">
+    <div style="width: 62mm; padding: 0 5mm; font-size: 12px;">
       <div style="text-align: center; font-size: 18px; font-weight: 600;">收费小票(补打)</div>
       <div style="margin-top: 20px;">
         <div>流水号: {{sellRecordList.length > 0 ? sellRecordList[0].lsh : ''}}</div>

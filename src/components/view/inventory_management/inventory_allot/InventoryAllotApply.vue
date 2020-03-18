@@ -21,6 +21,7 @@
         <el-form-item label="商品名称" prop="gsmGoodsName">
           <el-input v-model.trim="queryForm.gsmGoodsName" placeholder="商品名称 / 助记码"/>
         </el-form-item>
+        <!--
         <el-form-item label="审批状态" prop="approveState">
           <el-select v-model="queryForm.approveState" placeholder="请选择" style="width: 120px;">
             <el-option label="全部" :value="null"/>
@@ -28,6 +29,7 @@
             <el-option label="驳回" :value="approveState.UNAPPROVED"/>
           </el-select>
         </el-form-item>
+        -->
         <el-form-item>
           <el-button type="primary" round icon="el-icon-search"  @click="dataGridLoadData">查询</el-button>
           <el-button type="default" round icon="el-icon-refresh" @click="$refs.queryForm.resetFields()">重置</el-button>
@@ -57,10 +59,12 @@
         <el-table-column prop="quantity" label="调拨数量" width="80" show-overflow-tooltip/>
         <el-table-column prop="ph" label="批号" width="120" show-overflow-tooltip/>
         <el-table-column prop="pch" label="批次号" width="120" show-overflow-tooltip/>
-        <el-table-column prop="creatorName" label="操作人" width="110" show-overflow-tooltip sortable/>
+        <el-table-column prop="creatorName" label="操作人" min-width="110" show-overflow-tooltip/>
+        <!--
         <el-table-column prop="approveDate" label="审批时间" width="160" show-overflow-tooltip sortable/>
         <el-table-column prop="approverName" label="审批人" width="110" show-overflow-tooltip sortable/>
         <el-table-column prop="approveState" label="审批状态" min-width="110" :formatter="dataGridFormatterApproveSate" sortable/>
+        -->
       </el-table>
       <el-pagination
         :page-size="pagination.pageSize"

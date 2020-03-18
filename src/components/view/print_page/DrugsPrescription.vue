@@ -1,23 +1,32 @@
 <template>
   <div id="print-body" style="display: none;">
-    <div style="width: 91.5%; margin: 20px;">
-      <div style="text-align: center; font-size: 20px; font-weight: 600;">{{payload.clinicName}}</div>
-      <div style="text-align: center; font-size: 20px; font-weight: 600;">处方笺</div>
-      <div style="margin-top: 15px;">
-        <div style="float: left; width: 39%;">处方号: {{prescriptionList.length > 0 ? prescriptionList[0].lsh : ''}}</div>
-        <div style="float: left; width: 31%;">处方日期: {{prescriptionList.length > 0 ? prescriptionList[0].creationDate : ''}}</div>
+    <!--
+    <div style=" width: 190mm; height: 148mm; border: black 1px solid">
+      <div style="margin-top: 10px; text-align: center; font-size: 20px; font-weight: 600;">
+        <div>{{payload.clinicName}}</div>
+        <div>处方笺</div>
+      </div>
+
+      <div style="margin-top: 15px; display: flex; flex-direction: row;">
+        <div style="width: 75mm;">处方号: {{prescriptionList.length > 0 ? prescriptionList[0].lsh : ''}}</div>
+        <div style="width: 60mm;">处方日期: {{prescriptionList.length > 0 ? prescriptionList[0].creationDate : ''}}</div>
         <div>科别: {{prescriptionList.length > 0 ? prescriptionList[0].sysClinicRoomName : ''}}</div>
       </div>
-      <div style="clear: both;"></div>
-      <div style="margin-top: 5px;">
-        <div style="float: left; width: 19%;">姓名: {{prescriptionList.length > 0 ? prescriptionList[0].mrmMemberName : ''}}</div>
-        <div style="float: left; width: 10%;">性别: {{prescriptionList.length > 0 ? prescriptionList[0].genderName : ''}}</div>
-        <div style="float: left; width: 10%;">年龄: {{prescriptionList.length > 0 ? prescriptionList[0].age : ''}}</div>
-        <div style="float: left; width: 20%;">电话: {{prescriptionList.length > 0 ? prescriptionList[0].phone : ''}}</div>
+
+      <div style="margin-top: 5px; display: flex; flex-direction: row;">
+        <div style="width: 35mm;">姓名: {{prescriptionList.length > 0 ? prescriptionList[0].mrmMemberName : ''}}</div>
+        <div style="width: 40mm;">性别: {{prescriptionList.length > 0 ? (prescriptionList[0].genderName.length > 2 ? '未知' : prescriptionList[0].genderName) : ''}}</div>
+        <div style="width: 25mm;">年龄: {{prescriptionList.length > 0 ? prescriptionList[0].age : ''}}</div>
+        <div>电话: {{prescriptionList.length > 0 ? prescriptionList[0].phone : ''}}</div>
+      </div>
+
+      <div style="margin-top: 5px; display: flex; flex-direction: row;">
+        <div style="width: 95mm;">临床诊断: {{getDiagnoseStr()}}</div>
         <div>住址: {{prescriptionList.length > 0 ? prescriptionList[0].address : ''}}</div>
       </div>
-      <div style="clear: both;"></div>
-      <div style="margin-top: 5px;">临床诊断: {{getDiagnoseStr()}}</div>
+    </div>
+
+    <div style="width: 91.5%; margin: 20px;">
       <div style="margin-top: 10px; border: black 2px solid; height: 85mm; padding-left: 20px; position: relative;">
         <div style="font-size: 28px; padding: 10px 0;">
           <div style="float: left;">R</div>
@@ -41,6 +50,7 @@
       </div>
       <div style="clear: both;"></div>
     </div>
+    -->
   </div>
 </template>
 
@@ -80,8 +90,8 @@ export default {
      */
     printPage () {
       let LODOP = getLodop()
-      LODOP.PRINT_INIT('西药处方')
-      LODOP.ADD_PRINT_HTM(0, 0, '210mm', '148mm', document.getElementById('print-body').innerHTML) // ADD_PRINT_HTM(上边距(不写单位默认为px) 左边距 打印区域宽度 打印区域高度 打印内容)
+      LODOP.PRINT_INIT('处方笺')
+      LODOP.ADD_PRINT_HTM(0, '6mm', '210mm', '148mm', document.getElementById('print-body').innerHTML) // ADD_PRINT_HTM(上边距(不写单位默认为px) 左边距 打印区域宽度 打印区域高度 打印内容)
       // LODOP.PRINT()
       // LODOP.PRINTA()
       LODOP.PREVIEW()
@@ -146,8 +156,5 @@ export default {
 }
 </script>
 
-<style id="testStyle" scoped>
-  .testClass {
-    width: 100%;
-  }
+<style scoped>
 </style>
