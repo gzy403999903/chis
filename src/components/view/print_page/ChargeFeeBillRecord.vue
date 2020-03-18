@@ -1,6 +1,6 @@
 <template>
   <div id="printContent" style="display: none;">
-    <div style="width: 62mm; padding: 0 5mm; font-size: 12px;">
+    <div style="width: 62mm; padding: 0; font-size: 12px;">
       <div style="text-align: center; font-size: 18px; font-weight: 600;">收费小票(补打)</div>
       <div style="margin-top: 20px;">
         <div>流水号: {{sellRecordList.length > 0 ? sellRecordList[0].lsh : ''}}</div>
@@ -112,6 +112,7 @@ export default {
       LODOP.PRINT_INIT('收费小票(补打)')
       // let bodyStyle = '<style>' + document.getElementById('bodyStyle').innerHTML + '</style>'
       // let printHtml = bodyStyle + '<body>' + document.getElementById('bodyContent').innerHTML + '</body>'
+      // LODOP.SET_PRINT_PAGESIZE(1, '76mm', '297mm')
       LODOP.ADD_PRINT_HTM(0, 0, '100%', '100%', document.getElementById('printContent').innerHTML) // ADD_PRINT_HTM(上边距(不写单位默认为px) 左边距 打印区域宽度 打印区域高度 打印内容)
       // LODOP.PRINT()
       // LODOP.PRINTA()
