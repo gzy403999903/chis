@@ -109,9 +109,11 @@ export default {
     getMessageList () {
       const url = `/chisAPI/messager/getMessageList`
       this.$http.get(url).then((res) => {
-        res.data.forEach(msg => {
-          this.$notify({type: msg.type, duration: 10000, dangerouslyUseHTMLString: true, title: msg.sender, message: msg.content})
-        })
+        if (res.data.length > 0) {
+          res.data.forEach(msg => {
+            this.$notify({type: msg.type, duration: 10000, dangerouslyUseHTMLString: true, title: msg.sender, message: msg.content})
+          })
+        }
       })
     }
 
