@@ -1,8 +1,8 @@
 <template>
   <div id="printContent" style="display: none;">
-    <div style="width: 62mm; padding: 0 5mm; font-size: 12px;">
-      <div style="text-align: center; font-size: 18px; font-weight: 600;">收费小票(补打)</div>
-      <div style="margin-top: 20px;">
+    <div style="width: 58mm; font-size: 12px;">
+      <div style="text-align: center; font-size: 16px; font-weight: 600;">收费小票(补打)</div>
+      <div style="margin-top: 15px;">
         <div>流水号: {{sellRecordList.length > 0 ? sellRecordList[0].lsh : ''}}</div>
         <div>消费日期: {{sellRecordList.length > 0 ? sellRecordList[0].creationDate : ''}}</div>
         <div>补打日期: {{getReprintDate()}}</div>
@@ -19,8 +19,8 @@
       <div style="margin: 5px 0; border-bottom: black 1px solid;"></div>
       <div v-for="(item, index) in sellRecordList" :key="index"
            style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-between;">
-        <div style="width: 62mm;">{{item.entityName}}</div>
-        <div style="padding-left: 20mm; min-width: 10mm;">{{item.actualRetailPrice}}</div>
+        <div style="width: 58mm;">{{item.entityName}}</div>
+        <div style="padding-left: 18mm; min-width: 10mm;">{{item.actualRetailPrice}}</div>
         <div>{{item.quantity + item.unitsName}}</div>
         <div>{{(item.actualRetailPrice * item.quantity).toFixed(2)}}</div>
       </div>
@@ -110,10 +110,7 @@ export default {
     printPage () {
       let LODOP = getLodop()
       LODOP.PRINT_INIT('收费小票(补打)')
-      // let bodyStyle = '<style>' + document.getElementById('bodyStyle').innerHTML + '</style>'
-      // let printHtml = bodyStyle + '<body>' + document.getElementById('bodyContent').innerHTML + '</body>'
-      // LODOP.SET_PRINT_PAGESIZE(1, '76mm', '297mm')
-      LODOP.ADD_PRINT_HTM(0, 0, '100%', '100%', document.getElementById('printContent').innerHTML) // ADD_PRINT_HTM(上边距(不写单位默认为px) 左边距 打印区域宽度 打印区域高度 打印内容)
+      LODOP.ADD_PRINT_HTM(0, '5mm', '76mm', '297mm', document.getElementById('printContent').innerHTML) // ADD_PRINT_HTM(上边距(不写单位默认为px) 左边距 打印区域宽度 打印区域高度 打印内容)
       // LODOP.PRINT()
       // LODOP.PRINTA()
       LODOP.PREVIEW()

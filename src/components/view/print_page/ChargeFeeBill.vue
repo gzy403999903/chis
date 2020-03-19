@@ -1,8 +1,8 @@
 <template>
   <div id="printContent" style="display: none;">
-    <div style="width: 95mm; padding: 0 2mm; font-size: 18px;">
-      <div style="text-align: center; font-size: 24px; font-weight: 600;">收费小票</div>
-      <div style="margin-top: 20px;">
+    <div style="width: 58mm; font-size: 12px;">
+      <div style="text-align: center; font-size: 16px; font-weight: 600;">收费小票</div>
+      <div style="margin-top: 15px;">
         <div>流水号: {{lsh}}</div>
         <div>消费日期: {{getPrintDate()}}</div>
         <div>会员姓名: {{sellRecordList.length > 0 ? sellRecordList[0].mrmMemberName : ''}}</div>
@@ -18,8 +18,8 @@
       <div style="margin: 5px 0; border-bottom: black 1px solid;"></div>
       <div v-for="(item, index) in sellRecordList" :key="index"
            style="display: flex; flex-direction: row; flex-wrap: wrap; justify-content: space-between;">
-        <div style="width: 95mm;">{{item.name}}</div>
-        <div style="padding-left: 30mm;">{{item.actualRetailPrice}}</div>
+        <div style="width: 58mm;">{{item.name}}</div>
+        <div style="padding-left: 18mm; min-width: 10mm;">{{item.actualRetailPrice}}</div>
         <div>{{item.quantity + item.unitsName}}</div>
         <div>{{(item.actualRetailPrice * item.quantity).toFixed(2)}}</div>
       </div>
@@ -34,7 +34,7 @@
         <div>应收合计: {{sumActualRetailPrice()}}</div>
       </div>
       <div style="margin: 5px 0; border-bottom: black 1px dashed;"></div>
-      <div style="line-height: 25px;">
+      <div>
         <div v-if="payment.cash > 0">现金: {{payment.cash}}</div>
         <div v-if="payment.cashBackAmount > 0">现金找零: {{payment.cashBackAmount}}</div>
         <div v-if="payment.memberBalance > 0">会员卡: {{payment.memberBalance}}</div>
@@ -52,7 +52,7 @@
       <div>门诊: {{payload.clinicName}}</div>
       <div>电话: {{payload.clinicTel}}</div>
       <div>地址: {{payload.clinicAddress}}</div>
-      <div style="margin-top: 20px; text-align: center; font-size: 24px;">国药乐仁堂&nbsp;&nbsp;&nbsp;祝您身体健康</div>
+      <div style="margin-top: 20px; text-align: center; font-size: 14px;">国药乐仁堂&nbsp;&nbsp;&nbsp;祝您身体健康</div>
       <div style="margin-top: 10px; text-align: center;">凭本小票索取发票(仅当日有效)</div>
     </div>
   </div> <!-- end printContent -->
@@ -113,7 +113,7 @@ export default {
     printPage () {
       let LODOP = getLodop()
       LODOP.PRINT_INIT('收费小票')
-      LODOP.ADD_PRINT_HTM(0, 0, '10cm', '100cm', document.getElementById('printContent').innerHTML) // ADD_PRINT_HTM(上边距(不写单位默认为px) 左边距 打印区域宽度 打印区域高度 打印内容)
+      LODOP.ADD_PRINT_HTM(0, '5mm', '76mm', '297mm', document.getElementById('printContent').innerHTML) // ADD_PRINT_HTM(上边距(不写单位默认为px) 左边距 打印区域宽度 打印区域高度 打印内容)
       // LODOP.PRINT()
       // LODOP.PRINTA()
       LODOP.PREVIEW()
