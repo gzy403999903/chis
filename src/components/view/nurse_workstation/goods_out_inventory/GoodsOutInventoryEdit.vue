@@ -16,8 +16,7 @@
         <span>处方明细</span>
       </el-col>
       <el-col :span="19" style="text-align: right;">
-        <el-button size="mini" type="success" plain icon="el-icon-s-promotion" @click="loadInventoryPchList">出 库</el-button>
-        <el-button size="mini" type="primary" icon="el-icon-check" @click="submitData">提 交</el-button>
+        <el-button size="mini" type="success" plain icon="el-icon-s-promotion" @click="submitData">出 库</el-button>
         <el-button size="mini" type="warning" icon="el-icon-right" @click="dialogClose">返 回</el-button>
       </el-col>
     </el-row>
@@ -129,10 +128,14 @@ export default {
     /**
      * 界面打开后执行的操作
      */
-    dialogOpened () {
-      // 根据流水号获取对应的处方
+    async dialogOpened () {
+      // 根据流水号获取对应的处方和库存
       if (this.prescriptionLsh) {
-        this.loadPrescriptionDetail()
+        this.$loading()
+        let goodsData = await this.loadPrescriptionDetail()
+        await this.loadInventoryPchList(goodsData)
+        this.matchInventoryPch(goodsData)
+        this.$loading().close()
       }
     },
 
@@ -161,95 +164,113 @@ export default {
     /**
      * 载入处方明细
      */
-    loadPrescriptionDetail () {
-      this.$loading()
+    async loadPrescriptionDetail () {
+      let goodsData = []
       const url = '/chisAPI/sellRecord/getClinicListByPrescriptionLshFromCache'
       const params = {
         prescriptionLsh: this.prescriptionLsh
       }
-      this.$http.get(url, {params}).then(res => {
+
+      await this.$http.get(url, {params}).then(res => {
         if (res.data.code === 200) {
-          // 设置行的编辑状态
+          // 设置行的编辑属性
           res.data.resultSet.list.forEach(item => {
             item.editable = false
           })
-          // 进行载入
-          this.dataGrid.data = res.data.resultSet.list
+          // 载入对应的库存信息
+          goodsData = res.data.resultSet.list
         } else {
           this.$message.error(res.data.msg)
         }
-        this.$loading().close()
       })
+      return goodsData
     },
 
     /**
      * 获取对应的库存批次
      * [从前台获取, 从后台获取后无法手动选取]
      */
-    loadInventoryPchList () {
-      let gsmGoodsIdList = this.dataGrid.data.map(item => item.entityId)
-      if (gsmGoodsIdList.length === 0) {
+    async loadInventoryPchList (goodsData) {
+      // 获取商品ID集合, 如果没有则不继续执行
+      let gsmGoodsIdList = goodsData.map(item => item.entityId)
+      if (goodsData.length === 0) {
         return
       }
 
-      this.$loading()
       const url = `/chisAPI/inventory/getClinicPchListByGoodsIdList`
       let params = {
         gsmGoodsIdListJson: JSON.stringify(gsmGoodsIdList)
       }
-      this.$http.get(url, {params}).then((res) => {
+
+      await this.$http.get(url, {params}).then((res) => {
         if (res.data.code === 200) {
-          this.$message.success('加载库存信息完毕')
           this.selectData.inventoryList = res.data.resultSet.list
-          // 匹配库存
-          this.matchInventoryPch()
         } else {
           this.$message.error(res.data.msg)
         }
-        this.$loading().close()
       })
     },
 
     /**
-     * 匹配库存
+     * 匹配批次号
      */
-    matchInventoryPch () {
-      // 开始遍历所有处方信息
-      this.dataGrid.data.forEach(row => {
-        // 通过商品ID 获取对应 pch 信息
-        let inventoryList = this.selectData.inventoryList.filter(inventory => inventory.gsmGoodsId === row.entityId)
-        // 遍历获取的到库存信息, 一但拆分基数相同 且 库存数量大于等于销售数量则进行匹配
-        for (let i = 0; i < inventoryList.length; i++) {
-          let inventory = inventoryList[i]
-          if (inventory.splitQuantity === row.splitQuantity && inventory.quantity >= row.quantity) {
-            this.copyInventoryToRow(row, inventory)
+    matchInventoryPch (goodsData) {
+      // 防止重复 push
+      this.dataGrid.data = []
+
+      // 遍历销售商品匹配批次库存
+      for (let i = 0; i < goodsData.length; i++) {
+        // 获取当前销售商品
+        let goods = goodsData[i]
+
+        // 获取与当前销售商品一致的批次库存
+        let pchData = this.selectData.inventoryList.filter(inventory =>
+          inventory.gsmGoodsId === goods.entityId && inventory.splitQuantity === goods.splitQuantity
+        )
+
+        // 如果没有获取到库存直接创建该行
+        if (pchData.length === 0) {
+          this.dataGrid.data.push(goods)
+          continue
+        }
+
+        // 如果获取到批次库存则按要求进行创建数据行
+        for (let j = 0; j < pchData.length; j++) {
+          // 获取当前批次库存
+          let pch = pchData[j]
+          // 获取匹配后剩余的批次库存数量 (当前批次库存数量 - 销售数量)
+          let residuePchQuantity = pch.quantity - goods.quantity
+
+          // 如果剩余批次数量 大于等于 0
+          if (residuePchQuantity >= 0) {
+            this.matchInventoryPchQuantity(goods, pch)
+            this.dataGrid.data.push(goods)
             break
           }
-        }
-      })
+
+          // 如果剩余批次数量 小于 0
+          if (residuePchQuantity < 0) {
+            // 使用浅拷贝复制一行, 不能直接使用 goods.quantity = pch.quantity 然后 push(goods)
+            let pushGoods = {...goods}
+            pushGoods.quantity = pch.quantity
+            this.matchInventoryPchQuantity(pushGoods, pch)
+            this.dataGrid.data.push(pushGoods)
+            // 将当前商品的销售数量设置为 创建一行后剩余的数量
+            goods.quantity = Math.abs(residuePchQuantity)
+          }
+
+          // 如果当前为最后一个批次库存, 并且剩余批次库存的数量小于 0, 则继续创建一行
+          if (j === (pchData.length - 1) && residuePchQuantity < 0) {
+            this.dataGrid.data.push(goods)
+          }
+        } // end for j
+      } // end for i
     },
 
     /**
-     * 当选中的库存信息发生改变时执行的操作
-     * @param id
+     * 匹配批次库存数量
      */
-    inventoryChange (id) {
-      // 获取选中的批次库存
-      let inventory = this.selectData.inventoryList.find(item => {
-        return item.id === id
-      })
-      // 进行匹配操作, 交由行验证器验证该行是否有效
-      this.copyInventoryToRow(this.dataGrid.currentRow, inventory)
-      // 如果当前行有效则停止编辑该行
-      if (this.dataGridValidateRow(this.dataGrid.currentRow)) {
-        this.dataGrid.currentRow.editable = false
-      }
-    },
-
-    /**
-     * 将库存信息赋值到对应的数据行
-     */
-    copyInventoryToRow (row, inventory) {
+    matchInventoryPchQuantity (row, inventory) {
       row.gsmGoodsId = inventory.gsmGoodsId // 商品ID * 用于比对销售商品ID与出库商品ID是否一致
       row.purchaseTaxRate = inventory.purchaseTaxRate // 采购税率
       row.sellTaxRate = inventory.sellTaxRate // 销售税率
@@ -268,6 +289,23 @@ export default {
     },
 
     /**
+     * 当选中的库存信息发生改变时执行的操作
+     * @param id
+     */
+    inventoryChange (id) {
+      // 获取选中的批次库存
+      let inventory = this.selectData.inventoryList.find(item => {
+        return item.id === id
+      })
+      // 匹配库存
+      this.matchInventoryPchQuantity(this.dataGrid.currentRow, inventory)
+      // 如果当前行有效则停止编辑该行
+      if (this.dataGridValidateRow(this.dataGrid.currentRow)) {
+        this.dataGrid.currentRow.editable = false
+      }
+    },
+
+    /**
      * 双击编辑一行
      */
     editRow (row) {
@@ -278,11 +316,6 @@ export default {
 
       // 验证当前行是否有效
       if (!this.dataGridValidateRow(this.dataGrid.currentRow)) {
-        return
-      }
-
-      if (this.selectData.inventoryList.length === 0) {
-        this.$message.warning('请点击 出库 按钮获取商品库存信息, 如果您已为商品指定了批号, 该批号会被系统重新指定')
         return
       }
 
@@ -309,11 +342,6 @@ export default {
         return false
       }
 
-      if (this.hasRepeatRow(row)) {
-        this.$message.error('【' + row.oid + ' ' + row.name + '】' + '不能重复使用同一个批次号')
-        return false
-      }
-
       if (row.pchSplitQuantity && (row.pchSplitQuantity !== row.splitQuantity)) {
         this.$message.error('【' + row.oid + ' ' + row.name + '】' + '销售单位不符')
         return false
@@ -326,6 +354,11 @@ export default {
 
       if (new Date(row.expiryDate) < new Date()) {
         this.$message.error('【' + row.oid + ' ' + row.name + '】' + '批号商品已过期')
+        return false
+      }
+
+      if (this.hasRepeatRow(row)) {
+        this.$message.error('【' + row.oid + ' ' + row.name + '】' + '不能重复使用同一个批次号')
         return false
       }
 
@@ -354,6 +387,7 @@ export default {
 
       // 开启一行编辑
       this.editRow(row)
+
       // 进行拆分
       this.$prompt('', '请输入拆分数量', {
         confirmButtonText: '确定',
@@ -364,16 +398,10 @@ export default {
         inputValidator: this.dataGridSplitRowValidator,
         inputErrorMessage: ''
       }).then(({ value }) => {
-        // 复制一行
-        let copyRow = {}
-        for (let key in row) {
-          if (row.hasOwnProperty(key)) {
-            copyRow[key] = row[key]
-          }
-        }
-
-        // 更新当前行(开启当前行编辑操作已将该行设置为当前行)
+        // 更新当前行数量(开启编辑后 row 指向 this.dataGrid.currentRow)
         row.quantity = row.quantity - value
+        // 复制一行
+        let copyRow = {...row}
         // 初始化拆分行属性
         copyRow.editable = false
         copyRow.quantity = value

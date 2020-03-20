@@ -20,7 +20,7 @@
       </el-row>
 
       <!-- 左侧患者信息卡 -->
-      <div class="patients">
+      <div class="patients" :style="`height: ${$store.getters.dialogDataGridHeight}px`">
         <div class="patients-img">
           <img src="../../../../assets/images/girl.png" alt="Member" v-if="this.mrmMember.genderName === '女'">
           <img src="../../../../assets/images/boy.png" alt="Member" v-else>
@@ -280,7 +280,7 @@ export default {
 </script>
 
 <style scoped>
-  .patients {background-color: #3BB878; width: 220px; height: 93.6vh; float: left; margin-right: 15px;}
+  .patients {background-color: #3BB878; width: 220px; float: left; margin-right: 15px;}
   .patients-img {text-align: center; padding: 15px 0;}
   .patients img {max-width: 55%;}
   .patients hr {margin: 15px 0; border:none; border-top:2px white solid;}

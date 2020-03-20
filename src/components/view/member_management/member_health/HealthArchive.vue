@@ -45,7 +45,7 @@
         <el-table-column fixed="left" type="index" width="50"/>
         <el-table-column fixed="left" label="操作" align="center" width="100">
           <template slot-scope="scope">
-            <el-button size="mini" type="success" plain icon="el-icon-tickets" @click="dialogOpen(scope.row)">档 案</el-button>
+            <el-button size="mini" type="success" plain icon="el-icon-collection" @click="dialogOpen(scope.row)">档 案</el-button>
           </template>
         </el-table-column>
         <el-table-column prop="oid" label="会员编码" width="150" show-overflow-tooltip/>
