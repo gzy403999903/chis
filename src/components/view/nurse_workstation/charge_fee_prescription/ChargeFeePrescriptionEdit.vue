@@ -25,8 +25,8 @@
           <el-input-number size="mini" v-model="discountRate" :controls="false" :max="99" :min="0" :precision="0"
                            @change="discountRateChange"
                            style="width: 100px; margin-right: -2px;"/>
-          <el-button size="mini" type="success" plain icon="el-icon-discount" @click="discountSelectedData">折 扣</el-button>
-          <el-button size="mini" type="default" plain icon="el-icon-user" :disabled="true">折扣申请</el-button>
+          <el-button size="mini" type="success" plain icon="el-icon-discount" @click="discountSelectedData">打 折</el-button>
+          <el-button size="mini" type="default" plain icon="el-icon-user" :disabled="true">打折申请</el-button>
         </span>
         <el-button size="mini" type="success" plain icon="el-icon-s-promotion" @click="payDialogOpen">结 算</el-button>
         <el-button size="mini" type="warning" icon="el-icon-right" @click="dialogClose">返 回</el-button>
@@ -46,7 +46,7 @@
       :row-class-name="dataGridRowClassName"
       size="mini">
       <el-table-column fixed="left" type="index" width="55"/>
-      <el-table-column fixed="left" type="selection" width="55"/>
+      <el-table-column fixed="left" type="selection" :selectable="tableSelectable" width="55"/>
       <el-table-column prop="dwtSellPrescriptionLsh" label="处方流水号" width="220" show-overflow-tooltip sortable/>
       <el-table-column prop="sysSellTypeId" label="销售类型" width="100" :formatter="sellTypeFormatter" show-overflow-tooltip sortable/>
       <el-table-column prop="oid" label="编码" width="120" show-overflow-tooltip/>
@@ -176,7 +176,7 @@ export default {
      * 设置选择框是否可选
      */
     tableSelectable (row, rowIndex) {
-      return row.discountable
+      return this.hasIymInventoryId(row)
     },
 
     /**
@@ -222,7 +222,10 @@ export default {
       this.$http.get(url, {params}).then(res => {
         if (res.data.code === 200) {
           // 向返回数据添加属性
-          this.addAttrToData(res)
+          res.data.resultSet.list.forEach(item => {
+            item.editable = false // 设置该行编辑属性
+            item.showCostPrice = false // 设置该行显示成本价属性
+          })
           // 进行载入
           this.dataGrid.data = res.data.resultSet.list
           // 计算合计实收金额
@@ -231,29 +234,6 @@ export default {
           this.$message.error(res.data.msg)
         }
         this.$loading().close()
-      })
-    },
-
-    /**
-     * 向返回数据中添加属性
-     */
-    addAttrToData (res) {
-      res.data.resultSet.list.forEach(item => {
-        // 设置该行编辑属性
-        item.editable = false
-        // 设置该行显示成本价属性
-        item.showCostPrice = false
-        // 计算会员价和实收价格
-        /*
-        item.memberRetailPrice = item.retailPrice
-        if (item.discountable && (item.memberDiscountRate > 0)) {
-          const discountPrice = item.retailPrice * item.memberDiscountRate / 10
-          if ((discountPrice > item.costPrice) || item.lossable) {
-            item.memberRetailPrice = discountPrice.toFixed(4)
-            item.actualRetailPrice = discountPrice.toFixed(4)
-          }
-        }
-        */
       })
     },
 

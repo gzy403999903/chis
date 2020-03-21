@@ -394,13 +394,13 @@ export default {
       }
 
       // 验证会员
-      if (!this.mrmMemberId) {
+      if (!Number(this.mrmMemberId)) {
         this.$message.error('未能获取会员信息')
         return false
       }
 
       // 检查病例 ID
-      if (!this.dwtClinicalHistoryId) {
+      if (!Number(this.dwtClinicalHistoryId)) {
         this.$message.error('请填写并提交病例后再开具处方')
         return false
       }
@@ -493,9 +493,6 @@ export default {
       prescriptionData.forEach((item, index) => {
         this.insertRow()
         this.dataGrid.currentRow.editable = false // 停止该行编辑
-        this.dataGrid.currentRow.dwtClinicalHistoryId = item.dwtClinicalHistoryId // 病例ID
-        this.dataGrid.currentRow.mrmMemberId = item.mrmMemberId // 会员ID
-        this.dataGrid.currentRow.sysDoctorName = item.sysDoctorName // 医生名字 *
         this.dataGrid.currentRow.lsh = item.lsh // 流水号
         this.dataGrid.currentRow.sysSellTypeId = item.sysSellTypeId // 销售类型ID
         this.dataGrid.currentRow.cimItemTypeId = item.entityTypeId // 项目类型ID

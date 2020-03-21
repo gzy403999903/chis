@@ -66,7 +66,7 @@
         </el-col> <!-- end left-info -->
         <el-col :span="11" class="right-info">
           <el-card shadow="hover" v-for="(prescription, index) in prescriptionList" :key="index" style="margin-bottom: 10px;">
-            <div v-for="(detail, index) in prescription" :key="index" v-html="parsePrescription(prescription, detail)"></div>
+            <div v-html="parsePrescription(prescription)"></div>
           </el-card>
         </el-col>
       </el-row>
@@ -196,35 +196,38 @@ export default {
     /**
      * 解析处方, 返回对应的处方格式
      * @param prescription
-     * @param detail
      */
-    parsePrescription (prescription, detail) {
-      // 解析项目类型处方
-      if (detail.sysSellTypeId === this.sellType.ITEM) {
-        return detail.name + '&nbsp;&nbsp;' + detail.quantity + detail.unitsName
-      } else {
+    parsePrescription (prescription) {
+      let detail = ''
+      prescription.forEach((row, index) => {
         // 解析西药处方
         // 阿莫西林胶囊 250mg×12# sig:500mg Potid [药名是阿莫西林，剂型是胶囊，单位剂量是每粒250毫克，领取数量是12粒，用法是每次500毫克(2粒)，口服，每日3次]
         // 药品名称_剂型_基本剂量+基本剂量单位_X销售数量+销售单位_sig:_基本剂量*单次剂量+基本剂量单位_给药途径_用药频次
-        if (detail.entityTypeId === this.goodsType.WESTERN_DRUGS) {
-          let sig = JSON.parse(detail.sigJson)
-          return detail.name + '&nbsp;&nbsp;' + sig.doseTypeName + '&nbsp;&nbsp;' +
-            sig.dose + sig.doseUnitsName + '×' + detail.quantity + detail.unitsName +
-            '&nbsp;&nbsp;sig:' + sig.dose + sig.doseUnitsName + '×' + sig.onceDose +
-            '&nbsp;&nbsp;' + sig.drugUsageName.split('/')[0] + sig.drugFrequencyName.split('/')[0]
+        if (row.entityTypeId === this.goodsType.WESTERN_DRUGS) {
+          // 解析用法 JSON
+          let sig = JSON.parse(row.sigJson)
+          // 拼接西药处方格式 [药品名称_剂型_基本剂量+基本剂量单位_X销售数量+销售单位_sig:_基本剂量*单次剂量+基本剂量单位_给药途径_用药频次]
+          let rp = row.name + '&nbsp;&nbsp;' + sig.doseTypeName + '&nbsp;&nbsp;' +
+            sig.dose + sig.doseUnitsName + '×' + row.quantity + row.unitsName + '&nbsp;&nbsp;sig:' +
+            sig.dose + sig.doseUnitsName + '×' + sig.onceDose + '&nbsp;&nbsp;' +
+            sig.drugUsageName.split('/')[0] + sig.drugFrequencyName.split('/')[0]
+          // 返回西药处方
+          detail = detail + '<div style="margin-top: 5px;">' + rp + '</div>'
         }
-        // 解析中药处方
-        if (detail.entityTypeId === this.goodsType.CHINESE_DRUGS) {
-          let lastDetail = prescription[prescription.length - 1]
-          if (lastDetail.id === detail.id) {
-            let sig = JSON.parse(detail.sigJson)
-            return detail.name + '&nbsp;&nbsp;' + detail.quantity + detail.unitsName +
-              '<hr style="margin: 10px 0;"/> sig:' + sig.sig
-          } else {
-            return detail.name + '&nbsp;&nbsp;' + detail.quantity + detail.unitsName
+
+        // 中药处方
+        if (row.entityTypeId === this.goodsType.CHINESE_DRUGS) {
+          let sig = JSON.parse(row.sigJson)
+          let rp = row.name + '&nbsp;&nbsp;' + row.quantity + row.unitsName /* + (sig.drugsPrepareMethodName ? (' [' + sig.drugsPrepareMethodName + ']') : '') */
+          // 返回中药处方
+          detail = detail + '<div style="margin-top: 5px; width: 25%; float: left;">' + rp + '</div>'
+          if ((prescription.length - 1) === index) {
+            detail = detail + '<div style="clear: both;"></div><hr style="margin: 10px 0;"/> sig: ' + sig.sig
           }
         }
-      }
+      })
+
+      return detail
     }
   } // end methods
 }

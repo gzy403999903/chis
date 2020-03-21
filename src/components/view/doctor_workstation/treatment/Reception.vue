@@ -26,7 +26,9 @@
           <img src="../../../../assets/images/boy.png" alt="Member" v-else>
         </div>
         <div class="patients-info">
-          <i class="el-icon-qn-like_fill"><span style="font-size: 14px;">{{this.dwtClinicalHistoryId}}</span></i>
+          <p class="el-icon-edit-outline" style="color: #DD4A68;">
+            {{this.dwtClinicalHistoryId ? '病历号: ' + this.dwtClinicalHistoryId : '病历未填写'}}
+          </p>
           <p>姓名: {{mrmMember.name}}</p>
           <p>性别: {{mrmMember.genderName}}</p>
           <p>年龄: {{mrmMember.age}}</p>
@@ -47,7 +49,6 @@
           <el-button size="mini" @click="healthArchiveDialogOpen">健康档案</el-button>
           <el-button size="mini" @click="clinicalHistoryRecordDialogOpen">历史病历</el-button>
         </div>
-        <br/>
         <div class="patients-btn">
           <el-button size="mini" @click="appointmentVisitDialogOpen" style="width: 85%;">预约回访</el-button>
         </div>
@@ -59,22 +60,22 @@
           <el-tab-pane label="填写病例" name="clinicalHistory">
             <ClinicalHistory :mrmMemberId="mrmMemberId" :setDwtClinicalHistoryId="setDwtClinicalHistoryId"/>
           </el-tab-pane>
-          <el-tab-pane label="西药处方" name="westernDrugsPrescription">
+          <el-tab-pane label="西药处方" name="westernDrugsPrescription" :disabled="!Number(dwtClinicalHistoryId)">
             <WesternDrugsPrescription :mrmMemberId="mrmMemberId" :dwtClinicalHistoryId="dwtClinicalHistoryId"/>
           </el-tab-pane>
-          <el-tab-pane label="中药处方" name="chineseDrugsPrescription">
+          <el-tab-pane label="中药处方" name="chineseDrugsPrescription" :disabled="!Number(dwtClinicalHistoryId)">
             <ChineseDrugsPrescription :mrmMemberId="mrmMemberId" :dwtClinicalHistoryId="dwtClinicalHistoryId"/>
           </el-tab-pane>
-          <el-tab-pane label="检查/检验" name="medicalItemPrescription">
+          <el-tab-pane label="检查/检验" name="medicalItemPrescription" :disabled="!Number(dwtClinicalHistoryId)">
             <MedicalItemPrescription :mrmMemberId="mrmMemberId" :dwtClinicalHistoryId="dwtClinicalHistoryId"/>
           </el-tab-pane>
-          <el-tab-pane label="辅助治疗" name="adjuvantItemPrescription">
+          <el-tab-pane label="辅助治疗" name="adjuvantItemPrescription" :disabled="!Number(dwtClinicalHistoryId)">
             <AdjuvantItemPrescription :mrmMemberId="mrmMemberId" :dwtClinicalHistoryId="dwtClinicalHistoryId"/>
           </el-tab-pane>
-          <el-tab-pane label="其他项目" name="otherItemPrescription">
+          <el-tab-pane label="其他项目" name="otherItemPrescription" :disabled="!Number(dwtClinicalHistoryId)">
             <OtherItemPrescription :mrmMemberId="mrmMemberId" :dwtClinicalHistoryId="dwtClinicalHistoryId"/>
           </el-tab-pane>
-          <el-tab-pane label="卫生材料" name="hygienicMaterialPrescription">
+          <el-tab-pane label="卫生材料" name="hygienicMaterialPrescription" :disabled="!Number(dwtClinicalHistoryId)">
             <HygienicMaterialPrescription :mrmMemberId="mrmMemberId" :dwtClinicalHistoryId="dwtClinicalHistoryId"/>
           </el-tab-pane>
         </el-tabs>
@@ -282,13 +283,13 @@ export default {
 <style scoped>
   .patients {background-color: #3BB878; width: 220px; float: left; margin-right: 15px;}
   .patients-img {text-align: center; padding: 15px 0;}
-  .patients img {max-width: 55%;}
-  .patients hr {margin: 15px 0; border:none; border-top:2px white solid;}
+  .patients img {max-width: 45%;}
+  .patients hr {margin: 11px 0; border:none; border-top:2px white solid;}
   .patients-info {padding-left: 15px;}
   .patients-info p {font-size: 14px; font-weight: 600; padding-bottom: 10px; color: white;}
   .patients-info b {padding-left: 15px;}
   .patients-info i {font-size: 25px; padding-bottom: 10px; color: #DD4A68;}
-  .patients-btn {padding-left: 15px;}
+  .patients-btn {padding-left: 15px; padding-bottom: 10px;}
   .right-tabs {margin-right: 15px;}
 </style>
 <style>

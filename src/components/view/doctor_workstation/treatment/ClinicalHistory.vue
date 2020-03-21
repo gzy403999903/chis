@@ -204,6 +204,34 @@ export default {
   }, // end destroyed
 
   methods: {
+
+    /**
+     * 初始化页面
+     */
+    pageReset () {
+      // 初始化表单
+      this.$refs.editForm.resetFields()
+      // 初始化诊断
+      this.commonDiagnose.id = ''
+      this.commonDiagnose.data = []
+      this.select.commonDiagnose = []
+    },
+
+    /**
+     * 验证当前输入通过后获取下一个焦点
+     * @param currentProp
+     * @param nextRef
+     */
+    editFormValidateToNextFocus (currentProp, nextRef) {
+      this.$refs.editForm.validateField(currentProp, (valid) => {
+        if (!valid) {
+          this.$refs[nextRef].focus()
+        } else {
+          return false
+        }
+      })
+    },
+
     /**
      * 载入对应会员未进行归档的病例信息
      * 该方法的 loading 会在 Reception 组件中的 loadMember () 方法开始
@@ -230,46 +258,17 @@ export default {
      */
     loadClinicalHistoryToEditForm (clinicalHistory) {
       // 赋值返回病例ID
-      if (clinicalHistory.id !== '' && clinicalHistory.id !== 0) {
+      if (clinicalHistory.id) {
         this.setDwtClinicalHistoryId(clinicalHistory.id)
       }
       // 赋值编辑表单属性
       for (let key in this.editForm) {
-        this.editForm[key] = clinicalHistory[key]
+        if (this.editForm.hasOwnProperty(key)) {
+          this.editForm[key] = clinicalHistory[key]
+        }
       }
       // 赋值诊断列表
       this.commonDiagnose.data = JSON.parse(this.editForm.diagnoseJson)
-    },
-
-    /* -------------------------------------------------------------------------------------------------------------- */
-
-    /**
-     * 初始化页面
-     */
-    pageReset () {
-      // 初始化表单
-      if (this.$refs.editForm !== undefined) {
-        this.$refs.editForm.resetFields()
-      }
-      // 初始化诊断
-      this.commonDiagnose.id = ''
-      this.commonDiagnose.data = []
-      this.select.commonDiagnose = []
-    },
-
-    /**
-     * 验证当前输入通过后获取下一个焦点
-     * @param currentProp
-     * @param nextRef
-     */
-    editFormValidateToNextFocus (currentProp, nextRef) {
-      this.$refs.editForm.validateField(currentProp, (valid) => {
-        if (!valid) {
-          this.$refs[nextRef].focus()
-        } else {
-          return false
-        }
-      })
     },
 
     /**

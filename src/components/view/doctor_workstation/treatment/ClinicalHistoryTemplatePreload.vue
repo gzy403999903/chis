@@ -264,11 +264,11 @@ export default {
 
     /**
      * 载入选中行到病例界面
-     * @param row
+     * @param clinicalHistory
      */
     loadSelectedRow (clinicalHistory) {
-      // 清空ID
-      clinicalHistory.id = ''
+      // 删除id属性
+      delete clinicalHistory.id
       // 载入操作
       this.loadFromTemplate(clinicalHistory)
       // 关闭界面

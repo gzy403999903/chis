@@ -176,11 +176,7 @@ export default {
         return item.id === id
       })
 
-      for (let key in data) {
-        if (key === 'name') {
-          return data['name']
-        }
-      }
+      return (data ? data.name : '')
     },
 
     /**
@@ -425,13 +421,13 @@ export default {
       }
 
       // 验证会员
-      if (!this.mrmMemberId) {
+      if (!Number(this.mrmMemberId)) {
         this.$message.error('未能获取会员信息')
         return false
       }
 
       // 检查病例 ID
-      if (!this.dwtClinicalHistoryId) {
+      if (!Number(this.dwtClinicalHistoryId)) {
         this.$message.error('请填写并提交病例后再开具处方')
         return false
       }
@@ -527,9 +523,6 @@ export default {
         this.insertRow()
         this.dataGrid.currentRow.editable = false // 停止该行编辑
         this.dataGrid.currentRow.uuid = index
-        this.dataGrid.currentRow.dwtClinicalHistoryId = item.dwtClinicalHistoryId // 病例ID
-        this.dataGrid.currentRow.mrmMemberId = item.mrmMemberId // 会员ID
-        this.dataGrid.currentRow.sysDoctorName = item.sysDoctorName // 医生名字 *
         this.dataGrid.currentRow.lsh = item.lsh // 流水号
         this.dataGrid.currentRow.sysSellTypeId = item.sysSellTypeId // 销售类型ID
         this.dataGrid.currentRow.gsmGoodsTypeId = item.entityTypeId // 药品类型ID
