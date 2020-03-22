@@ -146,6 +146,7 @@
 <script>
 import PubSub from 'pubsub-js'
 import jwtDecode from 'jwt-decode'
+import {getIncompatibility} from '../../../../common/chineseDrugsIncompatibility'
 import PrescriptionCachePreload from './PrescriptionCachePreload'
 import PrescriptionTemplatePreload from './PrescriptionTemplatePreload'
 
@@ -328,15 +329,37 @@ export default {
      * 向 dataGrid 插入一行
      */
     insertRow () {
-      // 如果当前行无效则不继续执行
-      if (this.dataGrid.data.length > 0 && !this.validateRow(this.dataGrid.currentRow)) {
-        return
+      if (this.dataGrid.data.length > 0) {
+        // 如果当前行无效则不继续执行
+        if (!this.validateRow(this.dataGrid.currentRow)) {
+          return
+        }
+
+        // 检查是否违反 十八反十九畏
+        let drugs = this.dataGrid.currentRow.name
+        let drugsArray = this.dataGrid.data.map(goods => goods.name).filter(name => name !== drugs)
+        let incompatibilityDrugs = getIncompatibility(drugs, drugsArray)
+        if (incompatibilityDrugs) {
+          this.$confirm(`当前处方中【${drugs}】与【${incompatibilityDrugs}】违反十八反十九畏,` +
+            `请确认是否知晓其可能产生的副作用, 并对该处方造成的未知后果负责?`, '提示', {
+            dangerouslyUseHTMLString: true,
+            confirmButtonText: '我已知晓, 并为此处方负责',
+            cancelButtonText: '去除违反的药品',
+            type: 'warning',
+            showClose: false
+          }).then(() => {
+          }).catch(() => {
+            this.deleteRow(this.dataGrid.data[this.dataGrid.data.length - 2])
+          })
+        }
       }
+
       // 判断是否已经录入
       if (this.hasRepeatRow(this.dataGrid.currentRow)) {
         this.$message.error('当前记录已存在, 不能重复录入')
         return
       }
+
       // 停止编辑当前行
       if (this.dataGrid.data.length > 0) {
         this.dataGrid.currentRow.editable = false
@@ -702,7 +725,6 @@ export default {
       // 计算处方总价
       this.sumRetailPrice()
     }
-
   } // end methods
 }
 </script>

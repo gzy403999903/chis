@@ -98,8 +98,12 @@
             v-model.trim="editForm.sysClinicId"
             :disabled="editForm.id !== ''"
             filterable
+            default-first-option
             placeholder="请选择">
-            <el-option v-for="item in dialog.clinics" :key="item.id" :value="item.id" :label="item.name"/>
+            <el-option v-for="item in dialog.clinics" :key="item.id" :value="item.id" :label="item.name">
+              <span>{{item.name}}</span>
+              <span  style="padding-left: 10px; color: #8492a6; font-size: 13px">{{item.code}}</span>
+            </el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="所属角色" prop="sysRoleId">
@@ -107,8 +111,12 @@
             ref="sysRoleId"
             v-model.trim="editForm.sysRoleId"
             filterable
+            default-first-option
             placeholder="请选择">
-            <el-option v-for="item in dialog.roles" :key="item.id" :value="item.id" :label="item.name"/>
+            <el-option v-for="item in dialog.roles" :key="item.id" :value="item.id" :label="item.name">
+              <span>{{item.name}}</span>
+              <span  style="padding-left: 10px; color: #8492a6; font-size: 13px">{{item.code}}</span>
+            </el-option>
           </el-select>
         </el-form-item>
         <el-form-item label="状态" prop="state">
