@@ -440,7 +440,7 @@ export default {
         } else {
           return prev
         }
-      }, 0)).toFixed(2)
+      }, 0)).toFixed(4)
     },
 
     /**

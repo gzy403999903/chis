@@ -1,39 +1,47 @@
 <template>
   <div>
     <!--功能菜单-->
-    <el-card
-      shadow="never"
-      body-style="padding: 5px;"
-      class="el-card-menus">
-      <el-form :model="queryForm" ref="queryForm" :inline="true" size="mini">
+    <el-form :model="queryForm" ref="queryForm" :inline="true" size="mini">
+      <el-card
+        shadow="never"
+        body-style="padding: 5px;"
+        class="el-card-menus">
+        <el-form-item label="供应商编码" prop="oid">
+          <el-input v-model.trim="queryForm.oid" placeholder="供应商编码" style="width: 150px;"/>
+        </el-form-item>
         <el-form-item label="供应商名称" prop="name">
-          <el-input v-model.trim="queryForm.name" placeholder="供应商名称 / 助记码"/>
+          <el-input v-model.trim="queryForm.name" placeholder="供应商名称 / 助记码" style="width: 150px;"/>
         </el-form-item>
-        <el-form-item label="应付金额" prop="arrearagesAmount">
+        <el-form-item label="应付金额大于" prop="arrearagesAmount">
           <el-input-number v-model="queryForm.arrearagesAmount" :controls="false" :max="9999999" :min="0" :precision="2"
-                           style="width: 100px;"/>&nbsp;元
+                           style="width: 90px;"/>&nbsp;元
         </el-form-item>
-        <el-form-item label="受限额度" prop="arrearagesLimit">
+        <el-form-item label="受限额度大于" prop="arrearagesLimit">
           <el-input-number v-model="queryForm.arrearagesLimit" :controls="false" :max="9999999" :min="0" :precision="2"
-                           style="width: 100px;"/>&nbsp;元
+                           style="width: 90px;"/>&nbsp;元
         </el-form-item>
-        <el-form-item label="付款天数" prop="arrearagesDays">
+        <el-form-item label="付款天数大于" prop="arrearagesDays">
           <el-input-number v-model="queryForm.arrearagesDays" :controls="false" :max="9999999" :min="0" :precision="0"
-                           style="width: 100px;"/>&nbsp;天
+                           style="width: 90px;"/>&nbsp;天
         </el-form-item>
+      </el-card>
+      <el-card
+        shadow="never"
+        body-style="padding: 5px;"
+        class="el-card-menus">
         <el-form-item>
           <el-button type="primary" round icon="el-icon-search"  @click="dataGridLoadData">查询</el-button>
           <el-button type="default" round icon="el-icon-refresh" @click="$refs.queryForm.resetFields()">重置</el-button>
         </el-form-item>
-      </el-form>
-    </el-card>
+      </el-card>
+    </el-form>
 
     <!-- 数据表 -->
     <el-card
       shadow="never"
       body-style="padding: 0;">
       <el-table
-        :height="$store.getters.dataGridHeight"
+        :height="$store.getters.dataGridHeight - 40"
         :data="dataGrid.data"
         stripe
         size="mini">
@@ -68,6 +76,7 @@ export default {
   data () {
     return {
       queryForm: {
+        oid: null,
         name: null,
         arrearagesAmount: 0,
         arrearagesLimit: 0,

@@ -1,11 +1,11 @@
 <template>
   <div>
     <!--功能菜单-->
-    <el-card
-      shadow="never"
-      body-style="padding: 5px;"
-      class="el-card-menus">
-      <el-form :model="queryForm" ref="queryForm" :inline="true" size="mini">
+    <el-form :model="queryForm" ref="queryForm" :inline="true" size="mini">
+      <el-card
+        shadow="never"
+        body-style="padding: 5px;"
+        class="el-card-menus">
         <el-form-item label="单据日期" prop="creationDate">
           <el-date-picker
             style="width: 300px;"
@@ -63,19 +63,23 @@
           <el-input-number v-model="queryForm.arrearagesAmount" :controls="false" :max="999999" :min="-999999" :precision="2"
                            style="width: 100px;"/>&nbsp;元
         </el-form-item>
+      </el-card>
+      <el-card
+        shadow="never"
+        body-style="padding: 5px;"
+        class="el-card-menus">
         <el-form-item>
           <el-button type="primary" round icon="el-icon-search"  @click="dataGridLoadData">查询</el-button>
           <el-button type="default" round icon="el-icon-refresh" @click="$refs.queryForm.resetFields()">重置</el-button>
         </el-form-item>
-      </el-form>
-    </el-card>
-
+      </el-card>
+    </el-form>
     <!-- 数据表 -->
     <el-card
       shadow="never"
       body-style="padding: 0;">
       <el-table
-        :height="$store.getters.dataGridHeight"
+        :height="$store.getters.dataGridHeight - 40"
         :data="dataGrid.data"
         stripe
         size="mini">

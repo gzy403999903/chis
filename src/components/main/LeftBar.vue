@@ -39,7 +39,6 @@
           </template>
           <el-menu-item index="/main/doctorWorkstation/clinicalHistoryTemplate">病历模板</el-menu-item>
           <el-menu-item index="/main/error/404#chineseDrugTemplate">中医协定处方</el-menu-item>
-          <el-menu-item index="/main/error/404#hygienicMaterialTemplate">卫生材料模板</el-menu-item>
         </el-submenu>
         <el-submenu index="/doctorWorkstation-3">
           <template slot="title">
@@ -368,8 +367,12 @@
           <el-menu-item index="/main/dataReport/allExpirydateWarning" v-if="hqReport">效期预警*</el-menu-item>
           <el-menu-item index="/main/dataReport/ClinicExpirydateWarning" v-if="!hqReport">效期预警</el-menu-item>
           <!--
-          <el-menu-item index="/main/error/404#81-1">库存预警*</el-menu-item>
           <el-menu-item index="/main/error/404#81-2">库存预警</el-menu-item>
+          <el-menu-item index="/main/error/404#81-2">不动销明细</el-menu-item>
+          <el-menu-item index="/main/error/404#81-2">滞销明细</el-menu-item>
+          <el-menu-item index="/main/error/404#81-2">商品销售排行</el-menu-item>
+          <el-menu-item index="/main/error/404#81-2">项目销售排行</el-menu-item>
+          <el-menu-item index="/main/error/404#81-2">商品历史进价</el-menu-item>
           -->
         </el-submenu>
        <el-submenu index="/dataReport-2">
@@ -382,10 +385,9 @@
          <el-menu-item index="/main/dataReport/allBillingTypeReport" v-if="hqReport">计费类型汇总*</el-menu-item>
          <el-menu-item index="/main/dataReport/clinicBillingTypeReport" v-if="!hqReport">计费类型汇总</el-menu-item>
          <!--
-         <el-menu-item index="/main/error/404#82-2">全机构提成查询</el-menu-item>
-         <el-menu-item index="/main/error/404#82-3">收款明细查询</el-menu-item>
-         <el-menu-item index="/main/error/404#82-4">收款汇总查询(按门店)</el-menu-item>
-         <el-menu-item index="/main/error/404#82-5">收款汇总查询(按人员)</el-menu-item>
+         <el-menu-item index="/main/error/404#82-2">储值方式汇总</el-menu-item>
+         <el-menu-item index="/main/error/404#82-2">折扣毛利考核</el-menu-item>
+         <el-menu-item index="/main/error/404#82-2">提成查询</el-menu-item>
          -->
        </el-submenu>
       </template>
@@ -397,7 +399,7 @@
             <span slot="title">门诊维护</span>
           </template>
           <el-menu-item index="/main/systemManagement/clinicRoom">门诊科室设置</el-menu-item>
-          <el-menu-item index="/main/systemManagement/doctor">医生出诊设置</el-menu-item>
+          <el-menu-item index="/main/systemManagement/doctor">门诊医生注册</el-menu-item>
         </el-submenu>
         <!--
         <el-menu-item index="/main/error/404#systemManagement-2-1">
@@ -481,6 +483,15 @@
           <el-menu-item index="/main/systemManagement/waterSource">饮水来源</el-menu-item>
           <el-menu-item index="/main/systemManagement/toiletType">厕所类型</el-menu-item>
           <el-menu-item index="/main/systemManagement/livestockFence">禽畜栏</el-menu-item>
+        </el-submenu>
+        <el-submenu index="/systemManagement-9">
+          <template slot="title">
+            <i class="el-icon-reading"></i>
+            <span slot="title">其他字典</span>
+          </template>
+          <el-menu-item index="/main/systemManagement/practiceType">医生执业类别</el-menu-item>
+          <el-menu-item index="/main/systemManagement/practiceScope">医生执业范围</el-menu-item>
+          <el-menu-item index="/main/systemManagement/doctorTitles">医生职称</el-menu-item>
         </el-submenu>
       </template>
     </el-menu>

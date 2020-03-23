@@ -6,11 +6,14 @@
       body-style="padding: 5px;"
       class="el-card-menus">
       <el-form :model="queryForm" ref="queryForm" :inline="true" size="mini">
+        <el-form-item label="供应商编码" prop="oid">
+          <el-input v-model.trim="queryForm.oid" placeholder="供应商编码" style="width: 150px;"/>
+        </el-form-item>
         <el-form-item label="供应商名称" prop="name">
-          <el-input v-model.trim="queryForm.name" placeholder="供应商名称 / 助记码"/>
+          <el-input v-model.trim="queryForm.name" placeholder="供应商名称 / 助记码" style="width: 150px;"/>
         </el-form-item>
         <el-form-item label="联系人电话" prop="contacterPhone">
-          <el-input v-model.trim="queryForm.contacterPhone" placeholder="联系人电话"/>
+          <el-input v-model.trim="queryForm.contacterPhone" placeholder="联系人电话" style="width: 150px;"/>
         </el-form-item>
         <el-form-item label="状态" prop="state">
           <el-select v-model="queryForm.state" placeholder="请选择" style="width: 100px;">
@@ -84,6 +87,7 @@ export default {
   data () {
     return {
       queryForm: {
+        oid: null,
         name: null,
         contacterPhone: null,
         state: null

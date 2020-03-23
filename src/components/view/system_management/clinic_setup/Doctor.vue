@@ -6,6 +6,9 @@
       body-style="padding: 5px;"
       class="el-card-menus">
       <el-form :model="queryForm" ref="queryForm" :inline="true" size="mini">
+        <el-form-item label="机构名称" prop="sysClinicName">
+          <el-input v-model.trim="queryForm.sysClinicName" placeholder="机构名称 / 助记码"/>
+        </el-form-item>
         <el-form-item label="医生姓名" prop="name">
           <el-input v-model.trim="queryForm.name" placeholder="医生姓名 / 助记码"/>
         </el-form-item>
@@ -33,42 +36,17 @@
             <el-button size="mini" type="danger" icon="el-icon-delete" @click="dataGridDelete(scope.row)"/>
           </template>
         </el-table-column>
+        <el-table-column prop="id" label="识别码" width="100" show-overflow-tooltip/>
         <el-table-column prop="name" label="医生姓名" width="120" show-overflow-tooltip/>
-        <el-table-column prop="sysClinicRoomName" label="诊室名称" width="150" show-overflow-tooltip/>
-        <el-table-column label="周一" align="center">
-          <el-table-column prop="monBeginTime" label="开始时间" width="100" show-overflow-tooltip/>
-          <el-table-column prop="monEndTime" label="结束时间" width="100" show-overflow-tooltip/>
-          <el-table-column prop="monNo" label="放号数量" width="100" show-overflow-tooltip/>
-        </el-table-column>
-        <el-table-column label="周二" align="center">
-          <el-table-column prop="tueBeginTime" label="开始时间" width="100" show-overflow-tooltip/>
-          <el-table-column prop="tueEndTime" label="结束时间" width="100" show-overflow-tooltip/>
-          <el-table-column prop="tueNo" label="放号数量" width="100" show-overflow-tooltip/>
-        </el-table-column>
-        <el-table-column label="周三" align="center">
-          <el-table-column prop="wedBeginTime" label="开始时间" width="100" show-overflow-tooltip/>
-          <el-table-column prop="wedEndTime" label="结束时间" width="100" show-overflow-tooltip/>
-          <el-table-column prop="wedNo" label="放号数量" width="100" show-overflow-tooltip/>
-        </el-table-column>
-        <el-table-column label="周四" align="center">
-          <el-table-column prop="thuBeginTime" label="开始时间" width="100" show-overflow-tooltip/>
-          <el-table-column prop="thuEndTime" label="结束时间" width="100" show-overflow-tooltip/>
-          <el-table-column prop="thuNo" label="放号数量" width="100" show-overflow-tooltip/>
-        </el-table-column>
-        <el-table-column label="周五" align="center">
-          <el-table-column prop="friBeginTime" label="开始时间" width="100" show-overflow-tooltip/>
-          <el-table-column prop="friEndTime" label="结束时间" width="100" show-overflow-tooltip/>
-          <el-table-column prop="friNo" label="放号数量" width="100" show-overflow-tooltip/>
-        </el-table-column>
-        <el-table-column label="周六" align="center">
-          <el-table-column prop="satBeginTime" label="开始时间" width="100" show-overflow-tooltip/>
-          <el-table-column prop="satEndTime" label="结束时间" width="100" show-overflow-tooltip/>
-          <el-table-column prop="satNo" label="放号数量" width="100" show-overflow-tooltip/>
-        </el-table-column>
-        <el-table-column label="周日" align="center">
-          <el-table-column prop="sunBeginTime" label="开始时间" width="100" show-overflow-tooltip/>
-          <el-table-column prop="sunEndTime" label="结束时间" width="100" show-overflow-tooltip/>
-          <el-table-column prop="sunNo" label="放号数量" width="100" show-overflow-tooltip/>
+        <el-table-column prop="doctorTitlesName" label="职称" width="120" show-overflow-tooltip/>
+        <el-table-column prop="practiceTypeName" label="执业类别" width="120" show-overflow-tooltip/>
+        <el-table-column prop="sysPracticeScopeName" label="执业范围" width="120" show-overflow-tooltip/>
+        <el-table-column prop="sysClinicRoomName" label="所属科室" width="150" show-overflow-tooltip/>
+        <el-table-column prop="sysClinicName" label="账户注册地" width="400" show-overflow-tooltip/>
+        <el-table-column prop="mainSysClinicName" label="执业注册地" width="400"  show-overflow-tooltip/>
+        <el-table-column prop="subSysClinicName" label="多点执业地" width="400"  show-overflow-tooltip/>
+        <el-table-column prop="state" label="状态"  show-overflow-tooltip>
+          <template slot-scope="props">{{props.row.state ? '启用' : '禁用'}}</template>
         </el-table-column>
       </el-table>
       <el-pagination
@@ -85,8 +63,7 @@
 
     <!-- 添加 / 编辑 -->
     <el-dialog
-      top="4%"
-      width="60%"
+      width="65%"
       :show-close="false"
       :close-on-click-modal="false"
       :visible="dialog.visible"
@@ -96,7 +73,7 @@
       <!-- 模态框标题栏与功能按钮 -->
       <el-row slot="title">
         <el-col :span="5" style="font-size: 20px;">
-          <span>医生出诊设置</span>
+          <span>门诊医生注册</span>
         </el-col>
         <el-col :span="19" style="text-align: right;">
           <el-button size="mini" type="primary" icon="el-icon-check" @click="editFormSubmit">提 交</el-button>
@@ -104,325 +81,108 @@
         </el-col>
       </el-row>
 
-      <el-form :model="editForm" ref="editForm" :rules="editFormRules" size="small" label-width="100px">
+      <el-form :model="editForm" ref="editForm" :rules="editFormRules" size="small" label-width="120px">
         <el-row>
-          <el-col :span="11">
+          <el-col :span="14">
+            <el-form-item label="账户注册地" prop="sysClinicId">
+              <el-select
+                ref="sysClinicId"
+                v-model.trim="editForm.sysClinicId"
+                @change="clinicIdChange"
+                filterable
+                placeholder="请选择">
+                <el-option v-for="item in sysClinicList" :key="item.id" :value="item.id" :label="item.name + ' [' +item.code + ']'"/>
+              </el-select>
+            </el-form-item>
+
+            <el-form-item label="执业注册地" prop="mainSysClinicId">
+              <el-select
+                ref="mainSysClinicId"
+                v-model.trim="editForm.mainSysClinicId"
+                filterable
+                placeholder="请选择">
+                <el-option v-for="item in sysClinicList" :key="item.id" :value="item.id" :label="item.name + ' [' +item.code + ']'"/>
+              </el-select>
+            </el-form-item>
+
+            <el-form-item label="多点执业地" prop="subSysClinicId">
+              <el-select
+                ref="subSysClinicId"
+                v-model.trim="editForm.subSysClinicId"
+                filterable
+                placeholder="请选择">
+                <el-option v-for="item in sysClinicList" :key="item.id" :value="item.id" :label="item.name + ' [' +item.code + ']'"/>
+              </el-select>
+            </el-form-item>
+
+            <el-form-item label="多点有效期" prop="subSysClinicExpiryDate">
+              <el-date-picker
+                ref="subSysClinicExpiryDate"
+                v-model="editForm.subSysClinicExpiryDate"
+                type="date"
+                placeholder="选择日期"
+                value-format="yyyy-MM-dd"
+                :picker-options="pickerOptions"
+                style="width: 50%;"/>
+            </el-form-item>
+
+            <el-form-item label="简介" prop="intro">
+              <el-input type="textarea" v-model="editForm.intro" :rows="3" resize="none"/>
+            </el-form-item>
+          </el-col> <!-- end left -->
+
+          <el-col :span="10">
             <el-form-item label="医生姓名" prop="id">
               <el-select
                 ref="id"
                 v-model.trim="editForm.id"
                 filterable
                 placeholder="请选择">
-                <el-option v-for="item in clinicUserList" :key="item.id" :value="item.id" :label="item.name + ' [' +item.code + ']'"/>
+                <el-option v-for="item in dialog.clinicUserList" :key="item.id" :value="item.id" :label="item.name + ' [' +item.code + ']'"/>
               </el-select>
             </el-form-item>
-          </el-col>
-        </el-row>
 
-        <el-row>
-          <el-col :span="11">
             <el-form-item label="科室名称" prop="sysClinicRoomId">
               <el-select
                 ref="sysClinicRoomId"
                 v-model.trim="editForm.sysClinicRoomId"
                 filterable
                 placeholder="请选择">
-                <el-option v-for="item in clinicRoomList" :key="item.id" :value="item.id" :label="item.name + ' [' +item.code + ']'"/>
+                <el-option v-for="item in dialog.clinicRoomList" :key="item.id" :value="item.id" :label="item.name + ' [' +item.code + ']'"/>
               </el-select>
             </el-form-item>
-          </el-col>
-        </el-row>
 
-        <el-row>
-          <el-col :span="2" :push="6">
-            <el-form-item label="开始时间"/>
-          </el-col>
-          <el-col :span="2" :push="11">
-            <el-form-item label="结束时间"/>
-          </el-col>
-          <el-col :span="2" :push="14">
-            <el-form-item label="放号数量"/>
-          </el-col>
-        </el-row>
+            <el-form-item label="医师职称" prop="doctorTitlesId">
+              <el-select
+                ref="doctorTitlesId"
+                v-model.trim="editForm.doctorTitlesId"
+                filterable
+                placeholder="请选择">
+                <el-option v-for="item in doctorTitlesList" :key="item.id" :value="item.id" :label="item.name + ' [' +item.code + ']'"/>
+              </el-select>
+            </el-form-item>
 
-        <el-row>
-          <el-col :span="1" :push="1">
-            <el-form-item label="周一"/>
-          </el-col>
-          <el-col :span="23" :push="1">
-            <el-row>
-              <el-col :span="9">
-                <el-form-item prop="monBeginTime">
-                  <el-time-select
-                    placeholder="开始时间"
-                    v-model="editForm.monBeginTime"
-                    :picker-options="{
-                      start: timeRange.start,
-                      step: timeRange.step,
-                      end: timeRange.end
-                     }"/>
-                </el-form-item>
-              </el-col>
-              <el-col :span="9" :pull="2">
-                <el-form-item prop="monEndTime">
-                  <el-time-select
-                    placeholder="结束时间"
-                    v-model="editForm.monEndTime"
-                    :picker-options="{
-                       start: timeRange.start,
-                      step: timeRange.step,
-                      end: timeRange.end,
-                      minTime: editForm.monBeginTime
-                     }"/>
-                </el-form-item>
-              </el-col>
-              <el-col :span="6" :pull="4">
-                <el-form-item prop="monNo">
-                  <el-input-number v-model="editForm.monNo" :controls="false" :max="100" :min="0" :precision="0"/>
-                </el-form-item>
-              </el-col>
-            </el-row>
-          </el-col>
-        </el-row>
+            <el-form-item label="执业类别" prop="practiceTypeId">
+              <el-select
+                ref="practiceTypeId"
+                v-model.trim="editForm.practiceTypeId"
+                @change="loadPracticeScopeList"
+                filterable
+                placeholder="请选择">
+                <el-option v-for="item in practiceTypeList" :key="item.id" :value="item.id" :label="item.name + ' [' +item.code + ']'"/>
+              </el-select>
+            </el-form-item>
 
-        <el-row>
-          <el-col :span="1" :push="1">
-            <el-form-item label="周二"/>
-          </el-col>
-          <el-col :span="23" :push="1">
-            <el-row>
-              <el-col :span="9">
-                <el-form-item prop="tueBeginTime">
-                  <el-time-select
-                    placeholder="开始时间"
-                    v-model="editForm.tueBeginTime"
-                    :picker-options="{
-                      start: timeRange.start,
-                      step: timeRange.step,
-                      end: timeRange.end
-                     }"/>
-                </el-form-item>
-              </el-col>
-              <el-col :span="9" :pull="2">
-                <el-form-item prop="tueEndTime">
-                  <el-time-select
-                    placeholder="结束时间"
-                    v-model="editForm.tueEndTime"
-                    :picker-options="{
-                       start: timeRange.start,
-                      step: timeRange.step,
-                      end: timeRange.end,
-                      minTime: editForm.tueBeginTime
-                     }"/>
-                </el-form-item>
-              </el-col>
-              <el-col :span="6" :pull="4">
-                <el-form-item prop="tueNo">
-                  <el-input-number v-model="editForm.tueNo" :controls="false" :max="100" :min="0" :precision="0"/>
-                </el-form-item>
-              </el-col>
-            </el-row>
-          </el-col>
-        </el-row>
-
-        <el-row>
-          <el-col :span="1" :push="1">
-            <el-form-item label="周三"/>
-          </el-col>
-          <el-col :span="23" :push="1">
-            <el-row>
-              <el-col :span="9">
-                <el-form-item prop="wedBeginTime">
-                  <el-time-select
-                    placeholder="开始时间"
-                    v-model="editForm.wedBeginTime"
-                    :picker-options="{
-                      start: timeRange.start,
-                      step: timeRange.step,
-                      end: timeRange.end
-                     }"/>
-                </el-form-item>
-              </el-col>
-              <el-col :span="9" :pull="2">
-                <el-form-item prop="wedEndTime">
-                  <el-time-select
-                    placeholder="结束时间"
-                    v-model="editForm.wedEndTime"
-                    :picker-options="{
-                       start: timeRange.start,
-                      step: timeRange.step,
-                      end: timeRange.end,
-                      minTime: editForm.wedBeginTime
-                     }"/>
-                </el-form-item>
-              </el-col>
-              <el-col :span="6" :pull="4">
-                <el-form-item prop="wedNo">
-                  <el-input-number v-model="editForm.wedNo" :controls="false" :max="100" :min="0" :precision="0"/>
-                </el-form-item>
-              </el-col>
-            </el-row>
-          </el-col>
-        </el-row>
-
-        <el-row>
-          <el-col :span="1" :push="1">
-            <el-form-item label="周四"/>
-          </el-col>
-          <el-col :span="23" :push="1">
-            <el-row>
-              <el-col :span="9">
-                <el-form-item prop="thuBeginTime">
-                  <el-time-select
-                    placeholder="开始时间"
-                    v-model="editForm.thuBeginTime"
-                    :picker-options="{
-                      start: timeRange.start,
-                      step: timeRange.step,
-                      end: timeRange.end
-                     }"/>
-                </el-form-item>
-              </el-col>
-              <el-col :span="9" :pull="2">
-                <el-form-item prop="thuEndTime">
-                  <el-time-select
-                    placeholder="结束时间"
-                    v-model="editForm.thuEndTime"
-                    :picker-options="{
-                       start: timeRange.start,
-                      step: timeRange.step,
-                      end: timeRange.end,
-                      minTime: editForm.thuBeginTime
-                     }"/>
-                </el-form-item>
-              </el-col>
-              <el-col :span="6" :pull="4">
-                <el-form-item prop="thuNo">
-                  <el-input-number v-model="editForm.thuNo" :controls="false" :max="100" :min="0" :precision="0"/>
-                </el-form-item>
-              </el-col>
-            </el-row>
-          </el-col>
-        </el-row>
-
-        <el-row>
-          <el-col :span="1" :push="1">
-            <el-form-item label="周五"/>
-          </el-col>
-          <el-col :span="23" :push="1">
-            <el-row>
-              <el-col :span="9">
-                <el-form-item prop="friBeginTime">
-                  <el-time-select
-                    placeholder="开始时间"
-                    v-model="editForm.friBeginTime"
-                    :picker-options="{
-                      start: timeRange.start,
-                      step: timeRange.step,
-                      end: timeRange.end
-                     }"/>
-                </el-form-item>
-              </el-col>
-              <el-col :span="9" :pull="2">
-                <el-form-item prop="friEndTime">
-                  <el-time-select
-                    placeholder="结束时间"
-                    v-model="editForm.friEndTime"
-                    :picker-options="{
-                       start: timeRange.start,
-                      step: timeRange.step,
-                      end: timeRange.end,
-                      minTime: editForm.friBeginTime
-                     }"/>
-                </el-form-item>
-              </el-col>
-              <el-col :span="6" :pull="4">
-                <el-form-item prop="friNo">
-                  <el-input-number v-model="editForm.friNo" :controls="false" :max="100" :min="0" :precision="0"/>
-                </el-form-item>
-              </el-col>
-            </el-row>
-          </el-col>
-        </el-row>
-
-        <el-row>
-          <el-col :span="1" :push="1">
-            <el-form-item label="周六"/>
-          </el-col>
-          <el-col :span="23" :push="1">
-            <el-row>
-              <el-col :span="9">
-                <el-form-item prop="satBeginTime">
-                  <el-time-select
-                    placeholder="开始时间"
-                    v-model="editForm.satBeginTime"
-                    :picker-options="{
-                      start: timeRange.start,
-                      step: timeRange.step,
-                      end: timeRange.end
-                     }"/>
-                </el-form-item>
-              </el-col>
-              <el-col :span="9" :pull="2">
-                <el-form-item prop="satEndTime">
-                  <el-time-select
-                    placeholder="结束时间"
-                    v-model="editForm.satEndTime"
-                    :picker-options="{
-                       start: timeRange.start,
-                      step: timeRange.step,
-                      end: timeRange.end,
-                      minTime: editForm.satBeginTime
-                     }"/>
-                </el-form-item>
-              </el-col>
-              <el-col :span="6" :pull="4">
-                <el-form-item prop="name">
-                  <el-input-number v-model="editForm.satNo" :controls="false" :max="100" :min="0" :precision="0"/>
-                </el-form-item>
-              </el-col>
-            </el-row>
-          </el-col>
-        </el-row>
-
-        <el-row>
-          <el-col :span="1" :push="1">
-            <el-form-item label="周日"/>
-          </el-col>
-          <el-col :span="23" :push="1">
-            <el-row>
-              <el-col :span="9">
-                <el-form-item prop="sunBeginTime">
-                  <el-time-select
-                    placeholder="开始时间"
-                    v-model="editForm.sunBeginTime"
-                    :picker-options="{
-                      start: timeRange.start,
-                      step: timeRange.step,
-                      end: timeRange.end
-                     }"/>
-                </el-form-item>
-              </el-col>
-              <el-col :span="9" :pull="2">
-                <el-form-item prop="sunEndTime">
-                  <el-time-select
-                    placeholder="结束时间"
-                    v-model="editForm.sunEndTime"
-                    :picker-options="{
-                       start: timeRange.start,
-                      step: timeRange.step,
-                      end: timeRange.end,
-                      minTime: editForm.sunBeginTime
-                     }"/>
-                </el-form-item>
-              </el-col>
-              <el-col :span="6" :pull="4">
-                <el-form-item prop="sunNo">
-                  <el-input-number v-model="editForm.sunNo" :controls="false" :max="100" :min="0" :precision="0"/>
-                </el-form-item>
-              </el-col>
-            </el-row>
-          </el-col>
+            <el-form-item label="职业范围" prop="sysPracticeScopeId">
+              <el-select
+                ref="sysPracticeScopeId"
+                v-model.trim="editForm.sysPracticeScopeId"
+                filterable
+                placeholder="请选择">
+                <el-option v-for="item in dialog.practiceScopeList" :key="item.id" :value="item.id" :label="item.name + ' [' +item.code + ']'"/>
+              </el-select>
+            </el-form-item>
+          </el-col> <!-- end right -->
         </el-row>
 
       </el-form>
@@ -431,13 +191,17 @@
 </template>
 
 <script>
-import {getPyCode} from '../../../../common/py'
-
 export default {
 
   data () {
     return {
+      pickerOptions: {
+        disabledDate (time) {
+          return time.getTime() < Date.now()
+        }
+      },
       queryForm: {
+        sysClinicName: null,
         name: null
       },
       dataGrid: {
@@ -455,83 +219,63 @@ export default {
       dialog: {
         url: '',
         method: 'POST',
-        visible: false
-      },
-      timeRange: {
-        start: '08:00',
-        step: '00:30',
-        end: '22:30'
+        visible: false,
+        clinicUserList: [],
+        clinicRoomList: [],
+        practiceScopeList: []
       },
       editForm: {
         id: '',
+        sysClinicId: '',
+        mainSysClinicId: '',
+        subSysClinicId: '',
+        subSysClinicExpiryDate: '',
         sysClinicRoomId: '',
-        monBeginTime: '',
-        monEndTime: '',
-        monNo: 0,
-        tueBeginTime: '',
-        tueEndTime: '',
-        tueNo: 0,
-        wedBeginTime: '',
-        wedEndTime: '',
-        wedNo: 0,
-        thuBeginTime: '',
-        thuEndTime: '',
-        thuNo: 0,
-        friBeginTime: '',
-        friEndTime: '',
-        friNo: 0,
-        satBeginTime: '',
-        satEndTime: '',
-        satNo: 0,
-        sunBeginTime: '',
-        sunEndTime: '',
-        sunNo: 0
+        doctorTitlesId: '',
+        practiceTypeId: '',
+        sysPracticeScopeId: '',
+        intro: ''
       },
       editFormRules: {
         id: [
           {required: true, message: '不能为空'}
         ],
+        sysClinicId: [
+          {required: true, message: '不能为空'}
+        ],
+        mainSysClinicId: [
+          {required: true, message: '不能为空'}
+        ],
         sysClinicRoomId: [
           {required: true, message: '不能为空'}
         ],
-        monNo: [
+        doctorTitlesId: [
           {required: true, message: '不能为空'}
         ],
-        tueNo: [
+        practiceTypeId: [
           {required: true, message: '不能为空'}
         ],
-        wedNo: [
+        sysPracticeScopeId: [
           {required: true, message: '不能为空'}
         ],
-        thuNo: [
-          {required: true, message: '不能为空'}
-        ],
-        friNo: [
-          {required: true, message: '不能为空'}
-        ],
-        satNo: [
-          {required: true, message: '不能为空'}
-        ],
-        sunNo: [
-          {required: true, message: '不能为空'}
+        intro: [
+          {max: 200, message: '长度不合法[1-200]'}
         ]
       }
     }
   }, // end data
 
   computed: {
-    clinicUserList: function () {
-      return this.$store.getters.clinicUserList
+    sysClinicList: function () {
+      return this.$store.getters.sysClinicList
     },
-    clinicRoomList: function () {
-      return this.$store.getters.clinicRoomList
+    doctorTitlesList: function () {
+      return this.$store.getters.doctorTitlesList
+    },
+    practiceTypeList: function () {
+      return this.$store.getters.practiceTypeList
     }
   },
-
-  mounted () {
-    this.$store.dispatch('queryClinicUserList')
-    this.$store.dispatch('queryClinicRoomList')
-  }, // end mounted
 
   methods: {
     /* -------------------------------------------------------------------------------------------------------------- */
@@ -608,13 +352,9 @@ export default {
     dialogOpened () {
       let row = this.dataGrid.row
       if (row) {
-        // 如果用户所在机构与目前诊室所在机构不符 将目前诊室 ID 清空
-        if (row.sysClinicId !== row.roomSysClinicId) {
-          row.sysClinicRoomId = ''
-        }
-
+        this.clinicIdChange(row.sysClinicId) // 预加载数据[不能放到赋值后]
         for (let key in this.editForm) {
-          if (row[key] !== undefined) {
+          if (this.editForm.hasOwnProperty(key)) {
             this.editForm[key] = row[key]
           }
         }
@@ -641,10 +381,68 @@ export default {
     },
 
     /**
-     * 将输入的名称转成拼音助记码
+     * 当机构所在机构 ID 改变时进行的操作
      */
-    editFormSetPyCode () {
-      this.editForm.code = getPyCode(this.editForm.name)
+    clinicIdChange (sysClinicId) {
+      this.loadClinicUserList(sysClinicId)
+      this.loadClinicRoomList(sysClinicId)
+    },
+
+    /**
+     * 载入对应机构用户
+     */
+    loadClinicUserList (sysClinicId) {
+      // 清空 已选中的 医师 ID
+      this.editForm.id = ''
+      // 进行查询
+      const url = `/chisAPI/user/getEnabledByClinicId`
+      let params = {sysClinicId}
+
+      this.$http.get(url, {params}).then((res) => {
+        if (res.data.code === 200) {
+          this.dialog.clinicUserList = res.data.resultSet.list
+        } else {
+          this.$message.error(res.data.msg)
+        }
+      })
+    },
+
+    /**
+     * 载入对应机构诊室
+     */
+    loadClinicRoomList (sysClinicId) {
+      // 清空 已选中的 诊室 ID
+      this.editForm.sysClinicRoomId = ''
+      // 进行查询
+      const url = `/chisAPI/clinicRoom/geByClinicId`
+      let params = {sysClinicId}
+
+      this.$http.get(url, {params}).then((res) => {
+        if (res.data.code === 200) {
+          this.dialog.clinicRoomList = res.data.resultSet.list
+        } else {
+          this.$message.error(res.data.msg)
+        }
+      })
+    },
+
+    /**
+     * 载入对应职业类别的执业范围
+     */
+    loadPracticeScopeList (practiceTypeId) {
+      // 清空 已选中的 执业范围 ID
+      this.editForm.sysPracticeScopeId = ''
+      // 进行查询
+      const url = `/chisAPI/practiceScope/getByPracticeTypeId`
+      let params = {practiceTypeId}
+
+      this.$http.get(url, {params}).then((res) => {
+        if (res.data.code === 200) {
+          this.dialog.practiceScopeList = res.data.resultSet.list
+        } else {
+          this.$message.error(res.data.msg)
+        }
+      })
     },
 
     /**
@@ -652,31 +450,24 @@ export default {
      */
     editFormSubmit () {
       this.$refs.editForm.validate((valid) => {
-        if (valid) {
-          this.$loading()
-          let url = this.dialog.url
-          let method = this.dialog.method
-          // 如果为 null 将发送一个空串到后台
-          for (let key in this.editForm) {
-            if (this.editForm[key] === null) {
-              this.editForm[key] = ''
-            }
-          }
-          let params = this.editForm
-
-          this.$http({method, url, params}).then((res) => {
-            if (res.data.code === 200) {
-              this.$message.success(res.data.msg)
-              this.dialogClose()
-              this.dataGridLoadData()
-            } else {
-              this.$message.error(res.data.msg)
-              this.$loading().close()
-            }
-          })
-        } else {
+        if (!valid) {
           return false
         }
+        this.$loading()
+        let url = this.dialog.url
+        let method = this.dialog.method
+        let params = this.editForm
+
+        this.$http({method, url, params}).then((res) => {
+          if (res.data.code === 200) {
+            this.$message.success(res.data.msg)
+            this.dialogClose()
+            this.dataGridLoadData()
+          } else {
+            this.$message.error(res.data.msg)
+            this.$loading().close()
+          }
+        })
       })
     }
 

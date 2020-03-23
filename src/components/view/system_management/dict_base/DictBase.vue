@@ -61,7 +61,7 @@
     <!-- 添加功能 -->
     <el-dialog
       :title="`${title}`"
-      width="50%"
+      width="45%"
       :show-close="false"
       :close-on-click-modal="false"
       :visible="dialog.visible"

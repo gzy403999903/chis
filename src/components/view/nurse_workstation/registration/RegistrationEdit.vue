@@ -81,10 +81,11 @@
               <el-option v-for="item in clinicDoctorList" :key="item.id" :value="item.id" :label="item.name"/>
             </el-select>
           </el-form-item>
+          <el-form-item label="医师职称" prop="doctorTitlesName">
+            {{editForm.doctorTitlesName}}
+          </el-form-item>
           <el-form-item label="科室/诊室" prop="sysClinicRoomName">
             {{editForm.sysClinicRoomName}}
-          </el-form-item>
-          <el-form-item label="可用号数">
           </el-form-item>
           <el-form-item label="挂号类型" prop="cimItemId">
             <el-select
@@ -138,6 +139,7 @@ export default {
 
         sysDoctorId: '', // 医生ID
         sysDoctorName: '', // 医生姓名
+        doctorTitlesName: '', // 医生职称
         sysClinicRoomName: '', // 所在诊室名称
         cimItemId: '', // 挂号费ID
         retailPrice: 0 // 挂号费价格
@@ -245,6 +247,7 @@ export default {
         return item.id === id
       })
       this.editForm.sysDoctorName = doctor.name
+      this.editForm.doctorTitlesName = doctor.doctorTitlesName
       this.editForm.sysClinicRoomName = doctor.sysClinicRoomName
     },
 

@@ -15,8 +15,8 @@
         <span>自采入库单</span>
       </el-col>
       <el-col :span="19" style="text-align: right;">
+        <el-button size="mini" type="default" icon="el-icon-refresh" @click="pageResetConfirm">重置</el-button>
         <el-button size="mini" type="default" icon="el-icon-plus" @click="insertRow">插入一行</el-button>
-        <el-button size="mini" type="default" icon="el-icon-refresh" @click="pageResetConfirm">重置页面</el-button>
         <el-button size="mini" type="primary" icon="el-icon-check" @click="submitData">提 交</el-button>
         <el-button size="mini" type="warning" icon="el-icon-right" @click="dialogClose">返 回</el-button>
       </el-col>
@@ -78,9 +78,10 @@
               </el-select>
             </el-form-item>
           </el-col>
-          <el-col :span="6" :offset="1" style="font-size: 18px; font-weight: 600; color: #F56C6C; text-align: center;border-bottom: #666666 1px solid;">
-            <i class="el-icon-loading"></i>
-            成本合计: {{totalAmount}} &nbsp;元
+          <el-col :span="6">
+            <el-form-item label="成本合计">
+              {{(totalAmount).toFixed(4)}} &nbsp;元
+            </el-form-item>
           </el-col>
         </el-row>
 

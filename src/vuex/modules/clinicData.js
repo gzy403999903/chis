@@ -13,9 +13,6 @@ export default {
     // 机构用户
     clinicUserList: null,
 
-    // 机构诊室
-    clinicRoomList: null,
-
     // 机构医生
     clinicDoctorList: null,
 
@@ -30,10 +27,6 @@ export default {
   getters: {
     clinicUserList: (state) => {
       return state.clinicUserList
-    },
-
-    clinicRoomList: (state) => {
-      return state.clinicRoomList
     },
 
     clinicDoctorList: (state) => {
@@ -53,10 +46,6 @@ export default {
   mutations: {
     clinicUserList (state, data) {
       state.clinicUserList = data
-    },
-
-    clinicRoomList (state, data) {
-      state.clinicRoomList = data
     },
 
     clinicDoctorList (state, data) {
@@ -79,14 +68,6 @@ export default {
       const url = '/chisAPI/user/getClinicEnabled'
       axios.get(url).then((res) => {
         context.commit('clinicUserList', res.data)
-      })
-    },
-
-    // 获取机构启用状态诊室
-    queryClinicRoomList (context) {
-      const url = '/chisAPI/clinicRoom/getClinicListAll'
-      axios.get(url).then((res) => {
-        context.commit('clinicRoomList', res.data)
       })
     },
 

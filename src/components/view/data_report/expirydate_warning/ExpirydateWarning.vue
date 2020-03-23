@@ -16,6 +16,7 @@
         <el-form-item>
           <el-button type="primary" round icon="el-icon-search"  @click="dataGridLoadData">查询</el-button>
           <el-button type="default" round icon="el-icon-refresh" @click="$refs.queryForm.resetFields()">重置</el-button>
+          <el-button type="default" round icon="el-icon-download" @click="downloadExcel" :disabled="!dataGrid.data.length">导出Excel</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -137,6 +138,34 @@ export default {
           this.$message.error(res.data.msg)
         }
         this.$loading().close()
+      })
+    },
+
+    /**
+     * 下载 excel
+     */
+    downloadExcel () {
+      this.$loading()
+      let params = this.queryForm
+      let url = (
+        this.action === 'all'
+          ? '/chisAPI/inventoryReport/downloadExpiryDateExcel'
+          : '/chisAPI/inventoryReport/downloadClinicExpiryDateExcel'
+      )
+
+      this.$http({method: 'GET', url, params, responseType: 'blob'}).then(res => {
+        const blob = new Blob([res.data], {type: 'application/vnd.ms-excel;charset=utf-8'}) // 创建 Blob 对象
+        const url = window.URL.createObjectURL(blob) // 获取下载地址
+        const aLink = document.createElement('a') // 创建下载元素(a标签)
+        aLink.style.display = 'none' // 隐藏当前该下载元素
+        aLink.href = url // 设置该下载标签的下载地址
+        let fileName = '近效期库存表_' + new Date().toLocaleDateString() + '.xlsx' // 下载文件名
+        aLink.setAttribute('download', fileName) // 设置下载属性
+        document.body.appendChild(aLink) // 将标签添加至 body
+        aLink.click() // 点击进行下载
+        document.body.removeChild(aLink) // 下载完成移除该下载元素
+        window.URL.revokeObjectURL(url) // 释放掉 Blob 对象
+        this.$loading().close() // 关闭 loading
       })
     }
 

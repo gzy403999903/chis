@@ -3,6 +3,9 @@ import store from '../index'
 
 export default {
   state: {
+    // 所有机构
+    sysClinicList: null,
+
     // 省份
     provincesList: null,
 
@@ -16,7 +19,13 @@ export default {
     westernDiagnoseClassifyList: null,
 
     // 中医诊断分类
-    chineseDiagnoseClassifyList: null
+    chineseDiagnoseClassifyList: null,
+
+    // 医师职称
+    doctorTitlesList: null,
+
+    // 医生执业类别
+    practiceTypeList: null
 
   },
 
@@ -25,6 +34,13 @@ export default {
    * this.$store.getters.方法名
    */
   getters: {
+    sysClinicList: (state) => {
+      if (!state.sysClinicList) {
+        store.dispatch('querySysClinicList')
+      }
+      return state.sysClinicList
+    },
+
     provincesList: (state) => {
       if (!state.provincesList) {
         store.dispatch('queryProvincesList')
@@ -58,6 +74,20 @@ export default {
         store.dispatch('queryChineseDiagnoseClassifyList')
       }
       return state.chineseDiagnoseClassifyList
+    },
+
+    doctorTitlesList: (state) => {
+      if (!state.doctorTitlesList) {
+        store.dispatch('queryDoctorTitlesList')
+      }
+      return state.doctorTitlesList
+    },
+
+    practiceTypeList: (state) => {
+      if (!state.practiceTypeList) {
+        store.dispatch('queryPracticeTypeList')
+      }
+      return state.practiceTypeList
     }
 
   },
@@ -68,6 +98,10 @@ export default {
    * this.$store.commit(方法名, 参数...)
    */
   mutations: {
+    sysClinicList (state, data) {
+      state.sysClinicList = data
+    },
+
     provincesList (state, data) {
       state.provincesList = data
     },
@@ -86,6 +120,14 @@ export default {
 
     chineseDiagnoseClassifyList (state, data) {
       state.chineseDiagnoseClassifyList = data
+    },
+
+    doctorTitlesList (state, data) {
+      state.doctorTitlesList = data
+    },
+
+    practiceTypeList (state, data) {
+      state.practiceTypeList = data
     }
   },
 
@@ -95,6 +137,14 @@ export default {
    * this.$store.dispatch(mutations方法名, 参数...)
    */
   actions: {
+    // 获取所有机构
+    querySysClinicList (context) {
+      const url = '/chisAPI/clinic/getEnabled'
+      axios.get(url).then((res) => {
+        context.commit('sysClinicList', res.data)
+      })
+    },
+
     // 获取省份列表
     queryProvincesList (context) {
       const url = '/chisAPI/location/getProvinceIdGroupList'
@@ -132,6 +182,22 @@ export default {
       const url = '/chisAPI/chineseDiagnoseClassify/getAll'
       axios.get(url).then((res) => {
         context.commit('chineseDiagnoseClassifyList', res.data)
+      })
+    },
+
+    // 医师职称
+    queryDoctorTitlesList (context) {
+      const url = '/chisAPI/doctorTitles/getEnabledByTypeId'
+      axios.get(url).then((res) => {
+        context.commit('doctorTitlesList', res.data)
+      })
+    },
+
+    // 获取医生执业类别
+    queryPracticeTypeList (context) {
+      const url = '/chisAPI/practiceType/getEnabledByTypeId'
+      axios.get(url).then((res) => {
+        context.commit('practiceTypeList', res.data)
       })
     }
 

@@ -1423,18 +1423,13 @@ export default {
 
     /**
      * 判断当前操作机构是否为创建机构
-     * 从而对某项禁止编辑
      */
     editFormIsCreationClinic () {
       if (!this.row.sysClinicId || !this.payload.clinicId) {
         return false
       }
 
-      if (this.payload.clinicId === this.row.sysClinicId) {
-        return true
-      } else {
-        return false
-      }
+      return (this.payload.clinicId === this.row.sysClinicId)
     },
 
     /**

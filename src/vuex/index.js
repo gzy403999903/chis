@@ -7,7 +7,7 @@ import goodsDict from './modules/goodsDict'
 import memberDict from './modules/memberDict'
 import financeDict from './modules/financeDict'
 import definedEnum from './modules/definedEnum'
-import globalData from './modules/globalData'
+import otherDict from './modules/otherDict'
 import clinicData from './modules/clinicData'
 import sysConfig from './modules/sysConfig'
 
@@ -21,7 +21,7 @@ export default new Vuex.Store({
     memberDict,
     financeDict,
     definedEnum,
-    globalData,
+    otherDict,
     clinicData,
     sysConfig
   }

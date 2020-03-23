@@ -1,11 +1,11 @@
 <template>
   <div>
     <!--功能菜单-->
-    <el-card
-      shadow="never"
-      body-style="padding: 5px;"
-      class="el-card-menus">
-      <el-form :model="queryForm" ref="queryForm" :inline="true" size="mini">
+    <el-form :model="queryForm" ref="queryForm" :inline="true" size="mini">
+      <el-card
+        shadow="never"
+        body-style="padding: 5px;"
+        class="el-card-menus">
         <el-form-item label="单据日期" prop="creationDate">
           <el-date-picker
             style="width: 300px;"
@@ -67,26 +67,19 @@
             <el-option label="驳回" :value="approveState.UNAPPROVED"/>
           </el-select>
         </el-form-item>
-        <!--
+      </el-card>
+      <el-card
+        shadow="never"
+        body-style="padding: 5px;"
+        class="el-card-menus">
         <el-form-item>
-          <el-button type="primary" round icon="el-icon-search"  @click="dataGridLoadData">查询</el-button>
-          <el-button type="default" round icon="el-icon-refresh" @click="$refs.queryForm.resetFields()">重置</el-button>
+          <el-button type="primary" size="mini" round icon="el-icon-search"  @click="dataGridLoadData">查询</el-button>
+          <el-button type="default" size="mini" round icon="el-icon-refresh" @click="$refs.queryForm.resetFields()">重置</el-button>
+          <el-button type="default" size="mini" round icon="el-icon-edit" @click="insertInvoiceNo">录入发票</el-button>
+          <el-button type="default" size="mini" round icon="el-icon-edit" @click="insertPaymentNo">录入凭证</el-button>
         </el-form-item>
-        -->
-      </el-form>
-    </el-card>
-
-    <el-card
-      shadow="never"
-      body-style="padding: 5px;"
-      style="position: relative; padding-right: 10px;"
-      class="el-card-menus">
-      <!--<span class="total-paid-amount">{{'已勾选 ' + dataGrid.selectedData.length + ' 行, 共计 : ' + totalPaidAmount + '&nbsp;元'}}</span>-->
-      <el-button type="primary" size="mini" round icon="el-icon-search"  @click="dataGridLoadData">查询</el-button>
-      <el-button type="default" size="mini" round icon="el-icon-refresh" @click="$refs.queryForm.resetFields()">重置</el-button>
-      <el-button type="default" size="mini" round icon="el-icon-edit" @click="insertInvoiceNo">录入发票</el-button>
-      <el-button type="default" size="mini" round icon="el-icon-edit" @click="insertPaymentNo">录入凭证</el-button>
-    </el-card>
+      </el-card>
+    </el-form>
 
     <!-- 数据表 -->
     <el-card

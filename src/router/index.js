@@ -151,6 +151,9 @@ import WaterSource from '../components/view/system_management/archive_dict/Water
 import ToiletType from '../components/view/system_management/archive_dict/ToiletType'
 import LivestockFence from '../components/view/system_management/archive_dict/LivestockFence'
 import FamilyIllness from '../components/view/system_management/archive_dict/FamilyIllness'
+import PracticeType from '../components/view/system_management/other_dict/PracticeType'
+import PracticeScope from '../components/view/system_management/other_dict/PracticeScope'
+import DoctorTitles from '../components/view/system_management/other_dict/DoctorTitles'
 
 import ClinicRoom from '../components/view/system_management/clinic_setup/ClinicRoom'
 import Doctor from '../components/view/system_management/clinic_setup/Doctor'
@@ -750,6 +753,18 @@ export default new Router({
         {
           path: 'familyIllness',
           component: FamilyIllness
+        },
+        {
+          path: 'practiceType',
+          component: PracticeType
+        },
+        {
+          path: 'practiceScope',
+          component: PracticeScope
+        },
+        {
+          path: 'doctorTitles',
+          component: DoctorTitles
         }
       ]
     },
