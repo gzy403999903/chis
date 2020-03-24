@@ -847,8 +847,6 @@ export default {
       this.$http.get(url, {params}).then((res) => {
         if (res.data.code === 200) {
           this.select.secondClassifyList = res.data.resultSet.list
-        } else {
-          this.$message.error(res.data.msg)
         }
         this.$loading().close()
       })
@@ -901,7 +899,6 @@ export default {
             this.dataGridLoadData()
             this.dialogClose()
           } else {
-            this.$message.error(res.data.msg)
             this.$loading().close()
           }
         })
@@ -930,7 +927,6 @@ export default {
             this.dataGridLoadData()
             this.dialogClose()
           } else {
-            this.$message.error(res.data.msg)
             this.$loading().close()
           }
         })

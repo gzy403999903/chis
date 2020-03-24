@@ -153,8 +153,6 @@ export default {
         if (res.data.code === 200) {
           this.pagination.total = res.data.resultSet.page.total
           this.dataGrid.data = res.data.resultSet.page.list
-        } else {
-          this.$message.error(res.data.msg)
         }
         this.$loading().close()
       })
@@ -172,8 +170,6 @@ export default {
       await this.$http.get(url, {params}).then((res) => {
         if (res.data.code === 200) {
           this.dataGrid.prescriptionList = res.data.resultSet.list
-        } else {
-          this.$message.error(res.data.msg)
         }
         // this.$loading().close() // 在 printPrescription 方法中关闭
       })
@@ -197,8 +193,6 @@ export default {
       this.$http.get(url).then((res) => {
         if (res.data.code === 200) {
           PubSub.publish('printWesternDrugsPrescription')
-        } else {
-          this.$message.error(res.data.msg)
         }
         this.$loading().close()
       })

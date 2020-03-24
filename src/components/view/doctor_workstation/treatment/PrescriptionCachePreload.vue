@@ -136,8 +136,6 @@ export default {
       this.$http.get(url, {params}).then(res => {
         if (res.data.code === 200) {
           this.dataGrid.groupData = res.data.resultSet.list
-        } else {
-          this.$message.error(res.data.msg)
         }
         this.$loading().close()
       })
@@ -156,8 +154,6 @@ export default {
       this.$http.get(url, {params}).then(res => {
         if (res.data.code === 200) {
           this.dataGrid.detailData = res.data.resultSet.list
-        } else {
-          this.$message.error(res.data.msg)
         }
         this.$loading().close()
       })
@@ -190,8 +186,6 @@ export default {
             this.$message.success(res.data.msg)
             this.loadPrescriptionGroup()
             this.dataGrid.detailData = []
-          } else {
-            this.$message.error(res.data.msg)
           }
           this.$loading().close()
         })

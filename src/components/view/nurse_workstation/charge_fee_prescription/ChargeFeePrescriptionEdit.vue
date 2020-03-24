@@ -230,8 +230,6 @@ export default {
           this.dataGrid.data = res.data.resultSet.list
           // 计算合计实收金额
           this.sumActualRetailPrice()
-        } else {
-          this.$message.error(res.data.msg)
         }
         this.$loading().close()
       })
@@ -386,7 +384,7 @@ export default {
       }
 
       // 判断折扣率是否合法
-      if (!this.discountRate) {
+      if (!Number(this.discountRate)) {
         this.$message.error('折扣率为 [1 - 99]')
         return
       }

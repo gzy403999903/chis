@@ -381,7 +381,6 @@ export default {
             this.dialogClose()
             this.dataGridLoadData()
           } else {
-            this.$message.error(res.data.msg)
             this.$loading().close()
           }
         })

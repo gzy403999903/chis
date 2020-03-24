@@ -170,8 +170,6 @@ export default {
           if (res.data.resultSet.list.length > 0) {
             this.prescriptionListGroupByLsh(res.data.resultSet.list)
           }
-        } else {
-          this.$message.error(res.data.msg)
         }
         this.$loading().close()
       })
@@ -273,8 +271,6 @@ export default {
           this.$message.success(res.data.msg)
           this.dialogClose()
           this.dataGridLoadData()
-        } else {
-          this.$message.error(res.data.msg)
         }
         this.$loading().close()
       })

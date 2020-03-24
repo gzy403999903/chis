@@ -266,8 +266,6 @@ export default {
           let member = res.data.resultSet.member
           this.memberAvailableBalance = member.balance
           this.paymentAmount = member.paymentAmount
-        } else {
-          this.$message.error(res.data.msg)
         }
         this.$loading().close()
       })
@@ -386,7 +384,6 @@ export default {
               PubSub.publish('printChargeFeeBill')
             }
           } else {
-            this.$message.error(res.data.msg)
             this.$loading().close()
           }
         }) // end http

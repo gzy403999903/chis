@@ -461,8 +461,6 @@ export default {
         if (res.data.code === 200) {
           this.$message.success(res.data.msg)
           this.pageReset()
-        } else {
-          this.$message.error(res.data.msg)
         }
         this.$loading().close()
       })

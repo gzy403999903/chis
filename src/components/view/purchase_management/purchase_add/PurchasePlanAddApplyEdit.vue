@@ -354,8 +354,6 @@ export default {
           // 载入数据并关闭界面
           this.dataGrid.data = res.data.resultSet.list
           this.orderDialogClose()
-        } else {
-          this.$message.error(res.data.msg)
         }
         this.$loading().close()
       })
@@ -530,7 +528,6 @@ export default {
           this.dialogClose()
           this.dataGridLoadData()
         } else {
-          this.$message.error(res.data.msg)
           this.$loading().close()
         }
       })

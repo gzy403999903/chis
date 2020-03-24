@@ -216,7 +216,6 @@ export default {
         if (res.data.code === 200) {
           this.mrmMember = res.data.resultSet.member
         } else {
-          this.$message.error(res.data.msg)
           this.$loading().close()
         }
       })

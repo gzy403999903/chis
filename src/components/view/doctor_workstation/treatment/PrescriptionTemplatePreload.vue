@@ -204,8 +204,6 @@ export default {
         if (res.data.code === 200) {
           this.pagination.total = res.data.resultSet.page.total
           this.dataGrid.groupData = res.data.resultSet.page.list
-        } else {
-          this.$message.error(res.data.msg)
         }
         this.$loading().close()
       })
@@ -223,8 +221,6 @@ export default {
       this.$http.get(url, {params}).then((res) => {
         if (res.data.code === 200) {
           this.dataGrid.detailData = res.data.resultSet.list
-        } else {
-          this.$message.error(res.data.msg)
         }
         this.$loading().close()
       })

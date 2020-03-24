@@ -688,7 +688,6 @@ export default {
           // 清除缓存
           this.removeCache()
         } else {
-          this.$message.error(res.data.msg)
           this.$loading().close()
         }
       })

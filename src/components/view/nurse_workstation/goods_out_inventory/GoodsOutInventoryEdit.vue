@@ -179,8 +179,6 @@ export default {
           })
           // 载入对应的库存信息
           goodsData = res.data.resultSet.list
-        } else {
-          this.$message.error(res.data.msg)
         }
       })
       return goodsData
@@ -205,8 +203,6 @@ export default {
       await this.$http.get(url, {params}).then((res) => {
         if (res.data.code === 200) {
           this.selectData.inventoryList = res.data.resultSet.list
-        } else {
-          this.$message.error(res.data.msg)
         }
       })
     },
@@ -338,12 +334,12 @@ export default {
       }
 
       if (row.entityId !== row.gsmGoodsId) {
-        this.$message.error('【' + row.oid + ' ' + row.name + '】' + '销售商品与出库商品不一致')
+        this.$message.error('【' + row.oid + ' ' + row.name + '】销售商品与出库商品不一致')
         return false
       }
 
       if (row.pchSplitQuantity && (row.pchSplitQuantity !== row.splitQuantity)) {
-        this.$message.error('【' + row.oid + ' ' + row.name + '】' + '销售单位不符')
+        this.$message.error('【' + row.oid + ' ' + row.name + '】销售单位不符')
         return false
       }
 
@@ -353,12 +349,12 @@ export default {
       }
 
       if (new Date(row.expiryDate) < new Date()) {
-        this.$message.error('【' + row.oid + ' ' + row.name + '】' + '批号商品已过期')
+        this.$message.error('【' + row.oid + ' ' + row.name + '】商品批号已过期')
         return false
       }
 
       if (this.hasRepeatRow(row)) {
-        this.$message.error('【' + row.oid + ' ' + row.name + '】' + '不能重复使用同一个批次号')
+        this.$message.error('【' + row.oid + ' ' + row.name + '】不能重复使用同一个批次号')
         return false
       }
 
@@ -486,7 +482,6 @@ export default {
           this.dialogClose()
           this.dataGridLoadData()
         } else {
-          this.$message.error(res.data.msg)
           this.$loading().close()
         }
       })

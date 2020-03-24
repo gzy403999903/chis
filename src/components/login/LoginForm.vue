@@ -69,7 +69,6 @@ export default {
               this.$message.success('登陆成功')
             } else {
               this.$store.dispatch('removeToken')
-              this.$message.error(res.data.msg)
             }
             this.$loading().close()
           }).catch((error) => {

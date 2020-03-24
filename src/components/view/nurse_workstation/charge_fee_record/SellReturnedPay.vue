@@ -254,8 +254,6 @@ export default {
           let member = res.data.resultSet.member
           this.memberAvailableBalance = member.balance
           this.paymentAmount = member.paymentAmount
-        } else {
-          this.$message.error(res.data.msg)
         }
         this.$loading().close()
       })
@@ -364,7 +362,6 @@ export default {
             this.$message.success(res.data.msg)
             this.allDialogClose()
           } else {
-            this.$message.error(res.data.msg)
             this.$loading().close()
           }
         })

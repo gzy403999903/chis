@@ -188,8 +188,6 @@ export default {
           this.pagination.total = res.data.resultSet.page.total
           this.dataGrid.data = res.data.resultSet.page.list
           this.downloadable = true // 设置可下载
-        } else {
-          this.$message.error(res.data.msg)
         }
         this.$loading().close()
       })
@@ -205,8 +203,6 @@ export default {
       this.$http.get(url).then((res) => {
         if (res.data.code === 200) {
           this.downloadExcel()
-        } else {
-          this.$message.error(res.data.msg)
         }
         this.$loading().close()
       })

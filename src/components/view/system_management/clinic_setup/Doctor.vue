@@ -304,8 +304,6 @@ export default {
         if (res.data.code === 200) {
           this.pagination.total = res.data.resultSet.page.total
           this.dataGrid.data = res.data.resultSet.page.list
-        } else {
-          this.$message.error(res.data.msg)
         }
         this.$loading().close()
       })
@@ -329,7 +327,6 @@ export default {
             this.$message.success(res.data.msg)
             this.dataGridLoadData()
           } else {
-            this.$message.error(res.data.msg)
             this.$loading().close()
           }
         })
@@ -401,8 +398,6 @@ export default {
       this.$http.get(url, {params}).then((res) => {
         if (res.data.code === 200) {
           this.dialog.clinicUserList = res.data.resultSet.list
-        } else {
-          this.$message.error(res.data.msg)
         }
       })
     },
@@ -420,8 +415,6 @@ export default {
       this.$http.get(url, {params}).then((res) => {
         if (res.data.code === 200) {
           this.dialog.clinicRoomList = res.data.resultSet.list
-        } else {
-          this.$message.error(res.data.msg)
         }
       })
     },
@@ -439,8 +432,6 @@ export default {
       this.$http.get(url, {params}).then((res) => {
         if (res.data.code === 200) {
           this.dialog.practiceScopeList = res.data.resultSet.list
-        } else {
-          this.$message.error(res.data.msg)
         }
       })
     },
@@ -464,7 +455,6 @@ export default {
             this.dialogClose()
             this.dataGridLoadData()
           } else {
-            this.$message.error(res.data.msg)
             this.$loading().close()
           }
         })

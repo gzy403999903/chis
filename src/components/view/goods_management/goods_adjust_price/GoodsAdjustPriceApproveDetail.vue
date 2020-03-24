@@ -121,8 +121,6 @@ export default {
       this.$http.get(url, {params}).then((res) => {
         if (res.data.code === 200) {
           this.dataGrid.data = res.data.resultSet.list
-        } else {
-          this.$message.error('获取明细失败')
         }
         this.$loading().close()
       })
@@ -148,7 +146,6 @@ export default {
             this.dialogClose()
             this.dataGridLoadData()
           } else {
-            this.$message.error(res.data.msg)
             this.$loading().close()
           }
         })

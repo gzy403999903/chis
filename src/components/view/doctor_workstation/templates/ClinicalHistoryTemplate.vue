@@ -130,8 +130,6 @@ export default {
         if (res.data.code === 200) {
           this.pagination.total = res.data.resultSet.page.total
           this.dataGrid.data = res.data.resultSet.page.list
-        } else {
-          this.$message.error(res.data.msg)
         }
         this.$loading().close()
       })
@@ -152,7 +150,6 @@ export default {
             this.$message.success(res.data.msg)
             this.dataGridLoadData()
           } else {
-            this.$message.error(res.data.msg)
             this.$loading().close()
           }
         })

@@ -234,8 +234,6 @@ export default {
             item.purchasePrice = 0 // 采购单价
           })
           this.dataGrid.detailData = res.data.resultSet.groupList
-        } else {
-          this.$message.error(res.data.msg)
         }
         this.$loading().close()
       })
@@ -693,7 +691,6 @@ export default {
           this.dialogClose()
           this.dataGridLoadData()
         } else {
-          this.$message.error(res.data.msg)
           this.$loading().close()
         }
       })

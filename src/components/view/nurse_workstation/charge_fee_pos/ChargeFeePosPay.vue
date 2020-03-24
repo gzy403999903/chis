@@ -361,8 +361,6 @@ export default {
             if (this.openPrint) {
               PubSub.publish('printChargeFeeBill')
             }
-          } else {
-            this.$message.error(res.data.msg)
           }
           this.$loading().close()
         })

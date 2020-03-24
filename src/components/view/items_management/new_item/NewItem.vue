@@ -422,13 +422,8 @@ export default {
         if (res.data.code === 200) {
           this.pagination.total = res.data.resultSet.page.total
           this.dataGrid.data = res.data.resultSet.page.list
-        } else {
-          this.$message.error(res.data.msg)
         }
         this.$loading().close()
-      }).catch((error) => {
-        console.log('载入数据错误')
-        console.log(error)
       })
     },
 
@@ -523,7 +518,6 @@ export default {
             this.dataGridLoadData()
             this.dialog.visible = false
           } else {
-            this.$message.error(res.data.msg)
             this.$loading().close()
           }
         })
@@ -543,12 +537,8 @@ export default {
               this.dataGridLoadData()
               this.dialog.visible = false
             } else {
-              this.$message.error(res.data.msg)
               this.$loading().close()
             }
-          }).catch((error) => {
-            console.log('保存数据错误')
-            console.log(error)
           })
         } else {
           return false

@@ -121,8 +121,6 @@ export default {
             item.paidQuantity = 0
           })
           this.dataGrid.data = res.data.resultSet.list
-        } else {
-          this.$message.error(res.data.msg)
         }
         this.$loading().close()
       })
@@ -227,7 +225,6 @@ export default {
             this.dataGridLoadData()
             this.dialogClose()
           } else {
-            this.$message.error(res.data.msg)
             this.$loading().close()
           }
         })

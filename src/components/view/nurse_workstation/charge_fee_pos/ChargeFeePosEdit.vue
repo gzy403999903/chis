@@ -5,11 +5,21 @@
       shadow="never"
       body-style="padding: 5px;"
       class="el-card-menus">
-      <el-button type="default" size="mini" round icon="el-icon-circle-plus-outline" @click="insertRow">插入一行</el-button>
-      <el-button type="default" size="mini" round icon="el-icon-remove-outline" @click="deleteAllRow">清空录入商品</el-button>
-      <el-button type="default" size="mini" round icon="el-icon-remove-outline" @click="editFormReset">清空表单信息</el-button>
-      <el-button type="default" size="mini" round icon="el-icon-remove-outline" @click="pageReset">重置页面</el-button>
-      <el-button type="primary" size="mini" round icon="el-icon-money" @click="dialogOpen">收 费</el-button>
+      <span style="border: #bbbbbb 1px dashed; padding: 10px 10px; margin-right: 5px;">
+        <el-button type="default" size="mini" round icon="el-icon-circle-plus-outline" @click="insertRow">插入一行</el-button>
+        <el-button type="default" size="mini" round icon="el-icon-remove-outline" @click="deleteAllRow">清空录入商品</el-button>
+        <el-button type="default" size="mini" round icon="el-icon-remove-outline" @click="editFormReset">清空表单信息</el-button>
+        <el-button type="default" size="mini" round icon="el-icon-remove-outline" @click="pageReset">重置</el-button>
+      </span>
+      <span style="border: #bbbbbb 1px dashed; padding: 10px 10px; margin-right: 5px;">
+          <span style="padding-right: 10px; font-size: 14px; font-weight: 600;">折扣率</span>
+          <el-input-number size="mini" v-model="discountRate" :controls="false" :max="99" :min="0" :precision="0"
+                           @change="discountRateChange"
+                           style="width: 100px; margin-right: -2px;"/>
+          <el-button type="success" size="mini" plain round icon="el-icon-discount" @click="discountData">打 折</el-button>
+          <el-button type="default" size="mini" plain round icon="el-icon-user" :disabled="true">打折申请</el-button>
+        </span>
+      <el-button type="success" size="mini" plain round icon="el-icon-money" @click="dialogOpen">收 费</el-button>
     </el-card>
 
     <!-- 数据表 -->
@@ -50,11 +60,11 @@
                 <span class="select-option-top" style="width: 80px;">编码</span>
                 <span class="select-option-top" style="width: 150px;">名称</span>
                 <span class="select-option-top" style="width: 100px;">规格</span>
+                <span class="select-option-top" style="width: 100px;">零售单价</span>
+                <span class="select-option-top" style="width: 100px;">库存数量</span>
                 <span class="select-option-top" style="width: 120px;">批号</span>
                 <span class="select-option-top" style="width: 120px;">批次</span>
                 <span class="select-option-top" style="width: 100px;">含税进价</span>
-                <span class="select-option-top" style="width: 100px;">零售单价</span>
-                <span class="select-option-top" style="width: 100px;">库存数量</span>
                 <span class="select-option-top" style="width: 90px;">有效期至</span>
                 <span class="select-option-top" style="width: 80px;">产地</span>
                 <span class="select-option-top">生产厂家</span>
@@ -63,11 +73,11 @@
                 <span class="select-option-text" style="width: 80px;">{{item.gsmGoodsOid}}</span>
                 <span class="select-option-text" style="width: 150px;">{{item.gsmGoodsName}}</span>
                 <span class="select-option-text" style="width: 100px;">{{item.gsmGoodsSpecs}}</span>
+                <span class="select-option-text" style="width: 100px;">{{item.retailPrice}}&nbsp;元</span>
+                <span class="select-option-text" style="width: 100px;">{{item.quantity + ' ' + item.goodsUnitsName}}</span>
                 <span class="select-option-text" style="width: 120px;">{{item.ph}}</span>
                 <span class="select-option-text" style="width: 120px;">{{item.pch}}</span>
                 <span class="select-option-text" style="width: 100px;">{{item.costPrice}}&nbsp;元</span>
-                <span class="select-option-text" style="width: 100px;">{{item.retailPrice}}&nbsp;元</span>
-                <span class="select-option-text" style="width: 100px;">{{item.quantity + ' ' + item.goodsUnitsName}}</span>
                 <span class="select-option-text" style="width: 90px;">{{item.expiryDate}}</span>
                 <span class="select-option-text" style="width: 80px;">{{item.originName}}</span>
                 <span class="select-option-text">{{item.manufacturerName}}</span>
@@ -102,7 +112,10 @@
                              :ref="'actualRetailPrice' + props.$index"
                              @keyup.enter.native="insertRow"
                              @change="sumActualRetailPrice"/>
-            <span v-show="!props.row.editable">{{props.row.actualRetailPrice}}</span>
+            <span v-show="!props.row.editable">
+              <span v-if="props.row.actualRetailPrice < props.row.retailPrice" style="color: #67C23A;">{{props.row.actualRetailPrice}}</span>
+              <span v-else>{{props.row.actualRetailPrice}}</span>
+            </span>
           </template>
         </el-table-column>
         <!--
@@ -258,10 +271,10 @@
               合计: {{totalPrice}} &nbsp;元
             </div>
             <div style="position: absolute; bottom: 20px;">
-              <div>批号: {{dataGrid.currentRow.ph}}</div>
-              <div>有效期至: {{dataGrid.currentRow.expiryDate}}</div>
-              <div>产地: {{dataGrid.currentRow.originName}}</div>
-              <div>生产厂家: {{dataGrid.currentRow.manufacturerName}}</div>
+              <div>批号: {{dataGrid.currentRow ? dataGrid.currentRow.ph : ''}}</div>
+              <div>有效期至: {{dataGrid.currentRow ? dataGrid.currentRow.expiryDate : ''}}</div>
+              <div>产地: {{dataGrid.currentRow ? dataGrid.currentRow.originName : ''}}</div>
+              <div>生产厂家: {{dataGrid.currentRow ? dataGrid.currentRow.manufacturerName : ''}}</div>
             </div>
           </el-col> <!-- end right -->
         </el-row>
@@ -293,6 +306,7 @@ export default {
       inventoryType: this.$store.getters.inventoryType, // 仓库类型
       payload: jwtDecode(this.$store.getters.token),
       today: new Date().toLocaleDateString().replace(/(\/)/g, '-'), // 当前日期
+      discountRate: 0, // 折扣率
       totalPrice: 0, // 总金额
       dataGrid: {
         data: [],
@@ -346,6 +360,7 @@ export default {
       this.dataGrid.currentRow = {}
       this.dataGrid.index = 0
       this.selectData.inventoryList = []
+      this.discountRate = 0
       this.totalPrice = 0
 
       // this.dataGrid.sellRecordList = [] // 不能在这里重置该属性, 否则打印小票时无法获取信息, 在 getSubmitData 中进行重置
@@ -433,7 +448,7 @@ export default {
       // 判断库存数量是否足够
       if (row.quantity > row.inventoryQuantity) {
         if (showMsg === undefined) {
-          this.$message.error('可销数量不足, 当前库存数量: ' + row.inventoryQuantity)
+          this.$message.error('【' + row.oid + ' ' + row.name + '】可销数量不足, 当前库存数量: ' + row.inventoryQuantity)
         }
         return false
       }
@@ -441,7 +456,7 @@ export default {
       // 判断实收单价是否大于零售单价
       if (row.actualRetailPrice > row.retailPrice) {
         if (showMsg === undefined) {
-          this.$message.error('实收单价不能大于零售单价: ' + row.retailPrice)
+          this.$message.error('【' + row.oid + ' ' + row.name + '】实收单价不能大于零售单价: ' + row.retailPrice)
         }
         return false
       }
@@ -449,7 +464,7 @@ export default {
       // 判断是否可打折
       if (!row.discountable && (row.actualRetailPrice < row.retailPrice)) {
         if (showMsg === undefined) {
-          this.$message.error('该商品不能打折')
+          this.$message.error('【' + row.oid + ' ' + row.name + '】该商品不能打折')
         }
         return false
       }
@@ -457,8 +472,14 @@ export default {
       // 判断商品是否低于成本价
       if (!row.lossable && (row.actualRetailPrice < row.costPrice)) {
         if (showMsg === undefined) {
-          this.$message.error('实收单价不能低于成本价: ' + row.costPrice)
+          this.$message.error('【' + row.oid + ' ' + row.name + '】实收单价不能低于成本价: ' + row.costPrice)
         }
+        return false
+      }
+
+      // 判断是否过期
+      if (new Date(row.expiryDate) < new Date()) {
+        this.$message.error('【' + row.oid + ' ' + row.name + '】商品批号已过期')
         return false
       }
 
@@ -663,6 +684,44 @@ export default {
 
     /* -------------------------------------------------------------------------------------------------------------- */
     /**
+     * 当折扣率发生变化时执行的操作
+     */
+    discountRateChange () {
+      this.discountData()
+    },
+
+    /**
+     * 整单打折
+     */
+    discountData () {
+      // 判断是否有打折的明细
+      if (this.dataGrid.data.length === 0) {
+        return
+      }
+
+      // 判断折扣率是否合法
+      if (!Number(this.discountRate)) {
+        this.$message.error('折扣率为 [1 - 99]')
+        return
+      }
+
+      // 计算折扣后的实收金额
+      this.dataGrid.data.forEach(row => {
+        if (row.discountable) {
+          const discountPrice = row.retailPrice * (this.discountRate < 10 ? (this.discountRate / 10) : (this.discountRate / 100))
+          if ((discountPrice > row.costPrice) || row.lossable) {
+            row.actualRetailPrice = discountPrice.toFixed(4)
+          }
+        }
+      })
+
+      // 重新计算合计金额
+      this.sumActualRetailPrice()
+      this.$message.success('打折已完成')
+    },
+    /* -------------------------------------------------------------------------------------------------------------- */
+
+    /**
      * 验证所有行是否有效
      */
     hasSubmitRow () {
@@ -725,6 +784,12 @@ export default {
      */
     dialogOpen () {
       if (!this.hasSubmitRow()) {
+        return false
+      }
+
+      // 验证合计金额是否有效
+      if ((!Number(this.totalPrice) || this.totalPrice < 0) && this.totalPrice !== 0) {
+        this.$message.error('应收金额无效')
         return false
       }
 

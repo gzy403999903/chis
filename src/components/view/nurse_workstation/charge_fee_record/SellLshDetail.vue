@@ -127,8 +127,6 @@ export default {
           this.dataGrid.sellRecordList = chargeFeeRecord.sellRecordList
           this.dataGrid.paymentRecord = chargeFeeRecord.paymentRecord
           this.dataGrid.points = chargeFeeRecord.points
-        } else {
-          this.$message.error(res.data.msg)
         }
         this.$loading().close()
       })
@@ -143,8 +141,6 @@ export default {
       this.$http.get(url).then((res) => {
         if (res.data.code === 200) {
           PubSub.publish('reprintChargeFeeBill')
-        } else {
-          this.$message.error(res.data.msg)
         }
         this.$loading().close()
       })

@@ -182,8 +182,6 @@ export default {
             item.minQuantityRecord = item.minQuantity
             this.dataGrid.data.push(item)
           })
-        } else {
-          this.$message.error(res.data.msg)
         }
         this.$loading().close()
       })
@@ -329,7 +327,6 @@ export default {
             this.$message.success(res.data.msg)
             this.dataGridLoadData()
           } else {
-            this.$message.error(res.data.msg)
             this.$loading().close()
           }
         })

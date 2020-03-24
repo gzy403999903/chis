@@ -41,14 +41,12 @@ axios.interceptors.request.use(config => {
  * 如果状态码为 401则路由转发到 login
  * 清除 token
  */
-let showError = 1
+let showError = true
 axios.interceptors.response.use(res => {
-  // 当错误代码 为 401 且 showError = 1 时执行一次
-  if (res.data.code === 401 && showError === 1) {
-    // 将 showError = 0 防止重复执行
-    showError = 0
+  if (res.data.code === 401 && showError) {
+    showError = false
     if (res.config.url !== '/chisAPI/logout') {
-      Vue.prototype.$message.error('您的凭证失效,请重新登录')
+      Vue.prototype.$message.error(res.data.msg)
     }
     // 必须先执行清除 路由卫士在跳转页面前会检查 token 状态
     store.dispatch('removeToken')
@@ -57,11 +55,12 @@ axios.interceptors.response.use(res => {
       // 将要跳转的路由 path 作为参数跳转到 login, 登录成功后则跳转到参数页面
       // query: { redirect: router.currentRoute.fullPath }
     })
+  } else if (res.data.code !== 401 && res.data.code > 400) {
+    Vue.prototype.$message.error(res.data.msg)
+  } else if (res.data.code !== 401) {
+    showError = true
   }
-  // 非错误代码 401 恢复 showError 默认值
-  if (res.data.code !== 401) {
-    showError = 1
-  }
+
   return res
 }, error => {
   let status = error.response.status

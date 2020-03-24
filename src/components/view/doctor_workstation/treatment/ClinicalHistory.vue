@@ -246,8 +246,6 @@ export default {
           if (clinicalHistory) {
             this.loadClinicalHistoryToEditForm(clinicalHistory)
           }
-        } else {
-          this.$message.error(res.data.msg)
         }
         this.$loading().close()
       })
@@ -409,8 +407,6 @@ export default {
             // 设置返回病例 ID
             this.editForm.id = res.data.resultSet.id
             this.setDwtClinicalHistoryId(res.data.resultSet.id)
-          } else {
-            this.$message.error(res.data.msg)
           }
           this.$loading().close()
         })

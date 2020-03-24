@@ -161,13 +161,8 @@ export default {
         if (res.data.code === 200) {
           this.pagination.total = res.data.resultSet.page.total
           this.dataGrid.data = res.data.resultSet.page.list
-        } else {
-          this.$message.error(res.data.msg)
         }
         this.$loading().close()
-      }).catch((error) => {
-        console.log('载入数据错误')
-        console.log(error)
       })
     },
     dataGridDelete (row) {
@@ -185,12 +180,8 @@ export default {
             this.$message.success(res.data.msg)
             this.dataGridLoadData()
           } else {
-            this.$message.error(res.data.msg)
             this.$loading().close()
           }
-        }).catch((error) => {
-          console.log('删除数据错误')
-          console.log(error)
         })
       }).catch(() => {})
     },

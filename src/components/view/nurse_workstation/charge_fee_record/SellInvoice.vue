@@ -170,8 +170,6 @@ export default {
       this.$http.get(url, {params}).then((res) => {
         if (res.data.code === 200) {
           this.dataGrid.data = res.data.resultSet.list
-        } else {
-          this.$message.error(res.data.msg)
         }
         this.$loading().close()
       })
@@ -231,8 +229,6 @@ export default {
             this.$message.success(res.data.msg)
             this.dialogClose()
             this.dataGridLoadData()
-          } else {
-            this.$message.error(res.data.msg)
           }
           this.$loading().close()
         })

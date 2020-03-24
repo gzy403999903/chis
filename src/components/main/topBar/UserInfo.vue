@@ -43,8 +43,6 @@ export default {
       this.$http.get(url).then(res => {
         if (res.data.code === 401) {
           this.$message.success('您已退出系统')
-        } else {
-          this.$message.error(res.data.msg)
         }
       })
     },

@@ -179,8 +179,6 @@ export default {
           }
           // this.prescriptionList = res.data.resultSet.prescriptionList
           this.prescriptionListGroupByLsh(res.data.resultSet.prescriptionList)
-        } else {
-          this.$message.error(res.data.msg)
         }
         this.$loading().close()
       })

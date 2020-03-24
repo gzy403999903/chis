@@ -245,13 +245,8 @@ export default {
         if (res.data.code === 200) {
           this.pagination.total = res.data.resultSet.page.total
           this.dataGrid.data = res.data.resultSet.page.list
-        } else {
-          this.$message.error(res.data.msg)
         }
         this.$loading().close()
-      }).catch((error) => {
-        console.log('载入数据错误')
-        console.log(error)
       })
     },
     dataGridDelete (row) {
@@ -269,7 +264,6 @@ export default {
             this.$message.success(res.data.msg)
             this.dataGridLoadData()
           } else {
-            this.$message.error(res.data.msg)
             this.$loading().close()
           }
         })
@@ -289,13 +283,8 @@ export default {
         this.$http({method, url, params}).then((res) => {
           if (res.data.code === 200) {
             this.$message.success(res.data.msg)
-          } else {
-            this.$message.error(res.data.msg)
           }
           this.$loading().close()
-        }).catch((error) => {
-          console.log('初始化密码错误')
-          console.log(error)
         })
       }).catch(() => {})
     },
@@ -347,12 +336,8 @@ export default {
               this.dataGridLoadData()
               this.dialog.visible = false
             } else {
-              this.$message.error(res.data.msg)
               this.$loading().close()
             }
-          }).catch((error) => {
-            console.log('保存/编辑数据错误')
-            console.log(error)
           })
         } else {
           return false

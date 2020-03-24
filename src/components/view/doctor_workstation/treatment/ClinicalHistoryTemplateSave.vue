@@ -138,8 +138,6 @@ export default {
           if (res.data.code === 200) {
             this.$message.success(res.data.msg)
             this.dialogClose()
-          } else {
-            this.$message.error(res.data.msg)
           }
           this.$loading().close()
         })

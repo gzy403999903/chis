@@ -151,8 +151,6 @@ export default {
           if (res.data.resultSet.list.length > 0) {
             this.prescriptionListGroupByLsh(res.data.resultSet.list)
           }
-        } else {
-          this.$message.error(res.data.msg)
         }
         this.$loading().close()
       })

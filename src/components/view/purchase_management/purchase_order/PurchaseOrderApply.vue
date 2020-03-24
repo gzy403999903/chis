@@ -132,8 +132,6 @@ export default {
           this.pagination.total = res.data.resultSet.page.total
           this.dataGrid.data = res.data.resultSet.page.list
           this.dataGrid.selectedRows = []
-        } else {
-          this.$message.error(res.data.msg)
         }
         this.$loading().close()
       })
