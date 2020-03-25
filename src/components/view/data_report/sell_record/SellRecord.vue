@@ -1,11 +1,33 @@
 <template>
   <div>
-    <!--功能菜单-->
+    <!-- 功能菜单 -->
     <el-card
       shadow="never"
       body-style="padding: 5px;"
-      class="el-card-menus">
-      <el-form :model="queryForm" ref="queryForm" inline size="mini">
+      class="el-card-menus"
+      style="padding-right: 10px;">
+      <el-button type="default" size="mini" round icon="el-icon-search" @click="dialog.visible = true">条件查询</el-button>
+    </el-card>
+
+    <!-- 查询条件界面 -->
+    <el-dialog
+      width="40%"
+      :show-close="false"
+      :close-on-click-modal="false"
+      :visible="dialog.visible">
+      <!-- 模态框标题栏与功能按钮 -->
+      <el-row slot="title">
+        <el-col :span="5" style="font-size: 20px;">
+          <span>条件查询</span>
+        </el-col>
+        <el-col :span="19" style="text-align: right;">
+          <el-button type="primary" size="mini" icon="el-icon-search"  @click="dataGridLoadData">查询</el-button>
+          <el-button type="default" size="mini" icon="el-icon-refresh" @click="$refs.queryForm.resetFields()">重置</el-button>
+          <el-button type="warning" size="mini" icon="el-icon-right" @click="dialog.visible=false">返 回</el-button>
+        </el-col>
+      </el-row>
+
+      <el-form :model="queryForm" ref="queryForm" :inline="false" size="mini" label-width="120px" label-position="left" style="padding: 0 20px;">
         <el-form-item label="单据日期" prop="creationDate">
           <el-date-picker
             v-model="queryForm.creationDate"
@@ -18,18 +40,23 @@
             end-placeholder="结束日期"
             :picker-options="pickerOptions"/>
         </el-form-item>
+        <el-form-item label="机构名称" prop="sysClinicName" v-if="action === 'all'">
+          <el-input v-model.trim="queryForm.sysClinicName" placeholder="机构名称 / 助记码"/>
+        </el-form-item>
         <el-form-item label="流水号" prop="lsh">
-          <el-input v-model.trim="queryForm.lsh" placeholder="流水号" style="width: 210px;"/>
+          <el-input v-model.trim="queryForm.lsh" placeholder="流水号"/>
+        </el-form-item>
+        <el-form-item label="销售名称" prop="entityName">
+          <el-input v-model.trim="queryForm.entityName" placeholder="商品名称 / 项目名称 / 助记码"/>
+        </el-form-item>
+        <el-form-item label="会员姓名" prop="mrmMemberName">
+          <el-input v-model.trim="queryForm.mrmMemberName" placeholder="姓名 / 助记码"/>
         </el-form-item>
         <el-form-item label="销售人" prop="sellerName">
           <el-input v-model.trim="queryForm.sellerName" placeholder="姓名 / 助记码"/>
         </el-form-item>
-        <el-form-item>
-          <el-button type="primary" round icon="el-icon-search"  @click="dataGridLoadData">查询</el-button>
-          <el-button type="default" round icon="el-icon-refresh" @click="$refs.queryForm.resetFields()">重置</el-button>
-        </el-form-item>
       </el-form>
-    </el-card>
+    </el-dialog>
 
     <!-- 数据表 -->
     <el-card
@@ -39,6 +66,7 @@
         :height="$store.getters.dataGridHeight"
         :data="dataGrid.data"
         stripe
+        border
         size="mini">
         <el-table-column fixed="left" type="index" width="50"/>
         <el-table-column prop="creationDate" label="单据日期" width="160" show-overflow-tooltip/>
@@ -80,8 +108,11 @@
         <el-table-column prop="mrmMemberOid" label="会员编码" width="150" show-overflow-tooltip/>
         <el-table-column prop="mrmMemberName" label="会员姓名" width="100" show-overflow-tooltip/>
         <el-table-column prop="phone" label="会员电话" width="150" show-overflow-tooltip/>
+        <el-table-column prop="sellerId" label="销售人ID" width="100" show-overflow-tooltip/>
         <el-table-column prop="sellerName" label="销售人" width="100" show-overflow-tooltip/>
+        <el-table-column prop="operatorId" label="出库人ID" width="100" show-overflow-tooltip/>
         <el-table-column prop="operatorName" label="出库人" width="100" show-overflow-tooltip/>
+        <el-table-column prop="cashierId" label="收银员ID" width="100" show-overflow-tooltip/>
         <el-table-column prop="cashierName" label="收银员" width="100" show-overflow-tooltip/>
         <el-table-column prop="sysClinicName" label="机构名称" min-width="400" show-overflow-tooltip/>
       </el-table>
@@ -128,9 +159,15 @@ export default {
           return time.getTime() > Date.now()
         }
       },
+      dialog: {
+        visible: false
+      },
       queryForm: {
         creationDate: null,
+        sysClinicName: null,
         lsh: null,
+        entityName: null,
+        mrmMemberName: null,
         sellerName: null
       },
       dataGrid: {
@@ -171,7 +208,11 @@ export default {
      */
     dataGridLoadData () {
       this.$loading()
-      let url = `/chisAPI/sellRecordReport/${this.action}`
+      let url = (
+        this.action === 'all'
+          ? '/chisAPI/sellRecordReport/getByCriteria'
+          : '/chisAPI/sellRecordReport/getClinicListByCriteria'
+      )
       let params = this.queryForm
       params.pageNum = this.pagination.currentPage
       params.pageSize = this.pagination.pageSize
@@ -181,6 +222,8 @@ export default {
           this.pagination.total = res.data.resultSet.page.total
           this.dataGrid.data = res.data.resultSet.page.list
         }
+
+        this.dialog.visible = false
         this.$loading().close()
       })
     }

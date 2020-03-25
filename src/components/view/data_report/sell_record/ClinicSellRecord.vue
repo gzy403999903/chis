@@ -1,6 +1,6 @@
 <template>
   <div>
-    <SellRecord action="getClinicListByCriteria"/>
+    <SellRecord action="clinic"/>
   </div>
 </template>
 

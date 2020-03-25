@@ -366,6 +366,8 @@
           <el-menu-item index="/main/dataReport/allVisitRecord" v-if="hqReport">回访情况*</el-menu-item>
           <el-menu-item index="/main/dataReport/allExpirydateWarning" v-if="hqReport">效期预警*</el-menu-item>
           <el-menu-item index="/main/dataReport/ClinicExpirydateWarning" v-if="!hqReport">效期预警</el-menu-item>
+          <el-menu-item index="/main/dataReport/allLshMarginRate" v-if="hqReport">销售流水毛利*</el-menu-item>
+          <el-menu-item index="/main/dataReport/clinicLshMarginRate" v-if="!hqReport">销售流水毛利</el-menu-item>
           <!--
           <el-menu-item index="/main/error/404#81-2">库存预警</el-menu-item>
           <el-menu-item index="/main/error/404#81-2">不动销明细</el-menu-item>
@@ -382,10 +384,11 @@
          </template>
          <el-menu-item index="/main/dataReport/allPaymentRecordReport" v-if="hqReport">收费方式汇总*</el-menu-item>
          <el-menu-item index="/main/dataReport/clinicPaymentRecordReport" v-if="!hqReport">收费方式汇总</el-menu-item>
+         <el-menu-item index="/main/dataReport/allDepositPaymentRecordReport" v-if="hqReport">储值方式汇总*</el-menu-item>
+         <el-menu-item index="/main/dataReport/clinicDepositPaymentRecordReport" v-if="!hqReport">储值方式汇总</el-menu-item>
          <el-menu-item index="/main/dataReport/allBillingTypeReport" v-if="hqReport">计费类型汇总*</el-menu-item>
          <el-menu-item index="/main/dataReport/clinicBillingTypeReport" v-if="!hqReport">计费类型汇总</el-menu-item>
          <!--
-         <el-menu-item index="/main/error/404#82-2">储值方式汇总</el-menu-item>
          <el-menu-item index="/main/error/404#82-2">折扣毛利考核</el-menu-item>
          <el-menu-item index="/main/error/404#82-2">提成查询</el-menu-item>
          -->

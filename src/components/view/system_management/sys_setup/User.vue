@@ -47,7 +47,7 @@
             <el-button size="mini" type="danger" icon="el-icon-delete" @click="dataGridDelete(scope.row)" v-if="!scope.row.required"/>
           </template>
         </el-table-column>
-        <el-table-column prop="id" label="识别码" width="100"/>
+        <el-table-column prop="id" label="ID" width="100"/>
         <el-table-column prop="account" label="登录名" width="180"/>
         <el-table-column prop="name" label="姓名" width="100"/>
         <el-table-column prop="sysClinicName" label="所属机构" width="400" show-overflow-tooltip/>

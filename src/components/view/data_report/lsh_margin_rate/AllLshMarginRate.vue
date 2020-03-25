@@ -1,15 +1,12 @@
 <template>
-  <div>
-    <SellRecord action="all"/>
-  </div>
+  <LshMarginRate action="all"/>
 </template>
 
 <script>
-import SellRecord from './SellRecord'
-
+import LshMarginRate from './LshMarginRate'
 export default {
   components: {
-    SellRecord
+    LshMarginRate
   }
 }
 </script>

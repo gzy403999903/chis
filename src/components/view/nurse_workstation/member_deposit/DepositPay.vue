@@ -102,9 +102,6 @@
                              @keyup.enter.native="editFormValidateToNextFocus('cash', 'unionpay')"
                              @change="sumActualAmount"/>
           </el-form-item>
-          <el-form-item label="会员卡" prop="memberBalance">
-            <el-input-number disabled :controls="false" :max="99999" :min="0" :precision="2"/>
-          </el-form-item>
           <el-form-item label="银联" prop="unionpay">
             <el-input-number v-model="editForm.unionpay" :controls="false" :max="99999" :min="0" :precision="2"
                              :disabled="!memberForm.id"
@@ -123,6 +120,13 @@
             <el-input-number v-model="editForm.wechatpay" :controls="false" :max="99999" :min="0" :precision="2"
                              :disabled="!memberForm.id"
                              ref="wechatpay"
+                             @keyup.enter.native="editFormValidateToNextFocus('alipay', 'creditpay')"
+                             @change="sumActualAmount"/>
+          </el-form-item>
+          <el-form-item label="信用卡" prop="creditpay">
+            <el-input-number v-model="editForm.creditpay" :controls="false" :max="99999" :min="0" :precision="2"
+                             :disabled="!memberForm.id"
+                             ref="creditpay"
                              @change="sumActualAmount"/>
           </el-form-item>
           <el-form-item label="" prop="sysPaymentWayId">
@@ -186,6 +190,7 @@ export default {
         unionpay: 0, // 银联
         alipay: 0, // 支付宝
         wechatpay: 0, // 微信
+        creditpay: 0, // 店长卡(信用支付, 用于应收账款)
         sysPaymentWayId: '', // 付款方式ID
         sysPaymentWayAmount: 0, // 付款方式金额
         actualAmount: 0, // 实收金额 ~
@@ -205,6 +210,9 @@ export default {
           {required: true, message: '不能为空'}
         ],
         wechatpay: [
+          {required: true, message: '不能为空'}
+        ],
+        creditpay: [
           {required: true, message: '不能为空'}
         ],
         sysPaymentWayAmount: [
@@ -324,8 +332,13 @@ export default {
         }
 
         // 将所有收费方式金额累加得到 实收金额
-        this.editForm.actualAmount = this.editForm.cash + this.editForm.unionpay + this.editForm.alipay +
-                                     this.editForm.wechatpay + this.editForm.sysPaymentWayAmount
+        this.editForm.actualAmount = this.editForm.cash +
+                                     this.editForm.unionpay +
+                                     this.editForm.alipay +
+                                     this.editForm.wechatpay +
+                                     this.editForm.creditpay +
+                                     this.editForm.sysPaymentWayAmount
+
         // 计算本次赠送余额
         this.totalGivenAmount = this.computeGivenAmount()
 

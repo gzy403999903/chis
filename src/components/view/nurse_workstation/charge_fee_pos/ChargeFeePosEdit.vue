@@ -149,7 +149,7 @@
                   </el-form-item>
                 </el-col>
                 <el-col :span="6">
-                  <el-form-item label="识别码">
+                  <el-form-item label="ID">
                     <el-input v-model="editForm.sellerId" disabled/>
                   </el-form-item>
                 </el-col>

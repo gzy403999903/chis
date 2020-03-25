@@ -105,8 +105,12 @@ import AllBillingTypeReport from '../components/view/data_report/billing_type_re
 import ClinicBillingTypeReport from '../components/view/data_report/billing_type_report/ClinicBillingTypeReport'
 import AllPaymentRecordReport from '../components/view/data_report/payment_record_report/AllPaymentRecordReport'
 import ClinicPaymentRecordReport from '../components/view/data_report/payment_record_report/ClinicPaymentRecordReport'
+import AllDepositPaymentRecordReport from '../components/view/data_report/deposit_payment_record_report/AllDepositPaymentRecordReport'
+import ClinicDepositPaymentRecordReport from '../components/view/data_report/deposit_payment_record_report/ClinicDepositPaymentRecordReport'
 import AllExpirydateWarning from '../components/view/data_report/expirydate_warning/AllExpirydateWarning'
 import ClinicExpirydateWarning from '../components/view/data_report/expirydate_warning/ClinicExpirydateWarning'
+import AllLshMarginRate from '../components/view/data_report/lsh_margin_rate/AllLshMarginRate'
+import ClinicLshMarginRate from '../components/view/data_report/lsh_margin_rate/ClinicLshMarginRate'
 
 // system_management
 import Clinic from '../components/view/system_management/sys_setup/Clinic'
@@ -562,12 +566,28 @@ export default new Router({
           component: ClinicPaymentRecordReport
         },
         {
+          path: 'allDepositPaymentRecordReport',
+          component: AllDepositPaymentRecordReport
+        },
+        {
+          path: 'clinicDepositPaymentRecordReport',
+          component: ClinicDepositPaymentRecordReport
+        },
+        {
           path: 'allExpirydateWarning',
           component: AllExpirydateWarning
         },
         {
           path: 'clinicExpirydateWarning',
           component: ClinicExpirydateWarning
+        },
+        {
+          path: 'allLshMarginRate',
+          component: AllLshMarginRate
+        },
+        {
+          path: 'clinicLshMarginRate',
+          component: ClinicLshMarginRate
         }
       ]
     },

@@ -161,8 +161,8 @@ export default {
       this.$loading()
       let url = (
         this.action === 'all'
-          ? '/chisAPI/paymentRecordReport/getPaymentRecordListByCriteria'
-          : '/chisAPI/paymentRecordReport/getClinicPaymentRecordListByCriteria'
+          ? '/chisAPI/paymentRecordReport/getDepositPaymentRecordListByCriteria'
+          : '/chisAPI/paymentRecordReport/getClinicDepositPaymentRecordListByCriteria'
       )
       let params = this.queryForm
       params.pageNum = this.pagination.currentPage

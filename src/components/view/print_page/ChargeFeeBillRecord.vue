@@ -54,7 +54,7 @@
       <div>电话: {{payload.clinicTel}}</div>
       <div>地址: {{payload.clinicAddress}}</div>
       <div style="margin-top: 20px; text-align: center; font-size: 14px;">国药乐仁堂&nbsp;&nbsp;&nbsp;祝您身体健康</div>
-      <div style="margin-top: 10px; text-align: center;">凭本小票索取发票(仅当日有效)</div>
+      <div style="margin-top: 10px; text-align: center;">凭本小票索取发票(仅当月有效)</div>
     </div>
   </div> <!-- end printBody -->
 </template>
