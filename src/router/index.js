@@ -78,7 +78,7 @@ import ItemAdjustPriceApprove from '../components/view/items_management/item_adj
 // inventory_management
 import ClinicPhInventory from '../components/view/inventory_management/inventory/ClinicPhInventory'
 import AllPhInventory from '../components/view/inventory_management/inventory/AllPhInventory'
-import ClinicPchInventory from '../components/view/inventory_management/inventory/ClinicPchInventory'
+import PchInventory from '../components/view/inventory_management/inventory/PchInventory'
 import InventoryAllotApply from '../components/view/inventory_management/inventory_allot/InventoryAllotApply'
 import InventoryAllotApprove from '../components/view/inventory_management/inventory_allot/InventoryAllotApprove'
 import SelfUsedApply from '../components/view/inventory_management/self_used/SelfUsedApply'
@@ -111,6 +111,8 @@ import AllExpirydateWarning from '../components/view/data_report/expirydate_warn
 import ClinicExpirydateWarning from '../components/view/data_report/expirydate_warning/ClinicExpirydateWarning'
 import AllLshMarginRate from '../components/view/data_report/lsh_margin_rate/AllLshMarginRate'
 import ClinicLshMarginRate from '../components/view/data_report/lsh_margin_rate/ClinicLshMarginRate'
+import AllSellFrequency from '../components/view/data_report/sell_frequency/AllSellFrequency'
+import ClinicSellFrequency from '../components/view/data_report/sell_frequency/ClinicSellFrequency'
 
 // system_management
 import Clinic from '../components/view/system_management/sys_setup/Clinic'
@@ -418,8 +420,8 @@ export default new Router({
           component: AllPhInventory
         },
         {
-          path: 'clinicPchInventory',
-          component: ClinicPchInventory
+          path: 'pchInventory',
+          component: PchInventory
         },
         {
           path: 'inventoryAllotApply',
@@ -588,6 +590,14 @@ export default new Router({
         {
           path: 'clinicLshMarginRate',
           component: ClinicLshMarginRate
+        },
+        {
+          path: 'allSellFrequency',
+          component: AllSellFrequency
+        },
+        {
+          path: 'clinicSellFrequency',
+          component: ClinicSellFrequency
         }
       ]
     },

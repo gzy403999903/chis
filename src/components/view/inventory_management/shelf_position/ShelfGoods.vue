@@ -14,11 +14,17 @@
             <el-option label="卫生材料" :value="goodsType.HYGIENIC_MATERIAL"/>
           </el-select>
         </el-form-item>
+        <el-form-item label="商品编码" prop="gsmGoodsOid">
+          <el-input v-model.trim="queryForm.gsmGoodsOid" placeholder="商品编码"
+                    style="width: 120px;"/>
+        </el-form-item>
         <el-form-item label="商品名称" prop="gsmGoodsName">
-          <el-input v-model.trim="queryForm.gsmGoodsName" placeholder="商品名称 / 助记码"/>
+          <el-input v-model.trim="queryForm.gsmGoodsName" placeholder="商品名称 / 助记码"
+                    style="width: 130px;"/>
         </el-form-item>
         <el-form-item label="货位名称" prop="iymShelfPositionName">
-          <el-input v-model.trim="queryForm.iymShelfPositionName" placeholder="货位名称 / 助记码"/>
+          <el-input v-model.trim="queryForm.iymShelfPositionName" placeholder="货位名称 / 助记码"
+                    style="width: 130px;"/>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" round icon="el-icon-search"  @click="dataGridLoadData">查询</el-button>
@@ -99,6 +105,7 @@ export default {
       goodsType: this.$store.getters.goodsType, // 商品类型
       queryForm: {
         gsmGoodsTypeId: null,
+        gsmGoodsOid: null,
         gsmGoodsName: null,
         iymShelfPositionName: null
       },

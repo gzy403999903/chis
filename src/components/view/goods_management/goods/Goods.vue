@@ -7,13 +7,14 @@
       class="el-card-menus">
       <el-form :model="queryForm" ref="queryForm" :inline="true" size="mini">
         <el-form-item label="商品编码" prop="oid">
-          <el-input v-model.trim="queryForm.oid" placeholder="商品编码" style="width: 160px;"/>
+          <el-input v-model.trim="queryForm.oid" placeholder="商品编码" style="width: 140px;"/>
         </el-form-item>
-        <el-form-item :label="`${title}名称`" prop="name">
-          <el-input v-model.trim="queryForm.name" placeholder="商品名称 / 助记码" style="width: 160px;"/>
+        <el-form-item label="名称" prop="name">
+          <el-input v-model.trim="queryForm.name" placeholder="商品名称 / 助记码" style="width: 140px;"/>
         </el-form-item>
-        <el-form-item label="商品分类" prop="goodsClassifyId">
+        <el-form-item label="分类" prop="goodsClassifyId">
           <el-select
+            style="width: 160px;"
             v-model.trim="queryForm.goodsClassifyId"
             filterable
             placeholder="请选择">

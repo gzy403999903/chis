@@ -59,7 +59,7 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="未付金额" prop="arrearagesAmount">
+        <el-form-item label="未付金额大于" prop="arrearagesAmount">
           <el-input-number v-model="queryForm.arrearagesAmount" :controls="false" :max="999999" :min="-999999" :precision="2"
                            style="width: 100px;"/>&nbsp;元
         </el-form-item>

@@ -8,7 +8,7 @@
       <el-form :model="queryForm" ref="queryForm" inline size="mini">
         <el-form-item label="库房名称" prop="iymInventoryTypeId">
           <el-select
-            style="width: 150px;"
+            style="width: 120px;"
             ref="iymInventoryTypeId"
             v-model.trim="queryForm.iymInventoryTypeId"
             filterable
@@ -20,11 +20,14 @@
             <el-option label="退货库" :value="inventoryType.SUBTRACT_INVENTORY"/>
           </el-select>
         </el-form-item>
-        <el-form-item label="商品名称" prop="gsmGoodsName">
-          <el-input v-model.trim="queryForm.gsmGoodsName" placeholder="商品名称 / 助记码"/>
+        <el-form-item label="商品编码" prop="gsmGoodsOid">
+          <el-input v-model.trim="queryForm.gsmGoodsOid" placeholder="商品编码" style="width: 140px;"/>
+        </el-form-item>
+        <el-form-item label="名称" prop="gsmGoodsName">
+          <el-input v-model.trim="queryForm.gsmGoodsName" placeholder="商品名称 / 助记码" style="width: 140px;"/>
         </el-form-item>
         <el-form-item label="批号" prop="ph">
-          <el-input v-model.trim="queryForm.ph"/>
+          <el-input v-model.trim="queryForm.ph"  style="width: 140px;"/>
         </el-form-item>
         <el-form-item label="显示0库存" prop="showZero">
           <el-switch v-model="queryForm.showZero" active-color="#13ce66" inactive-color="#ff4949"/>
@@ -93,8 +96,8 @@ export default {
     return {
       inventoryType: this.$store.getters.inventoryType, // 仓库类型
       queryForm: {
-        sysClinicName: null,
         iymInventoryTypeId: null,
+        gsmGoodsOid: null,
         gsmGoodsName: null,
         ph: null,
         showZero: false

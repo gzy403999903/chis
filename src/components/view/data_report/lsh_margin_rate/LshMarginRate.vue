@@ -11,7 +11,7 @@
 
     <!-- 查询条件界面 -->
     <el-dialog
-      width="40%"
+      width="45%"
       :show-close="false"
       :close-on-click-modal="false"
       :visible="dialog.visible">
@@ -46,25 +46,25 @@
         <el-form-item label="流水号" prop="lsh">
           <el-input v-model.trim="queryForm.lsh" placeholder="流水号"/>
         </el-form-item>
-        <el-form-item label="商品毛利差高于" prop="goodsMarginRate">
+        <el-form-item label="商品毛利差" prop="goodsMarginRate">
           <el-input-number v-model="queryForm.goodsMarginRate" :controls="false" :max="99" :min="0" :precision="0"
-                           style="width: 100px;"/> &nbsp;%
+                           style="width: 100px;"/> &nbsp;% &nbsp;[大于等于]
         </el-form-item>
-        <el-form-item label="整单毛利差高于" prop="marginRate">
+        <el-form-item label="整单毛利差" prop="marginRate">
           <el-input-number v-model="queryForm.marginRate" :controls="false" :max="99" :min="0" :precision="0"
-                           style="width: 100px;"/> &nbsp;%
+                           style="width: 100px;"/> &nbsp;% &nbsp;[大于等于]
         </el-form-item>
-        <el-form-item label="商品折扣低于" prop="goodsDiscountRate">
+        <el-form-item label="商品折扣" prop="goodsDiscountRate">
           <el-input-number v-model="queryForm.goodsDiscountRate" :controls="false" :max="99" :min="0" :precision="0"
-                           style="width: 100px;"/> &nbsp;折
+                           style="width: 100px;"/> &nbsp;折 &nbsp;[小于等于]
         </el-form-item>
-        <el-form-item label="项目折扣低于" prop="itemDiscountRate">
+        <el-form-item label="项目折扣" prop="itemDiscountRate">
           <el-input-number v-model="queryForm.itemDiscountRate" :controls="false" :max="99" :min="0" :precision="0"
-                           style="width: 100px;"/> &nbsp;折
+                           style="width: 100px;"/> &nbsp;折 &nbsp;[小于等于]
         </el-form-item>
-        <el-form-item label="整单折扣低于" prop="discountRate">
+        <el-form-item label="整单折扣" prop="discountRate">
           <el-input-number v-model="queryForm.discountRate" :controls="false" :max="99" :min="0" :precision="0"
-                           style="width: 100px;"/> &nbsp;折
+                           style="width: 100px;"/> &nbsp;折 &nbsp;[小于等于]
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -181,11 +181,11 @@ export default {
         creationDate: null,
         sysClinicName: null,
         lsh: null,
-        goodsMarginRate: 0,
-        marginRate: 0,
-        goodsDiscountRate: 0,
-        itemDiscountRate: 0,
-        discountRate: 0
+        goodsMarginRate: undefined,
+        marginRate: undefined,
+        goodsDiscountRate: undefined,
+        itemDiscountRate: undefined,
+        discountRate: undefined
       },
       dataGrid: {
         data: []

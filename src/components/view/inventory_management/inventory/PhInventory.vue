@@ -7,11 +7,11 @@
       class="el-card-menus">
       <el-form :model="queryForm" ref="queryForm" inline size="mini">
         <el-form-item label="机构名称" prop="sysClinicName" v-if="action === 'all'">
-          <el-input v-model.trim="queryForm.sysClinicName" placeholder="机构名称 / 助记码"/>
+          <el-input v-model.trim="queryForm.sysClinicName" placeholder="机构名称 / 助记码" style="width: 140px;"/>
         </el-form-item>
         <el-form-item label="库房名称" prop="iymInventoryTypeId" v-if="action === 'clinic'">
           <el-select
-            style="width: 150px;"
+            style="width: 120px;"
             ref="iymInventoryTypeId"
             v-model.trim="queryForm.iymInventoryTypeId"
             filterable
@@ -23,11 +23,14 @@
             <el-option label="退货库" :value="inventoryType.SUBTRACT_INVENTORY"/>
           </el-select>
         </el-form-item>
+        <el-form-item label="商品编码" prop="gsmGoodsOid">
+          <el-input v-model.trim="queryForm.gsmGoodsOid" placeholder="商品编码" style="width: 140px;"/>
+        </el-form-item>
         <el-form-item label="商品名称" prop="gsmGoodsName">
-          <el-input v-model.trim="queryForm.gsmGoodsName" placeholder="商品名称 / 助记码"/>
+          <el-input v-model.trim="queryForm.gsmGoodsName" placeholder="商品名称 / 助记码" style="width: 140px;"/>
         </el-form-item>
         <el-form-item label="批号" prop="ph">
-          <el-input v-model.trim="queryForm.ph"/>
+          <el-input v-model.trim="queryForm.ph" style="width: 140px;"/>
         </el-form-item>
         <el-form-item label="显示0库存" prop="showZero">
           <el-switch v-model="queryForm.showZero" active-color="#13ce66" inactive-color="#ff4949"/>
@@ -59,7 +62,7 @@
         <el-table-column prop="retailPrice" label="零售价" width="100" show-overflow-tooltip/>
         <el-table-column prop="quantity" label="库存数量" width="100" show-overflow-tooltip/>
         <el-table-column prop="ph" label="批号" width="150" show-overflow-tooltip/>
-        <el-table-column prop="costPrice" label="批次进价" width="100" show-overflow-tooltip/>
+        <!--<el-table-column prop="costPrice" label="批次进价" width="100" show-overflow-tooltip/>-->
         <el-table-column prop="expiryDate" label="有效期至" width="100" show-overflow-tooltip/>
         <el-table-column prop="originName" label="产地" width="120" show-overflow-tooltip/>
         <el-table-column prop="manufacturerName" label="生产厂家" width="300" show-overflow-tooltip/>
@@ -96,6 +99,7 @@ export default {
       queryForm: {
         sysClinicName: null,
         iymInventoryTypeId: null,
+        gsmGoodsOid: null,
         gsmGoodsName: null,
         ph: null,
         showZero: false

@@ -225,7 +225,7 @@
             <i class="el-icon-receiving"></i>
             <span slot="title">库存查询</span>
           </template>
-          <el-menu-item index="/main/inventoryManagement/clinicPchInventory">本机构批次库存</el-menu-item>
+          <el-menu-item index="/main/inventoryManagement/pchInventory">本机构批次库存</el-menu-item>
           <el-menu-item index="/main/inventoryManagement/clinicPhInventory">本机构批号库存</el-menu-item>
           <el-menu-item index="/main/inventoryManagement/allPhInventory">各机构批号库存</el-menu-item>
         </el-submenu>
@@ -368,10 +368,10 @@
           <el-menu-item index="/main/dataReport/ClinicExpirydateWarning" v-if="!hqReport">效期预警</el-menu-item>
           <el-menu-item index="/main/dataReport/allLshMarginRate" v-if="hqReport">销售流水毛利*</el-menu-item>
           <el-menu-item index="/main/dataReport/clinicLshMarginRate" v-if="!hqReport">销售流水毛利</el-menu-item>
+          <el-menu-item index="/main/dataReport/allSellFrequency" v-if="hqReport">商品销售分析*</el-menu-item>
+          <el-menu-item index="/main/dataReport/clinicSellFrequency" v-if="!hqReport">商品销售分析</el-menu-item>
           <!--
           <el-menu-item index="/main/error/404#81-2">库存预警</el-menu-item>
-          <el-menu-item index="/main/error/404#81-2">不动销明细</el-menu-item>
-          <el-menu-item index="/main/error/404#81-2">滞销明细</el-menu-item>
           <el-menu-item index="/main/error/404#81-2">商品销售排行</el-menu-item>
           <el-menu-item index="/main/error/404#81-2">项目销售排行</el-menu-item>
           <el-menu-item index="/main/error/404#81-2">商品历史进价</el-menu-item>

@@ -350,6 +350,9 @@ export default {
       let row = this.dataGrid.row
       if (row) {
         this.clinicIdChange(row.sysClinicId) // 预加载数据[不能放到赋值后]
+        if (row.practiceTypeId) {
+          this.loadPracticeScopeList(row.practiceTypeId) // 预加载数据[不能放到赋值后]
+        }
         for (let key in this.editForm) {
           if (this.editForm.hasOwnProperty(key)) {
             this.editForm[key] = row[key]

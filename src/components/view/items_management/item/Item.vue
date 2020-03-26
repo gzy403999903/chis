@@ -6,11 +6,12 @@
       body-style="padding: 5px;"
       class="el-card-menus">
       <el-form :model="queryForm" ref="queryForm" :inline="true" size="mini">
-        <el-form-item :label="`${title}名称`" prop="name">
-          <el-input v-model.trim="queryForm.name" :placeholder="`${title}名称 / 助记码`"/>
+        <el-form-item label="项目名称" prop="name">
+          <el-input v-model.trim="queryForm.name" :placeholder="`${title}名称 / 助记码`" style="width: 150px;"/>
         </el-form-item>
-        <el-form-item label="项目分类" prop="itemClassifyId">
+        <el-form-item label="分类" prop="itemClassifyId">
           <el-select
+            style="width: 160px;"
             v-model.trim="queryForm.itemClassifyId"
             filterable
             default-first-option

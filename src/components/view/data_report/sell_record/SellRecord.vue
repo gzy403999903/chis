@@ -11,7 +11,7 @@
 
     <!-- 查询条件界面 -->
     <el-dialog
-      width="40%"
+      width="45%"
       :show-close="false"
       :close-on-click-modal="false"
       :visible="dialog.visible">
@@ -65,6 +65,7 @@
       <el-table
         :height="$store.getters.dataGridHeight"
         :data="dataGrid.data"
+        highlight-current-row
         stripe
         border
         size="mini">
