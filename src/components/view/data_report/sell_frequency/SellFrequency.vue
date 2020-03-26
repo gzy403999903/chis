@@ -45,7 +45,7 @@
         <el-form-item label="商品名称" prop="gsmGoodsName">
           <el-input v-model.trim="queryForm.gsmGoodsName" placeholder="商品名称 / 助记码"/>
         </el-form-item>
-        <el-form-item label="滞销天数" prop="days">
+        <el-form-item label="动销天数" prop="days">
           <el-input-number v-model="queryForm.days" :controls="false" :max="366" :min="1" :precision="0"
                            style="width: 100px;"/>
         </el-form-item>
