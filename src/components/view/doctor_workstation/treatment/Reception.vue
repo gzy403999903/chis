@@ -52,6 +52,12 @@
         <div class="patients-btn">
           <el-button size="mini" @click="appointmentVisitDialogOpen" style="width: 85%;">预约回访</el-button>
         </div>
+        <div class="count-map">
+          <div>{{'处方总数: ' + (countMap.countPrescription ? countMap.countPrescription : 0)}}</div>
+          <div>{{'合计金额: ' + (countMap.countAmount ? (countMap.countAmount).toFixed(2) : 0)}}</div>
+          <div>{{'中药处方: ' + (countMap.countChineseDrugsPrescription ? countMap.countChineseDrugsPrescription : 0)}}</div>
+          <div>{{'中药总克数: ' + (countMap.countChineseDrugsQuantity ? (countMap.countChineseDrugsQuantity).toFixed(0) : 0)}}</div>
+        </div>
       </div>
 
       <!-- 右侧选项卡 -->
@@ -61,22 +67,28 @@
             <ClinicalHistory :mrmMemberId="mrmMemberId" :setDwtClinicalHistoryId="setDwtClinicalHistoryId"/>
           </el-tab-pane>
           <el-tab-pane label="西药处方" name="westernDrugsPrescription" :disabled="!Number(dwtClinicalHistoryId)">
-            <WesternDrugsPrescription :mrmMemberId="mrmMemberId" :dwtClinicalHistoryId="dwtClinicalHistoryId"/>
+            <WesternDrugsPrescription :mrmMemberId="mrmMemberId" :dwtClinicalHistoryId="dwtClinicalHistoryId"
+                                      :loadCountPrescription="loadCountPrescription"/>
           </el-tab-pane>
           <el-tab-pane label="中药处方" name="chineseDrugsPrescription" :disabled="!Number(dwtClinicalHistoryId)">
-            <ChineseDrugsPrescription :mrmMemberId="mrmMemberId" :dwtClinicalHistoryId="dwtClinicalHistoryId"/>
+            <ChineseDrugsPrescription :mrmMemberId="mrmMemberId" :dwtClinicalHistoryId="dwtClinicalHistoryId"
+                                      :loadCountPrescription="loadCountPrescription"/>
           </el-tab-pane>
           <el-tab-pane label="检查/检验" name="medicalItemPrescription" :disabled="!Number(dwtClinicalHistoryId)">
-            <MedicalItemPrescription :mrmMemberId="mrmMemberId" :dwtClinicalHistoryId="dwtClinicalHistoryId"/>
+            <MedicalItemPrescription :mrmMemberId="mrmMemberId" :dwtClinicalHistoryId="dwtClinicalHistoryId"
+                                     :loadCountPrescription="loadCountPrescription"/>
           </el-tab-pane>
           <el-tab-pane label="辅助治疗" name="adjuvantItemPrescription" :disabled="!Number(dwtClinicalHistoryId)">
-            <AdjuvantItemPrescription :mrmMemberId="mrmMemberId" :dwtClinicalHistoryId="dwtClinicalHistoryId"/>
+            <AdjuvantItemPrescription :mrmMemberId="mrmMemberId" :dwtClinicalHistoryId="dwtClinicalHistoryId"
+                                      :loadCountPrescription="loadCountPrescription"/>
           </el-tab-pane>
           <el-tab-pane label="其他项目" name="otherItemPrescription" :disabled="!Number(dwtClinicalHistoryId)">
-            <OtherItemPrescription :mrmMemberId="mrmMemberId" :dwtClinicalHistoryId="dwtClinicalHistoryId"/>
+            <OtherItemPrescription :mrmMemberId="mrmMemberId" :dwtClinicalHistoryId="dwtClinicalHistoryId"
+                                   :loadCountPrescription="loadCountPrescription"/>
           </el-tab-pane>
           <el-tab-pane label="卫生材料" name="hygienicMaterialPrescription" :disabled="!Number(dwtClinicalHistoryId)">
-            <HygienicMaterialPrescription :mrmMemberId="mrmMemberId" :dwtClinicalHistoryId="dwtClinicalHistoryId"/>
+            <HygienicMaterialPrescription :mrmMemberId="mrmMemberId" :dwtClinicalHistoryId="dwtClinicalHistoryId"
+                                          :loadCountPrescription="loadCountPrescription"/>
           </el-tab-pane>
         </el-tabs>
       </div>
@@ -150,6 +162,7 @@ export default {
       activeName: 'clinicalHistory', // 激活标签页名称
       dwtClinicalHistoryId: 0, // 病例 ID
       mrmMember: {}, // 会员信息
+      countMap: {}, // 处方计算结果
       dialog: {
         healthArchiveVisible: false, // 健康档案界面开关
         clinicalHistoryRecordVisible: false, // 病历界面开关
@@ -169,6 +182,8 @@ export default {
         this.loadMember()
         // 载入会员未进行归档的病例
         PubSub.publish('loadLastUnfinishedForClinicalHistory')
+        // 载入会员处方计算结果
+        this.loadCountPrescription()
       } else {
         this.$message.error('获取会员信息失败')
       }
@@ -194,6 +209,8 @@ export default {
       this.dwtClinicalHistoryId = 0
       // 初始化会员信息
       this.mrmMember = {}
+      // 初始处方计算结果
+      this.countMap = {}
     },
 
     /**
@@ -217,6 +234,20 @@ export default {
           this.mrmMember = res.data.resultSet.member
         } else {
           this.$loading().close()
+        }
+      })
+    },
+
+    /**
+     * 载入会员处方计算结果
+     */
+    loadCountPrescription () {
+      const url = '/chisAPI/sellRecord/countPrescriptionByCriteriaFromCache'
+      let params = {mrmMemberId: this.mrmMemberId}
+      this.$http.get(url, {params}).then((res) => {
+        if (res.data.code === 200) {
+          this.countMap = res.data.resultSet.countMap
+        } else {
         }
       })
     },
@@ -290,6 +321,7 @@ export default {
   .patients-info i {font-size: 25px; padding-bottom: 10px; color: #DD4A68;}
   .patients-btn {padding-left: 15px; padding-bottom: 10px;}
   .right-tabs {margin-right: 15px;}
+  .count-map {padding-left: 15px; font-size: 12px; font-weight: 600;}
 </style>
 <style>
 </style>

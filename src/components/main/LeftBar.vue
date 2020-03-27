@@ -389,7 +389,6 @@
          <el-menu-item index="/main/dataReport/allBillingTypeReport" v-if="hqReport">计费类型汇总*</el-menu-item>
          <el-menu-item index="/main/dataReport/clinicBillingTypeReport" v-if="!hqReport">计费类型汇总</el-menu-item>
          <!--
-         <el-menu-item index="/main/error/404#82-2">折扣毛利考核</el-menu-item>
          <el-menu-item index="/main/error/404#82-2">提成查询</el-menu-item>
          -->
        </el-submenu>

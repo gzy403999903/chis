@@ -134,7 +134,8 @@
     <!-- 处方更正 -->
     <PrescriptionCachePreload :visible="dialog.cacheVisible" :mrmMemberId="mrmMemberId"
                               :sysSellTypeId="sellType.GOODS" :entityTypeId="goodsType.CHINESE_DRUGS"
-                              :dialog-close="preloadDialogClose" :loadFromCache="loadFromCache"/>
+                              :dialog-close="preloadDialogClose" :loadFromCache="loadFromCache"
+                              :loadCountPrescription="loadCountPrescription"/>
 
     <!-- 历史处方 -->
     <PrescriptionTemplatePreload :visible="dialog.templateVisible" :mrmMemberId="mrmMemberId" action="CRecord"
@@ -158,6 +159,10 @@ export default {
     },
     dwtClinicalHistoryId: {
       type: Number,
+      required: true
+    },
+    loadCountPrescription: {
+      type: Function,
       required: true
     }
   },
@@ -611,6 +616,7 @@ export default {
         if (res.data.code === 200) {
           this.$message.success(res.data.msg)
           this.pageReset()
+          this.loadCountPrescription()
         }
         this.$loading().close()
       })

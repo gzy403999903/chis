@@ -86,8 +86,10 @@
     <div style="padding: 10px; font-weight: 600; color: #3BB878;">{{promptMsg}}</div>
 
     <!-- 处方更正 -->
-    <PrescriptionCachePreload :visible="dialog.visible" :mrmMemberId="mrmMemberId" :sysSellTypeId="sellType.ITEM" :entityTypeId="itemTypeId"
-                                :dialog-close="preloadDialogClose" :loadFromCache="loadFromCache"/>
+    <PrescriptionCachePreload :visible="dialog.visible" :mrmMemberId="mrmMemberId"
+                              :sysSellTypeId="sellType.ITEM" :entityTypeId="itemTypeId"
+                              :dialog-close="preloadDialogClose" :loadFromCache="loadFromCache"
+                              :loadCountPrescription="loadCountPrescription"/>
   </div>
 </template>
 
@@ -112,6 +114,10 @@ export default {
     },
     action: {
       type: String,
+      required: true
+    },
+    loadCountPrescription: {
+      type: Function,
       required: true
     }
   },
@@ -461,6 +467,7 @@ export default {
         if (res.data.code === 200) {
           this.$message.success(res.data.msg)
           this.pageReset()
+          this.loadCountPrescription()
         }
         this.$loading().close()
       })

@@ -4,7 +4,7 @@
       <img src="../../../assets/images/butterfly.png"/>
     </div>
     <div class="user-info">
-      <div>姓名: <b>{{payload.userName}}</b></div><hr/>
+      <div>姓名: <b>{{ payload.userName}}</b></div><hr/> <!--+ '&nbsp;&nbsp;[' + payload.userId + ']'-->
       <div>角色: <b>{{payload.roleName}}</b></div><hr/>
       <div>{{payload.clinicName}}</div>
     </div>
@@ -58,7 +58,7 @@ export default {
 <style scoped>
   .user-panel {
     width: 400px;
-    height: 125px;
+    height: 130px;
     padding: 10px;
   }
   .user-image {
@@ -88,7 +88,7 @@ export default {
     height: 2px;
     /*background-image: linear-gradient(to right, rgba(59, 184, 120, 1), rgba(0, 0, 0, 0));*/
     background-color: #3BB878;
-    margin-bottom: 5px;
+    margin-bottom: 6px;
   }
   .user-clinic {
     font-size: 14px;

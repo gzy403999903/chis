@@ -1,7 +1,8 @@
 <template>
   <div>
     <ItemPrescription :mrmMemberId="mrmMemberId" :dwtClinicalHistoryId="dwtClinicalHistoryId"
-                      :itemTypeId="itemType.OTHER_ITEM" action="otherItem"/>
+                      :itemTypeId="itemType.OTHER_ITEM" action="otherItem"
+                      :loadCountPrescription="loadCountPrescription"/>
   </div>
 </template>
 
@@ -16,6 +17,10 @@ export default {
     },
     dwtClinicalHistoryId: {
       type: Number,
+      required: true
+    },
+    loadCountPrescription: {
+      type: Function,
       required: true
     }
   },

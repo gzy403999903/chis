@@ -171,7 +171,8 @@
     <!-- 处方更正 -->
     <PrescriptionCachePreload :visible="dialog.cacheVisible" :mrmMemberId="mrmMemberId"
                               :sysSellTypeId="sellType.GOODS" :entityTypeId="goodsType.WESTERN_DRUGS"
-                              :dialogClose="cacheDialogClose" :loadFromCache="loadFromCache"/>
+                              :dialogClose="cacheDialogClose" :loadFromCache="loadFromCache"
+                              :loadCountPrescription="loadCountPrescription"/>
 
     <!-- 历史处方 -->
     <PrescriptionTemplatePreload :visible="dialog.templateVisible" :mrmMemberId="mrmMemberId" action="WRecord"
@@ -194,6 +195,10 @@ export default {
     },
     dwtClinicalHistoryId: {
       type: Number,
+      required: true
+    },
+    loadCountPrescription: {
+      type: Function,
       required: true
     }
   },
@@ -624,6 +629,7 @@ export default {
         if (res.data.code === 200) {
           this.$message.success(res.data.msg)
           this.pageReset()
+          this.loadCountPrescription()
         }
         this.$loading().close()
       })
@@ -659,6 +665,7 @@ export default {
         this.dataGrid.currentRow.lsh = item.lsh // 流水号
         this.dataGrid.currentRow.sysSellTypeId = item.sysSellTypeId // 销售类型ID
         this.dataGrid.currentRow.gsmGoodsTypeId = item.entityTypeId // 药品类型ID
+        this.dataGrid.currentRow.goodsClassifyName = '' // 药品分类(没有这个属性 在编辑状态下会报错)
         this.dataGrid.currentRow.id = item.entityId // 药品ID
         this.dataGrid.currentRow.oid = item.oid // 药品编码 *
         this.dataGrid.currentRow.name = item.name // 药品名称

@@ -78,7 +78,17 @@
               default-first-option
               filterable
               placeholder="请选择">
+              <!--
               <el-option v-for="item in clinicDoctorList" :key="item.id" :value="item.id" :label="item.name"/>
+              -->
+              <el-option class="custom-el-option" v-for="item in clinicDoctorList" :key="item.id" :value="item.id" :label="item.name + ' [' + item.code + ']'">
+                <span class="select-option-top" style="padding-right: 5px;">ID</span>
+                <span class="select-option-text" style="width: 50px;">{{item.id}}</span>
+                <span class="select-option-top" style="padding-right: 5px;">姓名</span>
+                <span class="select-option-text" style="width: 80px;">{{item.name}}</span>
+                <span class="select-option-top" style="padding-right: 5px;">职称</span>
+                <span class="select-option-text">{{item.doctorTitlesName}}</span>
+              </el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="医师职称" prop="doctorTitlesName">

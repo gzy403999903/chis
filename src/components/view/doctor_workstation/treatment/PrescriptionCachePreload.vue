@@ -88,6 +88,10 @@ export default {
     loadFromCache: {
       type: Function,
       required: true
+    },
+    loadCountPrescription: {
+      type: Function,
+      required: true
     }
   },
 
@@ -186,8 +190,10 @@ export default {
             this.$message.success(res.data.msg)
             this.loadPrescriptionGroup()
             this.dataGrid.detailData = []
+            this.loadCountPrescription()
+          } else {
+            this.$loading().close()
           }
-          this.$loading().close()
         })
       }).catch(() => {})
     }
