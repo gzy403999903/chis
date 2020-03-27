@@ -14,13 +14,13 @@
         <span>病例模板</span>
       </el-col>
       <el-col :span="19" style="text-align: right;">
-        <el-button size="mini" type="primary" icon="el-icon-check" @click="submitData" v-show="!editable">提 交</el-button>
+        <el-button size="mini" type="primary" icon="el-icon-check" @click="submitData" v-if="editable">提 交</el-button>
         <el-button size="mini" type="warning" icon="el-icon-right" @click="dialogClose">返 回</el-button>
       </el-col>
     </el-row>
 
     <!-- 编辑表单 -->
-    <el-form :model="editForm" ref="editForm" :rules="editFormRules" size="small" label-width="110px" :disabled="editable">
+    <el-form :model="editForm" ref="editForm" :rules="editFormRules" size="small" label-width="110px" :disabled="!editable">
       <el-form-item prop="id" v-show="false">
         <el-input v-model.trim="editForm.id"/>
       </el-form-item>
@@ -241,12 +241,14 @@ export default {
         this.url = '/chisAPI/clinicalHistoryTemplate/update'
         this.method = 'PUT'
         // 如果是编辑操作判断是否为创建人, 如果不是则禁用编辑
-        this.editable = this.row.sysDoctorId !== this.payload.userId
+        this.editable = this.row.sysDoctorId === this.payload.userId
       } else {
         // 赋值提交属性
         this.url = '/chisAPI/clinicalHistoryTemplate/save'
         this.method = 'POST'
         this.$refs.chiefComplaint.focus()
+        // 如果是添加操作, 则允许编辑
+        this.editable = true
       }
     },
 
