@@ -55,7 +55,10 @@ axios.interceptors.response.use(res => {
       // 将要跳转的路由 path 作为参数跳转到 login, 登录成功后则跳转到参数页面
       // query: { redirect: router.currentRoute.fullPath }
     })
-  } else if (res.data.code !== 401 && res.data.code > 400) {
+
+    // 由于 401 有时会一次返回多个, 而 showError 执行一次后会等于 false,
+    // 所以第一个条件以后的判断还要判断 res.data.code !== 401
+  } else if (res.data.code !== 401 && res.data.code >= 400) {
     Vue.prototype.$message.error(res.data.msg)
   } else if (res.data.code !== 401) {
     showError = true

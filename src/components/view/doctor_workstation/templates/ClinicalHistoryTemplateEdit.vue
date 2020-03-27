@@ -14,13 +14,13 @@
         <span>病例模板</span>
       </el-col>
       <el-col :span="19" style="text-align: right;">
-        <el-button size="mini" type="primary" icon="el-icon-check" @click="submitData">提 交</el-button>
+        <el-button size="mini" type="primary" icon="el-icon-check" @click="submitData" v-show="!editable">提 交</el-button>
         <el-button size="mini" type="warning" icon="el-icon-right" @click="dialogClose">返 回</el-button>
       </el-col>
     </el-row>
 
     <!-- 编辑表单 -->
-    <el-form :model="editForm" ref="editForm" :rules="editFormRules" size="small" label-width="110px">
+    <el-form :model="editForm" ref="editForm" :rules="editFormRules" size="small" label-width="110px" :disabled="editable">
       <el-form-item prop="id" v-show="false">
         <el-input v-model.trim="editForm.id"/>
       </el-form-item>
@@ -138,6 +138,7 @@
 
 <script>
 import {getPyCode} from '../../../../common/py'
+import jwtDecode from 'jwt-decode'
 export default {
   props: {
     visible: {
@@ -160,8 +161,10 @@ export default {
 
   data () {
     return {
+      payload: jwtDecode(this.$store.getters.token),
       diagnoseType: this.$store.getters.diagnoseType, // 诊断类型
       allowCreateDiagnose: this.$store.getters.allowCreateDiagnose, // 是否允许创建诊断
+      editable: true, // 是否可编辑
       url: '',
       method: 'POST',
       editForm: {
@@ -228,13 +231,17 @@ export default {
       if (this.row.id) {
         // 赋值编辑表单属性
         for (let key in this.editForm) {
-          this.editForm[key] = this.row[key]
+          if (this.editForm.hasOwnProperty(key)) {
+            this.editForm[key] = this.row[key]
+          }
         }
         // 赋值诊断列表
         this.commonDiagnose.data = JSON.parse(this.editForm.diagnoseJson)
         // 赋值提交属性
         this.url = '/chisAPI/clinicalHistoryTemplate/update'
         this.method = 'PUT'
+        // 如果是编辑操作判断是否为创建人, 如果不是则禁用编辑
+        this.editable = this.row.sysDoctorId !== this.payload.userId
       } else {
         // 赋值提交属性
         this.url = '/chisAPI/clinicalHistoryTemplate/save'

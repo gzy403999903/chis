@@ -211,7 +211,7 @@ export default {
      * 匹配批次号
      */
     matchInventoryPch (goodsData) {
-      // 防止重复 push
+      // 清空 data, 防止重复 push
       this.dataGrid.data = []
 
       // 遍历销售商品匹配批次库存
@@ -251,8 +251,7 @@ export default {
             pushGoods.quantity = pch.quantity
             this.matchInventoryPchQuantity(pushGoods, pch)
             this.dataGrid.data.push(pushGoods)
-            // 将当前商品的销售数量设置为 创建一行后剩余的数量
-            goods.quantity = Math.abs(residuePchQuantity)
+            goods.quantity = Math.abs(residuePchQuantity) // 将当前商品的销售数量设置为 创建一行后剩余的数量
           }
 
           // 如果当前为最后一个批次库存, 并且剩余批次库存的数量小于 0, 则继续创建一行

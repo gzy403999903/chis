@@ -53,10 +53,10 @@
           <el-button size="mini" @click="appointmentVisitDialogOpen" style="width: 85%;">预约回访</el-button>
         </div>
         <div class="count-map">
-          <div>{{'处方总数: ' + (countMap.countPrescription ? countMap.countPrescription : 0)}}</div>
-          <div>{{'合计金额: ' + (countMap.countAmount ? (countMap.countAmount).toFixed(2) : 0)}}</div>
+          <div style="width: 110px;">{{'处方总数: ' + (countMap.countPrescription ? countMap.countPrescription : 0)}}</div>
+          <div style="width: 110px;">{{'合计金额: ' + (countMap.countAmount ? (countMap.countAmount).toFixed(2) : 0)}}</div>
           <div>{{'中药处方: ' + (countMap.countChineseDrugsPrescription ? countMap.countChineseDrugsPrescription : 0)}}</div>
-          <div>{{'中药总克数: ' + (countMap.countChineseDrugsQuantity ? (countMap.countChineseDrugsQuantity).toFixed(0) : 0)}}</div>
+          <div>{{'中药克数: ' + (countMap.countChineseDrugsQuantity ? (countMap.countChineseDrugsQuantity).toFixed(0) : 0)}}</div>
         </div>
       </div>
 

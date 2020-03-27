@@ -36,7 +36,7 @@
         <el-table-column fixed="left" label="距离过期 / 天" width="110" show-overflow-tooltip>
           <template slot-scope="props">
             <span v-show="props.row.days > 90">{{props.row.days}}</span>
-            <span v-show="props.row.days < 90" style="color: #F56C6C;">{{props.row.days}}</span>
+            <span v-show="props.row.days <= 90" style="color: #F56C6C;">{{props.row.days}}</span>
           </template>
         </el-table-column>
         <el-table-column prop="iymInventoryTypeName" label="所在库房" width="100" show-overflow-tooltip/>

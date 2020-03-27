@@ -39,10 +39,10 @@
                        v-if="scope.row.normative || scope.row.creatorId === payload.userId"/>
           </template>
         </el-table-column>
-        <el-table-column prop="name" label="疾病名称" show-overflow-tooltip/>
-        <el-table-column prop="code" label="助记码" show-overflow-tooltip/>
-        <el-table-column prop="shareState" label="共享状态" :formatter="dataGridFormatterShareState" show-overflow-tooltip/>
-        <el-table-column prop="creatorName" label="创建人" show-overflow-tooltip/>
+        <el-table-column prop="name" label="疾病名称" width="200" show-overflow-tooltip/>
+        <el-table-column prop="code" label="助记码" width="200" show-overflow-tooltip/>
+        <el-table-column prop="shareState" label="共享状态" :formatter="dataGridFormatterShareState" width="100" show-overflow-tooltip/>
+        <el-table-column prop="creatorName" label="创建人" width="100" show-overflow-tooltip/>
         <el-table-column prop="creationDate" label="创建日期" show-overflow-tooltip/>
       </el-table>
       <el-pagination
@@ -121,7 +121,7 @@ export default {
       payload: jwtDecode(this.$store.getters.token),
       queryForm: {
         name: null,
-        shareState: false
+        shareState: true
       },
       editable: true,
       editForm: {
