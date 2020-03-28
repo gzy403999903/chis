@@ -1,47 +1,60 @@
 <template>
   <div>
-    <!--功能菜单-->
-    <el-form :model="queryForm" ref="queryForm" :inline="true" size="mini">
-      <el-card
-        shadow="never"
-        body-style="padding: 5px;"
-        class="el-card-menus">
+    <!-- 功能菜单 -->
+    <el-card
+      shadow="never"
+      body-style="padding: 5px;"
+      class="el-card-menus"
+      style="padding-right: 10px;">
+      <el-button type="default" size="mini" round icon="el-icon-search" @click="dialog.visible = true">条件查询</el-button>
+    </el-card>
+
+    <!-- 查询条件界面 -->
+    <el-dialog
+      width="45%"
+      :show-close="false"
+      :close-on-click-modal="false"
+      :visible="dialog.visible">
+      <!-- 模态框标题栏与功能按钮 -->
+      <el-row slot="title">
+        <el-col :span="5" style="font-size: 20px;">
+          <span>条件查询</span>
+        </el-col>
+        <el-col :span="19" style="text-align: right;">
+          <el-button type="primary" size="mini" icon="el-icon-search"  @click="dataGridLoadData">查询</el-button>
+          <el-button type="default" size="mini" icon="el-icon-refresh" @click="$refs.queryForm.resetFields()">重置</el-button>
+          <el-button type="warning" size="mini" icon="el-icon-right" @click="dialog.visible=false">返 回</el-button>
+        </el-col>
+      </el-row>
+
+      <el-form :model="queryForm" ref="queryForm" :inline="false" size="mini" label-width="120px" label-position="left" style="padding: 0 20px;">
         <el-form-item label="供应商编码" prop="oid">
-          <el-input v-model.trim="queryForm.oid" placeholder="供应商编码" style="width: 150px;"/>
+          <el-input v-model.trim="queryForm.oid" placeholder="供应商编码"/>
         </el-form-item>
         <el-form-item label="供应商名称" prop="name">
-          <el-input v-model.trim="queryForm.name" placeholder="供应商名称 / 助记码" style="width: 150px;"/>
+          <el-input v-model.trim="queryForm.name" placeholder="供应商名称 / 助记码"/>
         </el-form-item>
         <el-form-item label="应付金额大于" prop="arrearagesAmount">
           <el-input-number v-model="queryForm.arrearagesAmount" :controls="false" :max="9999999" :min="0" :precision="2"
-                           style="width: 90px;"/>&nbsp;元
+                           style="width: 100px;"/>&nbsp;元 &nbsp;[大于等于]
         </el-form-item>
         <el-form-item label="受限额度大于" prop="arrearagesLimit">
           <el-input-number v-model="queryForm.arrearagesLimit" :controls="false" :max="9999999" :min="0" :precision="2"
-                           style="width: 90px;"/>&nbsp;元
+                           style="width: 100px;"/>&nbsp;元 &nbsp;[小于等于]
         </el-form-item>
         <el-form-item label="付款天数大于" prop="arrearagesDays">
           <el-input-number v-model="queryForm.arrearagesDays" :controls="false" :max="9999999" :min="0" :precision="0"
-                           style="width: 90px;"/>&nbsp;天
+                           style="width: 100px;"/>&nbsp;天 &nbsp;[小于等于]
         </el-form-item>
-      </el-card>
-      <el-card
-        shadow="never"
-        body-style="padding: 5px;"
-        class="el-card-menus">
-        <el-form-item>
-          <el-button type="primary" round icon="el-icon-search"  @click="dataGridLoadData">查询</el-button>
-          <el-button type="default" round icon="el-icon-refresh" @click="$refs.queryForm.resetFields()">重置</el-button>
-        </el-form-item>
-      </el-card>
-    </el-form>
+      </el-form>
+    </el-dialog>
 
     <!-- 数据表 -->
     <el-card
       shadow="never"
       body-style="padding: 0;">
       <el-table
-        :height="$store.getters.dataGridHeight - 40"
+        :height="$store.getters.dataGridHeight"
         :data="dataGrid.data"
         stripe
         size="mini">
@@ -75,12 +88,15 @@
 export default {
   data () {
     return {
+      dialog: {
+        visible: false
+      },
       queryForm: {
         oid: null,
         name: null,
-        arrearagesAmount: 0,
-        arrearagesLimit: 0,
-        arrearagesDays: 0
+        arrearagesAmount: undefined,
+        arrearagesLimit: undefined,
+        arrearagesDays: undefined
       },
       dataGrid: {
         data: [],
@@ -125,6 +141,7 @@ export default {
           this.pagination.total = res.data.resultSet.page.total
           this.dataGrid.data = res.data.resultSet.page.list
         }
+        this.dialog.visible = false
         this.$loading().close()
       })
     }

@@ -16,7 +16,7 @@
         <span>处方明细</span>
       </el-col>
       <el-col :span="19" style="text-align: right;">
-        <el-button size="mini" type="success" plain icon="el-icon-s-promotion" @click="submitData">出 库</el-button>
+        <el-button size="mini" type="success" plain icon="el-icon-s-promotion" @click="submitData">审 核</el-button>
         <el-button size="mini" type="warning" icon="el-icon-right" @click="dialogClose">返 回</el-button>
       </el-col>
     </el-row>

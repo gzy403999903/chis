@@ -43,7 +43,7 @@ export default {
       ITEM: 2 // 收费项目
     },
 
-    // 销售类型
+    // 销售方式
     sellWay: {
       PRESCRIPTION: 1, // 处方
       POS: 2 // POS

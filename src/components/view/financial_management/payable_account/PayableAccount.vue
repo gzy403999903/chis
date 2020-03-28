@@ -1,14 +1,35 @@
 <template>
   <div>
-    <!--功能菜单-->
-    <el-form :model="queryForm" ref="queryForm" :inline="true" size="mini">
-      <el-card
-        shadow="never"
-        body-style="padding: 5px;"
-        class="el-card-menus">
+    <!-- 功能菜单 -->
+    <el-card
+      shadow="never"
+      body-style="padding: 5px;"
+      class="el-card-menus"
+      style="padding-right: 10px;">
+      <el-button type="default" size="mini" round icon="el-icon-search" @click="dialog.queryVisible = true">条件查询</el-button>
+    </el-card>
+
+    <!-- 查询条件界面 -->
+    <el-dialog
+      width="45%"
+      :show-close="false"
+      :close-on-click-modal="false"
+      :visible="dialog.queryVisible">
+      <!-- 模态框标题栏与功能按钮 -->
+      <el-row slot="title">
+        <el-col :span="5" style="font-size: 20px;">
+          <span>条件查询</span>
+        </el-col>
+        <el-col :span="19" style="text-align: right;">
+          <el-button type="primary" size="mini" icon="el-icon-search"  @click="dataGridLoadData">查询</el-button>
+          <el-button type="default" size="mini" icon="el-icon-refresh" @click="$refs.queryForm.resetFields()">重置</el-button>
+          <el-button type="warning" size="mini" icon="el-icon-right" @click="dialog.queryVisible=false">返 回</el-button>
+        </el-col>
+      </el-row>
+
+      <el-form :model="queryForm" ref="queryForm" :inline="false" size="mini" label-width="120px" label-position="left" style="padding: 0 20px;">
         <el-form-item label="单据日期" prop="creationDate">
           <el-date-picker
-            style="width: 300px;"
             v-model="queryForm.creationDate"
             type="daterange"
             align="right"
@@ -21,7 +42,6 @@
         </el-form-item>
         <el-form-item label="供应商名称" prop="pemSupplierId">
           <el-select
-            style="width: 170px;"
             v-model.trim="queryForm.pemSupplierId"
             placeholder="供应商名称 / 助记码 搜索"
             :remote-method="querySupplier"
@@ -44,7 +64,6 @@
         </el-form-item>
         <el-form-item label="机构名称" prop="sysClinicId">
           <el-select
-            style="width: 170px;"
             v-model.trim="queryForm.sysClinicId"
             placeholder="机构名称 / 助记码 搜索"
             :remote-method="queryClinic"
@@ -59,27 +78,19 @@
             </el-option>
           </el-select>
         </el-form-item>
-        <el-form-item label="未付金额大于" prop="arrearagesAmount">
+        <el-form-item label="未付金额" prop="arrearagesAmount">
           <el-input-number v-model="queryForm.arrearagesAmount" :controls="false" :max="999999" :min="-999999" :precision="2"
-                           style="width: 100px;"/>&nbsp;元
+                           style="width: 100px;"/>&nbsp;元 &nbsp;[大于等于]
         </el-form-item>
-      </el-card>
-      <el-card
-        shadow="never"
-        body-style="padding: 5px;"
-        class="el-card-menus">
-        <el-form-item>
-          <el-button type="primary" round icon="el-icon-search"  @click="dataGridLoadData">查询</el-button>
-          <el-button type="default" round icon="el-icon-refresh" @click="$refs.queryForm.resetFields()">重置</el-button>
-        </el-form-item>
-      </el-card>
-    </el-form>
+      </el-form>
+    </el-dialog>
+
     <!-- 数据表 -->
     <el-card
       shadow="never"
       body-style="padding: 0;">
       <el-table
-        :height="$store.getters.dataGridHeight - 40"
+        :height="$store.getters.dataGridHeight"
         :data="dataGrid.data"
         stripe
         size="mini">
@@ -140,7 +151,7 @@ export default {
         creationDate: [],
         pemSupplierId: null,
         sysClinicId: null,
-        arrearagesAmount: 0
+        arrearagesAmount: undefined
       },
       dataGrid: {
         data: [],
@@ -155,7 +166,8 @@ export default {
         layout: this.$store.getters.pagination.layout
       },
       dialog: {
-        visible: false
+        visible: false,
+        queryVisible: false
       },
       selectData: {
         loading: false,
@@ -193,6 +205,7 @@ export default {
           this.pagination.total = res.data.resultSet.page.total
           this.dataGrid.data = res.data.resultSet.page.list
         }
+        this.dialog.queryVisible = false
         this.$loading().close()
       })
     },

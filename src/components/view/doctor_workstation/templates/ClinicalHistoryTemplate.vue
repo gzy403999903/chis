@@ -40,7 +40,8 @@
         <el-table-column fixed="left" label="操作" align="center" width="120">
           <template slot-scope="scope">
             <el-button size="mini" icon="el-icon-edit" @click="dialogOpen(scope.row)"/>
-            <el-button size="mini" type="danger" icon="el-icon-delete" @click="dataGridDelete(scope.row)"/>
+            <el-button size="mini" type="danger" icon="el-icon-delete" @click="dataGridDelete(scope.row)"
+                       :disabled="scope.row.sysDoctorId !== payload.userId"/>
           </template>
         </el-table-column>
         <el-table-column prop="dwtDiagnoseTypeName" label="病历类型" width="100" show-overflow-tooltip/>
@@ -70,7 +71,7 @@
 
 <script>
 import ClinicalHistoryTemplateEdit from './ClinicalHistoryTemplateEdit'
-
+import jwtDecode from 'jwt-decode'
 export default {
   components: {
     ClinicalHistoryTemplateEdit
@@ -78,6 +79,7 @@ export default {
 
   data () {
     return {
+      payload: jwtDecode(this.$store.getters.token),
       diagnoseType: this.$store.getters.diagnoseType, // 诊断类型
       queryForm: {
         dwtDiagnoseTypeId: null,

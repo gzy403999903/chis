@@ -6,11 +6,25 @@
       body-style="padding: 5px;"
       class="el-card-menus"
       style="padding-right: 10px;">
-      <el-button type="default" size="mini" round icon="el-icon-search" @click="dialog.visible = true">条件查询</el-button>
+      <el-row>
+        <el-col :span="20" align="left" class="count-div">
+          <div>销售总额(含税): {{dataGrid.countMap.hsxs ? dataGrid.countMap.hsxs : 0}}</div>
+          <div>成本总额(含税): {{dataGrid.countMap.hscb ? dataGrid.countMap.hscb : 0}}</div>
+          <div>毛利总额(含税): {{dataGrid.countMap.hsml ? dataGrid.countMap.hsml : 0}}</div>
+          <div>销售总额(无税): {{dataGrid.countMap.wsxs ? dataGrid.countMap.wsxs : 0}}</div>
+          <div>成本总额(无税): {{dataGrid.countMap.wscb ? dataGrid.countMap.wscb : 0}}</div>
+          <div>毛利总额(无税): {{dataGrid.countMap.wsml ? dataGrid.countMap.wsml : 0}}</div>
+          <div>毛利率: {{dataGrid.countMap.mll ? dataGrid.countMap.mll : 0}}%</div>
+        </el-col>
+        <el-col :span="4">
+          <el-button type="default" size="mini" round icon="el-icon-search" @click="dialog.visible = true">条件查询</el-button>
+        </el-col>
+      </el-row>
     </el-card>
 
     <!-- 查询条件界面 -->
     <el-dialog
+      top="4%"
       width="45%"
       :show-close="false"
       :close-on-click-modal="false"
@@ -27,10 +41,22 @@
         </el-col>
       </el-row>
 
-      <el-form :model="queryForm" ref="queryForm" :inline="false" size="mini" label-width="120px" label-position="left" style="padding: 0 20px;">
-        <el-form-item label="单据日期" prop="creationDate">
+      <el-form :model="queryForm" ref="queryForm" :inline="false" size="mini" label-width="110px" label-position="left" style="padding: 0 20px;">
+        <el-form-item label="销售日期" prop="creationDate">
           <el-date-picker
             v-model="queryForm.creationDate"
+            type="daterange"
+            align="right"
+            unlink-panels
+            value-format="yyyy-MM-dd"
+            range-separator="至"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+            :picker-options="pickerOptions"/>
+        </el-form-item>
+        <el-form-item label="开票日期" prop="invoiceDate">
+          <el-date-picker
+            v-model="queryForm.invoiceDate"
             type="daterange"
             align="right"
             unlink-panels
@@ -46,11 +72,36 @@
         <el-form-item label="流水号" prop="lsh">
           <el-input v-model.trim="queryForm.lsh" placeholder="流水号"/>
         </el-form-item>
+        <el-form-item label="销售类型" prop="sysSellTypeId">
+          <el-radio-group v-model="queryForm.sysSellTypeId" @change="sysSellTypeIdChange">
+            <el-radio :label="null" border>全部</el-radio>
+            <el-radio :label="sellType.GOODS" border>商品</el-radio>
+            <el-radio :label="sellType.ITEM" border>项目</el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item prop="entityTypeId">
+          <el-radio-group v-model="queryForm.entityTypeId">
+            <el-radio :label="null" border v-if="queryForm.sysSellTypeId">全部</el-radio>
+            <el-radio :label="goodsType.WESTERN_DRUGS" border v-if="queryForm.sysSellTypeId === sellType.GOODS">西药 / 中成药</el-radio>
+            <el-radio :label="goodsType.CHINESE_DRUGS" border v-if="queryForm.sysSellTypeId === sellType.GOODS">中药</el-radio>
+            <el-radio :label="goodsType.HYGIENIC_MATERIAL" border v-if="queryForm.sysSellTypeId === sellType.GOODS">卫生材料</el-radio>
+
+            <el-radio :label="itemType.MEDICAL_ITEM" border v-if="queryForm.sysSellTypeId === sellType.ITEM">医技项目</el-radio>
+            <el-radio :label="itemType.ADJUVANT_ITEM" border v-if="queryForm.sysSellTypeId === sellType.ITEM">辅助项目</el-radio>
+            <el-radio :label="itemType.OTHER_ITEM" border v-if="queryForm.sysSellTypeId === sellType.ITEM">其他项目</el-radio>
+          </el-radio-group>
+        </el-form-item>
+        <el-form-item label="商品编码" prop="entityOid">
+          <el-input v-model.trim="queryForm.entityOid" placeholder="商品编码"/>
+        </el-form-item>
         <el-form-item label="销售名称" prop="entityName">
           <el-input v-model.trim="queryForm.entityName" placeholder="商品名称 / 项目名称 / 助记码"/>
         </el-form-item>
         <el-form-item label="会员姓名" prop="mrmMemberName">
-          <el-input v-model.trim="queryForm.mrmMemberName" placeholder="姓名 / 助记码"/>
+          <el-input v-model.trim="queryForm.mrmMemberName" placeholder="会员姓名 / 助记码"/>
+        </el-form-item>
+        <el-form-item label="会员手机" prop="phone">
+          <el-input v-model.trim="queryForm.phone" placeholder="会员手机"/>
         </el-form-item>
         <el-form-item label="销售人" prop="sellerName">
           <el-input v-model.trim="queryForm.sellerName" placeholder="姓名 / 助记码"/>
@@ -109,7 +160,9 @@
         <el-table-column prop="mrmMemberOid" label="会员编码" width="150" show-overflow-tooltip/>
         <el-table-column prop="mrmMemberName" label="会员姓名" width="100" show-overflow-tooltip/>
         <el-table-column prop="phone" label="会员电话" width="150" show-overflow-tooltip/>
-        <el-table-column prop="sellerId" label="销售人ID" width="100" show-overflow-tooltip/>
+        <el-table-column prop="invoiceTypeName" label="发票类型" width="120" show-overflow-tooltip/>
+        <el-table-column prop="invoiceNo" label="发票号" width="100" show-overflow-tooltip/>
+        <el-table-column prop="invoiceDate" label="开票日期" width="160" show-overflow-tooltip/>
         <el-table-column prop="sellerName" label="销售人" width="100" show-overflow-tooltip/>
         <el-table-column prop="operatorId" label="出库人ID" width="100" show-overflow-tooltip/>
         <el-table-column prop="operatorName" label="出库人" width="100" show-overflow-tooltip/>
@@ -117,18 +170,6 @@
         <el-table-column prop="cashierName" label="收银员" width="100" show-overflow-tooltip/>
         <el-table-column prop="sysClinicName" label="机构名称" min-width="400" show-overflow-tooltip/>
       </el-table>
-      <!--
-      <div class="total-div">
-        <el-row>
-          <el-col :span="4">含税成本:</el-col>
-          <el-col :span="4">无税成本:</el-col>
-          <el-col :span="4">含税销售额:</el-col>
-          <el-col :span="4">无税销售额:</el-col>
-          <el-col :span="4">含税毛利:</el-col>
-          <el-col :span="4">无税毛利:</el-col>
-        </el-row>
-      </div>
-      -->
       <el-pagination
         :page-size="pagination.pageSize"
         :total="pagination.total"
@@ -160,19 +201,28 @@ export default {
           return time.getTime() > Date.now()
         }
       },
+      sellType: this.$store.getters.sellType, // 销售类型
+      goodsType: this.$store.getters.goodsType, // 商品类型
+      itemType: this.$store.getters.itemType, // 项目类型
       dialog: {
         visible: false
       },
       queryForm: {
         creationDate: null,
+        invoiceDate: null,
         sysClinicName: null,
         lsh: null,
+        sysSellTypeId: null,
+        entityTypeId: null,
+        entityOid: null,
         entityName: null,
         mrmMemberName: null,
+        phone: null,
         sellerName: null
       },
       dataGrid: {
-        data: []
+        data: [],
+        countMap: {}
       },
       pagination: {
         total: this.$store.getters.pagination.total, /* 总记录数 */
@@ -186,6 +236,13 @@ export default {
   }, // end data
 
   methods: {
+    /**
+     * 当销售类型发生改变时执行的内容
+     */
+    sysSellTypeIdChange () {
+      this.queryForm.entityTypeId = null
+    },
+
     /**
      * 当前页显示行数发生改变时
      * @param value
@@ -208,6 +265,8 @@ export default {
      * 载入数据
      */
     dataGridLoadData () {
+      this.dataGrid.countMap = {} // 初始化 countMap
+
       this.$loading()
       let url = (
         this.action === 'all'
@@ -222,6 +281,7 @@ export default {
         if (res.data.code === 200) {
           this.pagination.total = res.data.resultSet.page.total
           this.dataGrid.data = res.data.resultSet.page.list
+          this.dataGrid.countMap = res.data.resultSet.countMap
         }
 
         this.dialog.visible = false
@@ -234,10 +294,12 @@ export default {
 </script>
 
 <style scoped>
-  .total-div {
+  .count-div {
+    font-size: 12px;
+    font-weight: 600;
     line-height: 30px;
-    font-size: 14px;
-    padding-left: 5px;
-    background-color: rgb(250, 250, 250);
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
   }
 </style>

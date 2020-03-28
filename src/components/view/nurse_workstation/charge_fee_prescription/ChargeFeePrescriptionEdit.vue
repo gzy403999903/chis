@@ -281,7 +281,7 @@ export default {
     dataGridValidateRow (row) {
       // 验证是否出库
       if (!this.hasIymInventoryId(row)) {
-        this.$message.error('【' + row.oid + ' ' + row.name + '】 商品未出库')
+        this.$message.error('【' + row.oid + ' ' + row.name + '】 商品未审核出库')
         return false
       }
 
