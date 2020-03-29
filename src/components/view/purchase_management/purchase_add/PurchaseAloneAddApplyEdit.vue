@@ -254,7 +254,6 @@ export default {
       }
     }
     let validateQuantity = (rule, value, callback) => {
-      // 如果不可倒挂 并且成本单价大于零售单价则抛出错误
       if (value <= 0) {
         callback(new Error('入库数量不能为 0'))
       } else {

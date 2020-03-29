@@ -86,7 +86,7 @@
 
 <script>
 import VisitRecordDetail from './VisitRecordDetail'
-
+import moment from 'moment'
 export default {
   components: {
     VisitRecordDetail
@@ -100,7 +100,7 @@ export default {
         }
       },
       queryForm: {
-        appointmentDate: null,
+        appointmentDate: [new Date(moment().subtract(1, 'months')), new Date()],
         mrmMemberName: null,
         finished: null
       },

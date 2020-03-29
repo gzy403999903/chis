@@ -113,6 +113,7 @@ import AllLshMarginRate from '../components/view/data_report/lsh_margin_rate/All
 import ClinicLshMarginRate from '../components/view/data_report/lsh_margin_rate/ClinicLshMarginRate'
 import AllSellFrequency from '../components/view/data_report/sell_frequency/AllSellFrequency'
 import ClinicSellFrequency from '../components/view/data_report/sell_frequency/ClinicSellFrequency'
+import DaySellRecord from '../components/view/data_report/day_sell_record/DaySellRecord'
 
 // system_management
 import Clinic from '../components/view/system_management/sys_setup/Clinic'
@@ -598,6 +599,10 @@ export default new Router({
         {
           path: 'clinicSellFrequency',
           component: ClinicSellFrequency
+        },
+        {
+          path: 'daySellRecord',
+          component: DaySellRecord
         }
       ]
     },

@@ -46,25 +46,47 @@
         <el-form-item label="流水号" prop="lsh">
           <el-input v-model.trim="queryForm.lsh" placeholder="流水号"/>
         </el-form-item>
-        <el-form-item label="商品毛利差" prop="goodsMarginRate">
-          <el-input-number v-model="queryForm.goodsMarginRate" :controls="false" :max="99" :min="0" :precision="0"
-                           style="width: 100px;"/> &nbsp;% &nbsp;[大于等于]
+        <el-form-item label="商品毛利率差" prop="goodsMarginRate">
+          <el-select v-model="queryForm.goodsMarginRateLogical" size="mini" placeholder="请选择" style="width: 100px;"
+                     @change="logicalJoin('goodsMarginRateLogical', 'goodsMarginRate')">
+            <el-option v-for="item in $store.getters.numLogicalList" :key="item.value" :label="item.label" :value="item.value"/>
+          </el-select>
+          <el-input-number v-model="queryForm.goodsMarginRate" :controls="false" :max="99" :min="-99" :precision="0"
+                           @change="logicalJoin('goodsMarginRateLogical', 'goodsMarginRate')"
+                           style="width: 100px;"/> &nbsp;%
         </el-form-item>
-        <el-form-item label="整单毛利差" prop="marginRate">
-          <el-input-number v-model="queryForm.marginRate" :controls="false" :max="99" :min="0" :precision="0"
-                           style="width: 100px;"/> &nbsp;% &nbsp;[大于等于]
+        <el-form-item label="整单毛利率差" prop="marginRate">
+          <el-select v-model="queryForm.marginRateLogical" size="mini" placeholder="请选择" style="width: 100px;"
+                     @change="logicalJoin('marginRateLogical', 'marginRate')">
+            <el-option v-for="item in $store.getters.numLogicalList" :key="item.value" :label="item.label" :value="item.value"/>
+          </el-select>
+          <el-input-number v-model="queryForm.marginRate" :controls="false" :max="99" :min="-99" :precision="0"
+                           @change="logicalJoin('marginRateLogical', 'marginRate')"
+                           style="width: 100px;"/> &nbsp;%
         </el-form-item>
         <el-form-item label="商品折扣" prop="goodsDiscountRate">
+          <el-select v-model="queryForm.goodsDiscountRateLogical" size="mini" placeholder="请选择" style="width: 100px;"
+                     :disabled="true">
+            <el-option v-for="item in $store.getters.numLogicalList" :key="item.value" :label="item.label" :value="item.value"/>
+          </el-select>
           <el-input-number v-model="queryForm.goodsDiscountRate" :controls="false" :max="99" :min="0" :precision="0"
-                           style="width: 100px;"/> &nbsp;折 &nbsp;[小于等于]
+                           style="width: 100px;"/> &nbsp;折
         </el-form-item>
         <el-form-item label="项目折扣" prop="itemDiscountRate">
+          <el-select v-model="queryForm.itemDiscountRateLogical" size="mini" placeholder="请选择" style="width: 100px;"
+                     :disabled="true">
+            <el-option v-for="item in $store.getters.numLogicalList" :key="item.value" :label="item.label" :value="item.value"/>
+          </el-select>
           <el-input-number v-model="queryForm.itemDiscountRate" :controls="false" :max="99" :min="0" :precision="0"
-                           style="width: 100px;"/> &nbsp;折 &nbsp;[小于等于]
+                           style="width: 100px;"/> &nbsp;折
         </el-form-item>
         <el-form-item label="整单折扣" prop="discountRate">
+          <el-select v-model="queryForm.discountRateLogical" size="mini" placeholder="请选择" style="width: 100px;"
+                     :disabled="true">
+            <el-option v-for="item in $store.getters.numLogicalList" :key="item.value" :label="item.label" :value="item.value"/>
+          </el-select>
           <el-input-number v-model="queryForm.discountRate" :controls="false" :max="99" :min="0" :precision="0"
-                           style="width: 100px;"/> &nbsp;折 &nbsp;[小于等于]
+                           style="width: 100px;"/> &nbsp;折
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -98,6 +120,11 @@
             {{props.row.goodsActualMarginRate + ' %'}}
           </template>
         </el-table-column>
+        <el-table-column label="商品毛利率差" width="150" show-overflow-tooltip>
+          <template slot-scope="props">
+            {{(props.row.goodsRetailMarginRate - Math.abs(props.row.goodsActualMarginRate)).toFixed(2) + ' %'}}
+          </template>
+        </el-table-column>
         <el-table-column label="商品折扣率" width="120" show-overflow-tooltip>
           <template slot-scope="props">
             {{formatterDiscountRate(props.row.goodsDiscountRate)}}
@@ -121,6 +148,11 @@
         <el-table-column label="整单实收毛利率" width="150" show-overflow-tooltip>
           <template slot-scope="props">
             {{props.row.actualMarginRate + ' %'}}
+          </template>
+        </el-table-column>
+        <el-table-column label="整单毛利率差" width="150" show-overflow-tooltip>
+          <template slot-scope="props">
+            {{(props.row.retailMarginRate - Math.abs(props.row.actualMarginRate)).toFixed(2) + ' %'}}
           </template>
         </el-table-column>
         <el-table-column prop="discountRate" label="整单折扣率" width="120" show-overflow-tooltip>
@@ -159,6 +191,7 @@
 </template>
 
 <script>
+import moment from 'moment'
 export default {
   props: {
     action: {
@@ -178,14 +211,19 @@ export default {
         visible: false
       },
       queryForm: {
-        creationDate: null,
+        creationDate: [new Date(moment().subtract(1, 'months')), new Date()],
         sysClinicName: null,
         lsh: null,
         goodsMarginRate: undefined,
+        goodsMarginRateLogical: '>=',
         marginRate: undefined,
+        marginRateLogical: '>=',
         goodsDiscountRate: undefined,
+        goodsDiscountRateLogical: '<=',
         itemDiscountRate: undefined,
-        discountRate: undefined
+        itemDiscountRateLogical: '<=',
+        discountRate: undefined,
+        discountRateLogical: '<='
       },
       dataGrid: {
         data: []
@@ -225,6 +263,19 @@ export default {
      */
     formatterDiscountRate (value) {
       return value === 100 || value === 0 ? '' : (value % 10 === 0 ? (value / 10).toFixed(0) + ' 折' : value + ' 折')
+    },
+
+    /**
+     * 拼接查询逻辑运算符和字段值
+     */
+    logicalJoin (logical, field) {
+      let logicalValue = this.queryForm[logical] ? this.queryForm[logical] : this.$store.getters.numLogicalList[0].value
+      let fieldValue = (this.queryForm[field] || this.queryForm[field] === 0) ? this.queryForm[field] : undefined
+      if (fieldValue || fieldValue === 0) {
+        fieldValue.toString().indexOf(' ') !== -1
+          ? this.queryForm[field] = (logicalValue + ' ' + fieldValue.split(' ')[1])
+          : this.queryForm[field] = (logicalValue + ' ' + fieldValue)
+      }
     },
 
     /**

@@ -386,7 +386,7 @@ export default {
       row.discountable = '' // 是否可打折
       row.splitQuantity = '' // 拆分数量(指的是库存记录的拆分数量)
       row.goodsUnitsName = '' // 销售单位
-      row.quantity = '' // 销售数量
+      row.quantity = undefined // 销售数量
       row.foldQuantity = 1 // 剂数
       row.inventoryQuantity = '' // 库存数量
       row.drugsPrepareMethodId = '' // 药品炮制方法Id

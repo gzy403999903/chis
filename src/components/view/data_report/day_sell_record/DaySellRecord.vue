@@ -6,7 +6,7 @@
       body-style="padding: 5px;"
       class="el-card-menus">
       <el-form :model="queryForm" ref="queryForm" inline size="mini">
-        <el-form-item label="单据日期" prop="creationDate">
+        <el-form-item label="销售日期" prop="creationDate">
           <el-date-picker
             v-model="queryForm.creationDate"
             type="daterange"
@@ -17,12 +17,6 @@
             start-placeholder="开始日期"
             end-placeholder="结束日期"
             :picker-options="pickerOptions"/>
-        </el-form-item>
-        <el-form-item label="机构名称" prop="sysClinicName" v-if="action === 'all'">
-          <el-input v-model.trim="queryForm.sysClinicName" placeholder="机构名称 / 助记码"/>
-        </el-form-item>
-        <el-form-item label="收银员" prop="creatorName">
-          <el-input v-model.trim="queryForm.creatorName" placeholder="收银员姓名 / 助记码"/>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" round icon="el-icon-search"  @click="dataGridLoadData">查询</el-button>
@@ -44,28 +38,10 @@
         highlight-current-row
         size="mini">
         <el-table-column fixed="left" type="index" width="50"/>
-        <el-table-column prop="creationDate" label="单据日期" width="120" show-overflow-tooltip/>
-        <el-table-column prop="cash" label="现金" width="100" show-overflow-tooltip/>
-        <el-table-column prop="memberBalance" label="会员卡(储值)" width="120" show-overflow-tooltip/>
-        <el-table-column prop="unionpay" label="银联" width="100" show-overflow-tooltip/>
-        <el-table-column prop="alipay" label="支付宝" width="100" show-overflow-tooltip/>
-        <el-table-column prop="wechatpay" label="微信" width="100" show-overflow-tooltip/>
-        <el-table-column prop="creditpay" label="信用卡" width="100" show-overflow-tooltip/>
-        <el-table-column prop="shengyb" label="省医保" width="100" show-overflow-tooltip/>
-        <el-table-column prop="shiyb" label="市医保" width="100" show-overflow-tooltip/>
-        <!--<el-table-column prop="dkq" label="抵扣券" width="100" show-overflow-tooltip/>-->
-        <el-table-column prop="ybk" label="亿保卡" width="100" show-overflow-tooltip/>
-        <el-table-column prop="bgflk" label="北国福礼卡" width="120" show-overflow-tooltip/>
-        <el-table-column prop="yky" label="一卡易" width="100" show-overflow-tooltip/>
-        <el-table-column prop="actualAmount" label="小计" width="100" show-overflow-tooltip/>
-        <el-table-column prop="disparityAmount" label="差额" width="100" show-overflow-tooltip/>
-        <el-table-column label="收银员ID" width="120" show-overflow-tooltip>
-          <template slot-scope="props">
-            {{props.row.creatorId + ' '}}
-          </template>
-        </el-table-column>
-        <el-table-column prop="creatorName" label="收银员姓名" width="120" show-overflow-tooltip/>
-        <el-table-column prop="sysClinicName" label="机构名称" min-width="400" show-overflow-tooltip/>
+        <el-table-column prop="sysClinicName" label="机构名称" width="400" show-overflow-tooltip/>
+        <el-table-column prop="rxs" label="日销售(含税)" width="120" show-overflow-tooltip/>
+        <el-table-column prop="yxs" label="月销售(含税)" width="120" show-overflow-tooltip/>
+        <el-table-column min-width="1" show-overflow-tooltip/>
       </el-table>
       <el-pagination
         :page-size="pagination.pageSize"
@@ -84,13 +60,6 @@
 <script>
 import moment from 'moment'
 export default {
-  props: {
-    action: {
-      type: String,
-      required: true
-    }
-  }, // end props
-
   data () {
     return {
       pickerOptions: {
@@ -99,9 +68,7 @@ export default {
         }
       },
       queryForm: {
-        creationDate: [new Date(moment().subtract(1, 'months')), new Date()],
-        sysClinicName: null,
-        creatorName: null
+        creationDate: [new Date(moment().subtract(1, 'months')), new Date()]
       },
       dataGrid: {
         data: []
@@ -160,11 +127,7 @@ export default {
      */
     dataGridLoadData () {
       this.$loading()
-      let url = (
-        this.action === 'all'
-          ? '/chisAPI/paymentRecordReport/getPaymentRecordListByCriteria'
-          : '/chisAPI/paymentRecordReport/getClinicPaymentRecordListByCriteria'
-      )
+      let url = '/chisAPI/sellRecordReport/getDaySellRecordByCreationDate'
       let params = this.queryForm
       params.pageNum = this.pagination.currentPage
       params.pageSize = this.pagination.pageSize

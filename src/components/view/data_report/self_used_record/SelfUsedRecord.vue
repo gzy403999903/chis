@@ -75,6 +75,7 @@
 </template>
 
 <script>
+import moment from 'moment'
 export default {
   data () {
     return {
@@ -85,7 +86,7 @@ export default {
         }
       },
       queryForm: {
-        creationDate: null,
+        creationDate: [new Date(moment().subtract(1, 'months')), new Date()],
         lsh: null,
         sysClinicName: null
       },

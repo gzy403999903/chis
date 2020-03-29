@@ -58,7 +58,17 @@ export default {
     },
 
     // 总部ID  headquarters ID
-    HQID: 1
+    HQID: 1,
+
+    // 数字类型SQL查询逻辑运算符
+    numLogicalList: [
+      {label: '等于', value: '='},
+      {label: '不等于', value: '!='},
+      {label: '大于', value: '>'},
+      {label: '大于等于', value: '>='},
+      {label: '小于', value: '<'},
+      {label: '小于等于', value: '<='}
+    ]
   },
 
   /**
@@ -100,6 +110,10 @@ export default {
 
     HQID: (state) => {
       return state.HQID
+    },
+
+    numLogicalList: (state) => {
+      return state.numLogicalList
     }
   },
 

@@ -186,6 +186,7 @@
 </template>
 
 <script>
+import moment from 'moment'
 export default {
   props: {
     action: {
@@ -208,7 +209,7 @@ export default {
         visible: false
       },
       queryForm: {
-        creationDate: null,
+        creationDate: [new Date(moment().subtract(1, 'months')), new Date()],
         invoiceDate: null,
         sysClinicName: null,
         lsh: null,

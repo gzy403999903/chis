@@ -359,15 +359,16 @@
             <i class="el-icon-tickets"></i>
             <span slot="title">运营报表</span>
           </template>
-          <el-menu-item index="/main/dataReport/clinicSellRecord" v-if="!hqReport">销售明细</el-menu-item>
           <el-menu-item index="/main/dataReport/allSellRecord" v-if="hqReport">销售明细*</el-menu-item>
+          <el-menu-item index="/main/dataReport/clinicSellRecord" v-if="!hqReport">销售明细</el-menu-item>
+          <el-menu-item index="/main/dataReport/daySellRecord" v-if="hqReport">日销售报表*</el-menu-item>
           <el-menu-item index="/main/dataReport/selfUsedRecord" v-if="hqReport">领用明细*</el-menu-item>
           <el-menu-item index="/main/dataReport/lossRecord" v-if="hqReport">报损明细*</el-menu-item>
           <el-menu-item index="/main/dataReport/allVisitRecord" v-if="hqReport">回访情况*</el-menu-item>
           <el-menu-item index="/main/dataReport/allExpirydateWarning" v-if="hqReport">效期预警*</el-menu-item>
           <el-menu-item index="/main/dataReport/ClinicExpirydateWarning" v-if="!hqReport">效期预警</el-menu-item>
-          <el-menu-item index="/main/dataReport/allLshMarginRate" v-if="hqReport">销售流水毛利*</el-menu-item>
-          <el-menu-item index="/main/dataReport/clinicLshMarginRate" v-if="!hqReport">销售流水毛利</el-menu-item>
+          <el-menu-item index="/main/dataReport/allLshMarginRate" v-if="hqReport">流水毛利分析*</el-menu-item>
+          <el-menu-item index="/main/dataReport/clinicLshMarginRate" v-if="!hqReport">流水毛利分析</el-menu-item>
           <el-menu-item index="/main/dataReport/allSellFrequency" v-if="hqReport">库存动销分析*</el-menu-item>
           <el-menu-item index="/main/dataReport/clinicSellFrequency" v-if="!hqReport">库存动销分析</el-menu-item>
           <!--
