@@ -13,7 +13,10 @@ export default {
     paymentTypeList: null,
 
     // 付款方式
-    paymentWayList: null
+    paymentWayList: null,
+
+    // 纳税人类型
+    taxpayerTypeList: null
   }, // end state
 
   /**
@@ -47,6 +50,13 @@ export default {
         store.dispatch('queryPaymentWayList')
       }
       return state.paymentWayList
+    },
+
+    taxpayerTypeList: (state) => {
+      if (!state.taxpayerTypeList) {
+        store.dispatch('queryTaxpayerTypeList')
+      }
+      return state.taxpayerTypeList
     }
   }, // end getters
 
@@ -70,6 +80,10 @@ export default {
 
     paymentWayList (state, data) {
       state.paymentWayList = data
+    },
+
+    taxpayerTypeList (state, data) {
+      state.taxpayerTypeList = data
     }
   }, // end mutations
 
@@ -108,6 +122,14 @@ export default {
       const url = '/chisAPI/paymentWay/getEnabled'
       axios.get(url).then((res) => {
         context.commit('paymentWayList', res.data.resultSet.list)
+      })
+    },
+
+    // 查询纳税人类型
+    queryTaxpayerTypeList (context) {
+      const url = '/chisAPI/taxpayerType/getEnabledByTypeId'
+      axios.get(url).then((res) => {
+        context.commit('taxpayerTypeList', res.data)
       })
     }
   } // end actions

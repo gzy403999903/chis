@@ -67,11 +67,6 @@
                       @keyup.enter.native="editFormValidateField('cardNo', 'invoiceTypeId')"/>
           </el-form-item>
         </el-col>
-
-        <!--<el-col :span="6">
-          <el-form-item label="统一社会信用代码" prop="code">
-          </el-form-item>
-        </el-col>-->
       </el-row>
 
       <el-row>
@@ -136,7 +131,20 @@
         <el-col :span="6">
           <el-form-item label="公司传真" prop="fax">
             <el-input v-model.trim="editForm.fax" ref="fax"
-                      @keyup.enter.native="editFormValidateField('fax', 'contacter')"/>
+                      @keyup.enter.native="editFormValidateField('fax', 'taxpayerTypeId')"/>
+          </el-form-item>
+        </el-col>
+
+        <el-col :span="6">
+          <el-form-item label="纳税人类别" prop="taxpayerTypeId">
+            <el-select
+              ref="taxpayerTypeId"
+              @keyup.enter.native="editFormValidateField('taxpayerTypeId', 'contacter')"
+              v-model.trim="editForm.taxpayerTypeId"
+              filterable
+              placeholder="请选择">
+              <el-option v-for="item in taxpayerTypeList" :key="item.id" :value="item.id" :label="item.name + ' [' +item.code + ']'"/>
+            </el-select>
           </el-form-item>
         </el-col>
       </el-row>
@@ -529,6 +537,7 @@ export default {
         legalPerson: '',
         tel: '',
         fax: '',
+        taxpayerTypeId: '',
         contacter: '',
         contacterPhone: '',
         address: '',
@@ -602,6 +611,9 @@ export default {
         fax: [
           {max: 15, message: '长度不合法[1-15]'}
           /* {validator: numberValidate, trigger: 'blur'} */
+        ],
+        taxpayerTypeId: [
+          {required: true, message: '不能为空'}
         ],
         contacter: [
           {required: true, message: '不能为空'},
@@ -710,6 +722,9 @@ export default {
     },
     paymentTypeList: function () {
       return this.$store.getters.paymentTypeList
+    },
+    taxpayerTypeList: function () {
+      return this.$store.getters.taxpayerTypeList
     }
   },
 

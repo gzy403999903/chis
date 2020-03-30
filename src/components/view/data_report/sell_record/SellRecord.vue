@@ -8,13 +8,13 @@
       style="padding-right: 10px;">
       <el-row>
         <el-col :span="20" align="left" class="count-div">
-          <div>销售总额(含税): {{dataGrid.countMap.hsxs ? dataGrid.countMap.hsxs : 0}}</div>
-          <div>成本总额(含税): {{dataGrid.countMap.hscb ? dataGrid.countMap.hscb : 0}}</div>
-          <div>毛利总额(含税): {{dataGrid.countMap.hsml ? dataGrid.countMap.hsml : 0}}</div>
-          <div>销售总额(无税): {{dataGrid.countMap.wsxs ? dataGrid.countMap.wsxs : 0}}</div>
-          <div>成本总额(无税): {{dataGrid.countMap.wscb ? dataGrid.countMap.wscb : 0}}</div>
-          <div>毛利总额(无税): {{dataGrid.countMap.wsml ? dataGrid.countMap.wsml : 0}}</div>
-          <div>毛利率: {{dataGrid.countMap.mll ? dataGrid.countMap.mll : 0}}%</div>
+          <div>销售总额(含税): {{dataGrid.countMap ? dataGrid.countMap.hsxs : 0}}</div>
+          <div>成本总额(含税): {{dataGrid.countMap ? dataGrid.countMap.hscb : 0}}</div>
+          <div>毛利总额(含税): {{dataGrid.countMap ? dataGrid.countMap.hsml : 0}}</div>
+          <div>销售总额(无税): {{dataGrid.countMap ? dataGrid.countMap.wsxs : 0}}</div>
+          <div>成本总额(无税): {{dataGrid.countMap ? dataGrid.countMap.wscb : 0}}</div>
+          <div>毛利总额(无税): {{dataGrid.countMap ? dataGrid.countMap.wsml : 0}}</div>
+          <div>毛利率: {{dataGrid.countMap ? dataGrid.countMap.mll : 0}}%</div>
         </el-col>
         <el-col :span="4">
           <el-button type="default" size="mini" round icon="el-icon-search" @click="dialog.visible = true">条件查询</el-button>
@@ -48,6 +48,7 @@
             type="daterange"
             align="right"
             unlink-panels
+            :clearable="false"
             value-format="yyyy-MM-dd"
             range-separator="至"
             start-placeholder="开始日期"

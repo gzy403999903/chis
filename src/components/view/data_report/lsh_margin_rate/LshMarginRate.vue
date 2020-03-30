@@ -34,6 +34,7 @@
             type="daterange"
             align="right"
             unlink-panels
+            :clearable="false"
             value-format="yyyy-MM-dd"
             range-separator="至"
             start-placeholder="开始日期"

@@ -361,7 +361,7 @@
           </template>
           <el-menu-item index="/main/dataReport/allSellRecord" v-if="hqReport">销售明细*</el-menu-item>
           <el-menu-item index="/main/dataReport/clinicSellRecord" v-if="!hqReport">销售明细</el-menu-item>
-          <el-menu-item index="/main/dataReport/daySellRecord" v-if="hqReport">日销售报表*</el-menu-item>
+          <el-menu-item index="/main/dataReport/daySellRecord" v-if="hqReport">日销售报表(含税)*</el-menu-item>
           <el-menu-item index="/main/dataReport/selfUsedRecord" v-if="hqReport">领用明细*</el-menu-item>
           <el-menu-item index="/main/dataReport/lossRecord" v-if="hqReport">报损明细*</el-menu-item>
           <el-menu-item index="/main/dataReport/allVisitRecord" v-if="hqReport">回访情况*</el-menu-item>
@@ -429,6 +429,7 @@
           <el-menu-item index="/main/systemManagement/invoiceType">发票类型</el-menu-item>
           <el-menu-item index="/main/systemManagement/paymentType">付款类型</el-menu-item>
           <el-menu-item index="/main/systemManagement/paymentWay">付款方式</el-menu-item>
+          <el-menu-item index="/main/systemManagement/taxpayerType">纳税人类型</el-menu-item>
         </el-submenu>
         <el-submenu index="/systemManagement-5">
           <template slot="title">

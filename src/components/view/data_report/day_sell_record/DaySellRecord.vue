@@ -12,6 +12,7 @@
             type="daterange"
             align="right"
             unlink-panels
+            :clearable="false"
             value-format="yyyy-MM-dd"
             range-separator="至"
             start-placeholder="开始日期"
@@ -21,6 +22,7 @@
         <el-form-item>
           <el-button type="primary" round icon="el-icon-search"  @click="dataGridLoadData">查询</el-button>
           <el-button type="default" round icon="el-icon-refresh" @click="$refs.queryForm.resetFields()">重置</el-button>
+          <el-button type="default" round icon="el-icon-download" @click="downloadExcel" :disabled="!dataGrid.data.length">导出Excel</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -39,9 +41,14 @@
         size="mini">
         <el-table-column fixed="left" type="index" width="50"/>
         <el-table-column prop="sysClinicName" label="机构名称" width="400" show-overflow-tooltip/>
-        <el-table-column prop="rxs" label="日销售(含税)" width="120" show-overflow-tooltip/>
-        <el-table-column prop="yxs" label="月销售(含税)" width="120" show-overflow-tooltip/>
-        <el-table-column min-width="1" show-overflow-tooltip/>
+        <el-table-column prop="xyf" label="西药/中成药" width="100" show-overflow-tooltip/>
+        <el-table-column prop="zyf" label="中药" width="100" show-overflow-tooltip/>
+        <el-table-column prop="wsclf" label="卫生材料" width="100" show-overflow-tooltip/>
+        <el-table-column prop="yjxmf" label="医技项目" width="100" show-overflow-tooltip/>
+        <el-table-column prop="fzxmf" label="辅助项目" width="100" show-overflow-tooltip/>
+        <el-table-column prop="qtxmf" label="其他项目" width="100" show-overflow-tooltip/>
+        <el-table-column prop="rxs" label="日销售" width="100" show-overflow-tooltip/>
+        <el-table-column prop="yxs" label="月销售" min-width="100" show-overflow-tooltip/>
       </el-table>
       <el-pagination
         :page-size="pagination.pageSize"
@@ -139,6 +146,34 @@ export default {
           this.adjustTableHeight()
         }
         this.$loading().close()
+      })
+    },
+
+    /**
+     * 下载 excel
+     */
+    downloadExcel () {
+      this.$loading()
+      let params = this.queryForm
+      let url = '/chisAPI/sellRecordReport/downloadDaySellRecordExcel'
+      this.$http({method: 'GET', url, params, responseType: 'blob'}).then(res => {
+        const blob = new Blob([res.data], {type: 'application/vnd.ms-excel;charset=utf-8'}) // 创建 Blob 对象
+        const url = window.URL.createObjectURL(blob) // 获取下载地址
+        const aLink = document.createElement('a') // 创建下载元素(a标签)
+        aLink.style.display = 'none' // 隐藏当前该下载元素
+        aLink.href = url // 设置该下载标签的下载地址
+
+        // 下载文件名
+        let fileName = '日销售报表(含税)' +
+          moment(this.queryForm.creationDate[0]).format('YYYY-MM-DD') + '至' +
+          moment(this.queryForm.creationDate[1]).format('YYYY-MM-DD') + '.xlsx'
+
+        aLink.setAttribute('download', fileName) // 设置下载属性
+        document.body.appendChild(aLink) // 将标签添加至 body
+        aLink.click() // 点击进行下载
+        document.body.removeChild(aLink) // 下载完成移除该下载元素
+        window.URL.revokeObjectURL(url) // 释放掉 Blob 对象
+        this.$loading().close() // 关闭 loading
       })
     }
 

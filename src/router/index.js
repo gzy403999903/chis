@@ -141,6 +141,7 @@ import SecondClassify from '../components/view/system_management/goods_dict/Seco
 import InvoiceType from '../components/view/system_management/financial_dict/InvoiceType'
 import PaymentType from '../components/view/system_management/financial_dict/PaymentType'
 import PaymentWay from '../components/view/system_management/financial_dict/PaymentWay'
+import TaxpayerType from '../components/view/system_management/financial_dict/TaxpayerType'
 import Nationality from '../components/view/system_management/member_dict/Nationality'
 import Marital from '../components/view/system_management/member_dict/Marital'
 import Education from '../components/view/system_management/member_dict/Education'
@@ -720,6 +721,10 @@ export default new Router({
         {
           path: 'paymentWay',
           component: PaymentWay
+        },
+        {
+          path: 'taxpayerType',
+          component: TaxpayerType
         },
         {
           path: 'nationality',
