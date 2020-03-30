@@ -8,12 +8,13 @@
       <el-form :model="queryForm" ref="queryForm" inline size="mini">
         <el-form-item label="处方日期" prop="creationDate">
           <el-date-picker
+            style="width: 280px;"
             v-model="queryForm.creationDate"
             type="daterange"
             align="right"
             unlink-panels
             value-format="yyyy-MM-dd"
-            range-separator="至"
+            range-separator="-"
             start-placeholder="开始日期"
             end-placeholder="结束日期"
             :picker-options="pickerOptions"/>
@@ -22,7 +23,7 @@
           <el-input v-model.trim="queryForm.lsh" placeholder="流水号"/>
         </el-form-item>
         <el-form-item label="处方类型" prop="entityTypeId">
-          <el-select v-model="queryForm.entityTypeId" style="width: 140px;">
+          <el-select v-model="queryForm.entityTypeId" style="width: 120px;">
             <el-option label="全部" :value="null"/>
             <el-option label="西药处方" :value="goodsType.WESTERN_DRUGS"/>
             <el-option label="中药处方" :value="goodsType.CHINESE_DRUGS"/>
@@ -100,7 +101,7 @@ export default {
       },
       goodsType: this.$store.getters.goodsType,
       queryForm: {
-        creationDate: null,
+        creationDate: this.$store.getters.queryDate,
         lsh: null,
         entityTypeId: null,
         sysDoctorName: null

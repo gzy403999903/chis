@@ -1,3 +1,5 @@
+import moment from 'moment'
+
 export default {
   state: {
     // 审批状态
@@ -68,7 +70,10 @@ export default {
       {label: '大于等于', value: '>='},
       {label: '小于', value: '<'},
       {label: '小于等于', value: '<='}
-    ]
+    ],
+
+    // 查询日期跨度
+    queryDate: [moment().subtract(1, 'months').format('YYYY-MM-DD'), moment().format('YYYY-MM-DD')]
   },
 
   /**
@@ -114,6 +119,10 @@ export default {
 
     numLogicalList: (state) => {
       return state.numLogicalList
+    },
+
+    queryDate: (state) => {
+      return state.queryDate
     }
   },
 

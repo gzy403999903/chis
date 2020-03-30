@@ -8,12 +8,13 @@
       <el-form :model="queryForm" ref="queryForm" :inline="true" size="mini">
         <el-form-item label="申请日期" prop="creationDate">
           <el-date-picker
+            style="width: 280px;"
             v-model="queryForm.creationDate"
             type="daterange"
             align="right"
             unlink-panels
             value-format="yyyy-MM-dd"
-            range-separator="至"
+            range-separator="-"
             start-placeholder="开始日期"
             end-placeholder="结束日期"
             :picker-options="pickerOptions"/>
@@ -102,7 +103,7 @@ export default {
       },
       queryForm: {
         name: '',
-        creationDate: null,
+        creationDate: this.$store.getters.queryDate,
         approveState: null,
         useCreatorId: false
       },

@@ -35,7 +35,7 @@
             align="right"
             unlink-panels
             value-format="yyyy-MM-dd"
-            range-separator="至"
+            range-separator="-"
             start-placeholder="开始日期"
             end-placeholder="结束日期"
             :picker-options="pickerOptions"/>
@@ -157,7 +157,7 @@ export default {
         }
       },
       queryForm: {
-        creationDate: [],
+        creationDate: this.$store.getters.queryDate,
         pemSupplierId: null,
         sysClinicId: null,
         paymentNo: null,

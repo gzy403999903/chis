@@ -8,21 +8,22 @@
       <el-form :model="queryForm" ref="queryForm" :inline="true" size="mini">
         <el-form-item label="计划日期" prop="creationDate">
           <el-date-picker
+            style="width: 280px;"
             v-model="queryForm.creationDate"
             type="daterange"
             align="right"
             unlink-panels
             value-format="yyyy-MM-dd"
-            range-separator="至"
+            range-separator="-"
             start-placeholder="开始日期"
             end-placeholder="结束日期"
             :picker-options="pickerOptions"/>
         </el-form-item>
         <el-form-item label="机构名称" prop="sysClinicName">
-          <el-input v-model.trim="queryForm.sysClinicName" placeholder="机构名称 / 助记码" style="width: 170px;"/>
+          <el-input v-model.trim="queryForm.sysClinicName" placeholder="机构名称 / 助记码" style="width: 150px;"/>
         </el-form-item>
         <el-form-item label="商品名称" prop="gsmGoodsName">
-          <el-input v-model.trim="queryForm.gsmGoodsName" placeholder="商品名称 / 助记码" style="width: 170px;"/>
+          <el-input v-model.trim="queryForm.gsmGoodsName" placeholder="商品名称 / 助记码" style="width: 150px;"/>
         </el-form-item>
         <el-form-item label="审批状态" prop="approveState">
           <el-select v-model="queryForm.approveState" placeholder="请选择" style="width: 100px;">
@@ -97,7 +98,7 @@ export default {
         }
       },
       queryForm: {
-        creationDate: null,
+        creationDate: this.$store.getters.queryDate,
         sysClinicName: null,
         gsmGoodsName: null,
         approveState: null

@@ -36,7 +36,7 @@
             unlink-panels
             :clearable="false"
             value-format="yyyy-MM-dd"
-            range-separator="至"
+            range-separator="-"
             start-placeholder="开始日期"
             end-placeholder="结束日期"
             :picker-options="pickerOptions"/>
@@ -192,7 +192,6 @@
 </template>
 
 <script>
-import moment from 'moment'
 export default {
   props: {
     action: {
@@ -212,7 +211,7 @@ export default {
         visible: false
       },
       queryForm: {
-        creationDate: [new Date(moment().subtract(1, 'months')), new Date()],
+        creationDate: this.$store.getters.queryDate,
         sysClinicName: null,
         lsh: null,
         goodsMarginRate: undefined,

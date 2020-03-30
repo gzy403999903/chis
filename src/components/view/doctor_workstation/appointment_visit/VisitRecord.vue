@@ -13,13 +13,13 @@
             align="right"
             unlink-panels
             value-format="yyyy-MM-dd HH:mm:ss"
-            range-separator="至"
+            range-separator="-"
             start-placeholder="开始日期"
             end-placeholder="结束日期"
             :picker-options="pickerOptions"/>
         </el-form-item>
         <el-form-item label="会员姓名" prop="mrmMemberName">
-          <el-input v-model.trim="queryForm.mrmMemberName" placeholder="姓名 / 助记码 / 手机"/>
+          <el-input v-model.trim="queryForm.mrmMemberName" placeholder="姓名 / 助记码 / 手机" style="width: 150px;"/>
         </el-form-item>
         <el-form-item label="状态" prop="finished">
           <el-select v-model="queryForm.finished" placeholder="请选择" style="width: 100px;">

@@ -14,7 +14,7 @@
             unlink-panels
             :clearable="false"
             value-format="yyyy-MM-dd"
-            range-separator="至"
+            range-separator="-"
             start-placeholder="开始日期"
             end-placeholder="结束日期"
             :picker-options="pickerOptions"/>
@@ -65,7 +65,6 @@
 </template>
 
 <script>
-import moment from 'moment'
 export default {
   data () {
     return {
@@ -75,7 +74,7 @@ export default {
         }
       },
       queryForm: {
-        creationDate: [new Date(moment().subtract(1, 'months')), new Date()]
+        creationDate: this.$store.getters.queryDate
       },
       dataGrid: {
         data: []
@@ -165,8 +164,8 @@ export default {
 
         // 下载文件名
         let fileName = '日销售报表(含税)' +
-          moment(this.queryForm.creationDate[0]).format('YYYY-MM-DD') + '至' +
-          moment(this.queryForm.creationDate[1]).format('YYYY-MM-DD') + '.xlsx'
+          this.queryForm.creationDate[0] + '至' +
+          this.queryForm.creationDate[1] + '.xlsx'
 
         aLink.setAttribute('download', fileName) // 设置下载属性
         document.body.appendChild(aLink) // 将标签添加至 body

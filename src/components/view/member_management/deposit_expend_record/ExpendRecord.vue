@@ -8,21 +8,22 @@
       <el-form :model="queryForm" ref="queryForm" inline size="mini">
         <el-form-item label="单据日期" prop="creationDate">
           <el-date-picker
+            style="width: 280px;"
             v-model="queryForm.creationDate"
             type="daterange"
             align="right"
             unlink-panels
             value-format="yyyy-MM-dd"
-            range-separator="至"
+            range-separator="-"
             start-placeholder="开始日期"
             end-placeholder="结束日期"
             :picker-options="pickerOptions"/>
         </el-form-item>
         <el-form-item label="流水号" prop="lsh">
-          <el-input v-model.trim="queryForm.lsh" placeholder="流水号" style="width: 210px;"/>
+          <el-input v-model.trim="queryForm.lsh" placeholder="流水号" style="width: 150px;"/>
         </el-form-item>
         <el-form-item label="会员姓名" prop="mrmMemberName">
-          <el-input v-model.trim="queryForm.mrmMemberName" placeholder="会员姓名 / 助记码 / 手机"/>
+          <el-input v-model.trim="queryForm.mrmMemberName" placeholder="会员姓名 / 助记码 / 手机" style="width: 150px;"/>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" round icon="el-icon-search"  @click="dataGridLoadData">查询</el-button>
@@ -76,7 +77,7 @@ export default {
         }
       },
       queryForm: {
-        creationDate: null,
+        creationDate: this.$store.getters.queryDate,
         lsh: null,
         mrmMemberName: null
       },
