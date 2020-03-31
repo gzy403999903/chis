@@ -361,6 +361,8 @@
           </template>
           <el-menu-item index="/main/dataReport/allSellRecord" v-if="hqReport">销售明细*</el-menu-item>
           <el-menu-item index="/main/dataReport/clinicSellRecord" v-if="!hqReport">销售明细</el-menu-item>
+          <el-menu-item index="/main/dataReport/allSortSellRecord" v-if="hqReport">销售排行*</el-menu-item>
+          <el-menu-item index="/main/dataReport/clinicSortSellRecord" v-if="!hqReport">销售排行</el-menu-item>
           <el-menu-item index="/main/dataReport/daySellRecord" v-if="hqReport">日销售报表(含税)*</el-menu-item>
           <el-menu-item index="/main/dataReport/selfUsedRecord" v-if="hqReport">领用明细*</el-menu-item>
           <el-menu-item index="/main/dataReport/lossRecord" v-if="hqReport">报损明细*</el-menu-item>
@@ -371,10 +373,10 @@
           <el-menu-item index="/main/dataReport/clinicLshMarginRate" v-if="!hqReport">流水毛利分析</el-menu-item>
           <el-menu-item index="/main/dataReport/allSellFrequency" v-if="hqReport">库存动销分析*</el-menu-item>
           <el-menu-item index="/main/dataReport/clinicSellFrequency" v-if="!hqReport">库存动销分析</el-menu-item>
+          <el-menu-item index="/main/dataReport/clinicalHistoryCheck" v-if="hqReport">病历合规检查*</el-menu-item>
+
           <!--
           <el-menu-item index="/main/error/404#81-2">库存预警</el-menu-item>
-          <el-menu-item index="/main/error/404#81-2">商品销售排行</el-menu-item>
-          <el-menu-item index="/main/error/404#81-2">项目销售排行</el-menu-item>
           <el-menu-item index="/main/error/404#81-2">商品历史进价</el-menu-item>
           -->
         </el-submenu>

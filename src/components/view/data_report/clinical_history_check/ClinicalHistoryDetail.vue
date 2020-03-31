@@ -10,20 +10,9 @@
     <!-- 模态框标题栏与功能按钮 -->
     <el-row slot="title">
       <el-col :span="5" style="font-size: 20px;">
-        <span>患者回访</span>
+        <span>病历详情</span>
       </el-col>
       <el-col :span="19" style="text-align: right;">
-        <el-date-picker
-          v-if="!row.finished"
-          v-model="nextAppointmentDate"
-          type="datetime"
-          size="mini"
-          clearable
-          value-format="yyyy-MM-dd HH:mm:ss"
-          :default-value="new Date()"
-          :picker-options="pickerOptions"
-          placeholder="选择下一次预约时间"/> &nbsp;
-        <el-button size="mini" type="primary" icon="el-icon-check" @click="submitData" v-if="!row.finished">提 交</el-button>
         <el-button size="mini" type="warning" icon="el-icon-right" @click="dialogClose">返 回</el-button>
       </el-col>
     </el-row>
@@ -76,25 +65,13 @@
           </div>
         </el-col> <!-- end left-info -->
         <el-col :span="11" class="right-info">
-          <!--
-          <div>
-            <span class="r-word">R</span>
-            <span class="p-word">P</span>
-          </div>
-          -->
           <el-card shadow="hover" v-for="(prescription, index) in prescriptionList" :key="index"
                    style="margin-bottom: 10px; margin-left: 10px;">
             <div v-html="parsePrescription(prescription)"></div>
           </el-card>
         </el-col>
       </el-row>
-
-      <div class="visit-content">
-        回访内容
-        <el-input type="textarea" v-model.trim="visitContent" :rows="3" resize="none" maxlength="200" show-word-limit
-                  placeholder="" :readonly="row.finished"/>
-      </div>
-      <span style="font-size: 12px;">* 滚动鼠标滑轮查看隐藏内容, 在提交时选择下一次预约时间将自动创建下一次回访</span>
+      <span style="font-size: 12px;">* 滚动鼠标滑轮查看隐藏内容</span>
     </div>
 
   </el-dialog>
@@ -114,10 +91,6 @@ export default {
     dialogClose: {
       type: Function,
       required: true
-    },
-    dataGridLoadData: {
-      type: Function,
-      required: true
     }
   },
 
@@ -130,9 +103,7 @@ export default {
       },
       sellType: this.$store.getters.sellType, // 销售类型
       goodsType: this.$store.getters.goodsType, // 商品类型
-      prescriptionList: [], // 处方集合
-      visitContent: '', // 回访内容
-      nextAppointmentDate: '' // 下次回访预约日期
+      prescriptionList: [] // 处方集合
     }
   },
 
@@ -141,11 +112,8 @@ export default {
      * 界面打开后执行的操作
      */
     dialogOpened () {
-      if (this.row.dwtClinicalHistoryId) {
-        this.loadPrescription(this.row.dwtClinicalHistoryId)
-      }
-      if (this.row.visitContent) {
-        this.visitContent = this.row.visitContent
+      if (this.row.id) {
+        this.loadPrescription(this.row.id)
       }
     },
 
@@ -154,8 +122,6 @@ export default {
      */
     dialogClosed () {
       this.prescriptionList = []
-      this.visitContent = ''
-      this.nextAppointmentDate = ''
     },
 
     /**
@@ -252,35 +218,6 @@ export default {
       })
 
       return detail
-    },
-
-    /**
-     * 提交数据
-     */
-    submitData () {
-      if (!this.visitContent) {
-        this.$message.error('回访内容不能为空')
-        return false
-      }
-
-      this.$loading()
-      let url = '/chisAPI/visitRecord/update'
-      let method = 'PUT'
-
-      let params = {
-        id: this.row.id,
-        visitContent: this.visitContent,
-        nextAppointmentDate: this.nextAppointmentDate
-      }
-
-      this.$http({method, url, params}).then((res) => {
-        if (res.data.code === 200) {
-          this.$message.success(res.data.msg)
-          this.dialogClose()
-          this.dataGridLoadData()
-        }
-        this.$loading().close()
-      })
     }
   } // end methods
 }
@@ -304,7 +241,7 @@ export default {
     padding-right: 40px;
   }
   .left-info, .right-info {
-    height: 300px;
+    height: 380px;
     overflow-y: auto;
     padding-top: 10px;
     border-top: #3BB878 2px solid;
@@ -324,7 +261,7 @@ export default {
     font-weight: 600;
     text-align: right;
     letter-spacing: 3px;
-    margin-bottom: 15px;
+    margin-bottom: 25px;
   }
   .left-info .div3 {
     float: left;
@@ -353,9 +290,5 @@ export default {
     /*border-top: #606266 2px solid;
     border-bottom: #606266 2px solid;*/
   }
-  .visit-content {
-    font-size: 14px;
-    font-weight: 600;
-    padding-top: 5px;
-  }
+
 </style>

@@ -6,7 +6,7 @@
       body-style="padding: 5px;"
       class="el-card-menus">
       <el-form :model="queryForm" ref="queryForm" inline size="mini">
-        <el-form-item label="单据日期" prop="creationDate">
+        <el-form-item label="病历日期" prop="creationDate">
           <el-date-picker
             style="width: 280px;"
             v-model="queryForm.creationDate"
@@ -20,10 +20,10 @@
             end-placeholder="结束日期"
             :picker-options="pickerOptions"/>
         </el-form-item>
-        <el-form-item label="流水号" prop="lsh">
-          <el-input v-model.trim="queryForm.lsh" placeholder="流水号" style="width: 150px;"/>
+        <el-form-item label="医生姓名" prop="sysDoctorName">
+          <el-input v-model.trim="queryForm.sysDoctorName" placeholder="医生姓名 / 助记码" style="width: 150px;"/>
         </el-form-item>
-        <el-form-item label="机构名称" prop="sysClinicName">
+        <el-form-item label="机构姓名" prop="sysClinicName">
           <el-input v-model.trim="queryForm.sysClinicName" placeholder="机构名称 / 助记码" style="width: 150px;"/>
         </el-form-item>
         <el-form-item>
@@ -43,23 +43,18 @@
         stripe
         size="mini">
         <el-table-column fixed="left" type="index" width="50"/>
-        <el-table-column prop="creationDate" label="单据日期" width="160" show-overflow-tooltip/>
-        <el-table-column prop="lsh" label="流水号" width="230" show-overflow-tooltip/>
-        <el-table-column prop="gsmGoodsTypeName" label="商品类型" width="110" show-overflow-tooltip/>
-        <el-table-column prop="gsmGoodsOid" label="商品编码" width="100" show-overflow-tooltip/>
-        <el-table-column prop="gsmGoodsName" label="名称" width="150" show-overflow-tooltip/>
-        <el-table-column prop="gsmGoodsSpecs" label="规格" width="150" show-overflow-tooltip/>
-        <el-table-column prop="goodsUnitsName" label="单位" width="80" show-overflow-tooltip/>
-        <el-table-column prop="quantity" label="出库数量" width="80" show-overflow-tooltip/>
-        <el-table-column prop="ph" label="批号" width="150" show-overflow-tooltip/>
-        <el-table-column prop="expiryDate" label="有效期至" width="100" show-overflow-tooltip/>
-        <el-table-column prop="originName" label="产地" width="100" show-overflow-tooltip/>
-        <el-table-column prop="manufacturerName" label="生产厂家" width="250" show-overflow-tooltip/>
-        <el-table-column prop="creatorName" label="操作人" width="100" show-overflow-tooltip/>
-        <el-table-column prop="approverName" label="审核人" width="100" show-overflow-tooltip/>
-        <el-table-column prop="approveDate" label="审核日期" width="160" show-overflow-tooltip/>
-        <el-table-column prop="approveState" label="审核状态" width="100" :formatter="formatterApproveSate" show-overflow-tooltip/>
-        <el-table-column prop="notes" label="备注" width="200" show-overflow-tooltip/>
+        <el-table-column fixed="left" label="操作" align="center" width="80">
+          <template slot-scope="scope">
+            <el-button size="mini" plain @click="dialogOpen(scope.row)">查 看</el-button>
+          </template>
+        </el-table-column>
+        <el-table-column prop="creationDate" label="病历日期" width="160" show-overflow-tooltip/>
+        <el-table-column prop="dwtDiagnoseTypeName" label="病历分类" width="80" show-overflow-tooltip/>
+        <el-table-column prop="sysDoctorId" label="医生ID" width="80" show-overflow-tooltip/>
+        <el-table-column prop="sysDoctorName" label="医生姓名" width="80" show-overflow-tooltip/>
+        <el-table-column prop="mrmMemberOid" label="会员编码" width="150" show-overflow-tooltip/>
+        <el-table-column prop="mrmMemberName" label="姓名" width="100" show-overflow-tooltip/>
+        <el-table-column prop="phone" label="电话" width="120" show-overflow-tooltip/>
         <el-table-column prop="sysClinicName" label="机构名称" min-width="400" show-overflow-tooltip/>
       </el-table>
       <el-pagination
@@ -73,14 +68,21 @@
         @current-change="paginationCurrentChange">
       </el-pagination>
     </el-card>
+
+    <!-- 病例详情 -->
+    <ClinicalHistoryDetail :visible="dialog.visible" :row="dataGrid.row" :dialogClose="dialogClose"/>
   </div>
 </template>
 
 <script>
+import ClinicalHistoryDetail from './ClinicalHistoryDetail'
 export default {
+  components: {
+    ClinicalHistoryDetail
+  },
+
   data () {
     return {
-      approveState: this.$store.getters.approveState,
       pickerOptions: {
         disabledDate (time) {
           return time.getTime() > Date.now()
@@ -88,11 +90,12 @@ export default {
       },
       queryForm: {
         creationDate: this.$store.getters.queryDate,
-        lsh: null,
+        sysDoctorName: null,
         sysClinicName: null
       },
       dataGrid: {
-        data: []
+        data: [],
+        row: {}
       },
       pagination: {
         total: this.$store.getters.pagination.total, /* 总记录数 */
@@ -101,6 +104,9 @@ export default {
         pagerCount: this.$store.getters.pagination.pagerCount, /* 分页页码按钮的数量 */
         pageSizes: this.$store.getters.pagination.pageSizes, /* 选取每页显示的行数 */
         layout: this.$store.getters.pagination.layout
+      },
+      dialog: {
+        visible: false
       }
     }
   }, // end data
@@ -125,24 +131,11 @@ export default {
     },
 
     /**
-     * 格式化审核状态
-     */
-    formatterApproveSate (row, column, cellValue) {
-      switch (cellValue) {
-        case this.$store.getters.approveState.UNAPPROVED: return '驳回'
-        case this.$store.getters.approveState.APPROVED: return '通过'
-        case this.$store.getters.approveState.CANCEL: return '撤销'
-        case this.$store.getters.approveState.PENDING: return '待审核'
-        default: return '未知状态'
-      }
-    },
-
-    /**
      * 载入数据
      */
     dataGridLoadData () {
       this.$loading()
-      let url = '/chisAPI/lossRecord/getByCriteria'
+      let url = '/chisAPI/clinicalHistory/getByCriteriaForCheck'
       let params = this.queryForm
       params.pageNum = this.pagination.currentPage
       params.pageSize = this.pagination.pageSize
@@ -154,6 +147,22 @@ export default {
         }
         this.$loading().close()
       })
+    },
+
+    /**
+     * 打开病历界面
+     * @param row
+     */
+    dialogOpen (row) {
+      this.dataGrid.row = row
+      this.dialog.visible = true
+    },
+
+    /**
+     * 关闭病历界面
+     */
+    dialogClose () {
+      this.dialog.visible = false
     }
 
   } // end methods

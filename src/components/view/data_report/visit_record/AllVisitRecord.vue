@@ -20,7 +20,7 @@
             :picker-options="pickerOptions"/>
         </el-form-item>
         <el-form-item label="会员姓名" prop="mrmMemberName">
-          <el-input v-model.trim="queryForm.mrmMemberName" placeholder="姓名 / 助记码 / 手机"/>
+          <el-input v-model.trim="queryForm.mrmMemberName" placeholder="姓名 / 助记码 / 手机" style="width: 150px;"/>
         </el-form-item>
         <el-form-item label="状态" prop="finished">
           <el-select v-model="queryForm.finished" placeholder="请选择" style="width: 100px;">
@@ -81,7 +81,7 @@
 
     <!-- 回访界面 -->
     <VisitRecordDetail :visible="dialog.visible" :row="dataGrid.row"
-                     :dialogClose="dialogClose" :data-grid-load-data="dataGridLoadData"/>
+                     :dialogClose="dialogClose"/>
   </div>
 </template>
 

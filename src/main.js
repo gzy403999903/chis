@@ -41,10 +41,10 @@ axios.interceptors.request.use(config => {
  * 如果状态码为 401则路由转发到 login
  * 清除 token
  */
-let showError = true
+let errorTimestamp = 0
 axios.interceptors.response.use(res => {
-  if (res.data.code === 401 && showError) {
-    showError = false
+  if (res.data.code === 401 && (errorTimestamp === 0 || (new Date().getTime() - errorTimestamp) > 1000)) {
+    errorTimestamp = new Date().getTime()
     if (res.config.url !== '/chisAPI/logout') {
       Vue.prototype.$message.error(res.data.msg)
     }
@@ -55,13 +55,11 @@ axios.interceptors.response.use(res => {
       // 将要跳转的路由 path 作为参数跳转到 login, 登录成功后则跳转到参数页面
       // query: { redirect: router.currentRoute.fullPath }
     })
+  }
 
-    // 由于 401 有时会一次返回多个, 而 showError 执行一次后会等于 false,
-    // 所以第一个条件以后的判断还要判断 res.data.code !== 401
-  } else if (res.data.code !== 401 && res.data.code >= 400) {
+  // 显示返回的错误信息
+  if (res.data.code !== 401 && res.data.code >= 400) {
     Vue.prototype.$message.error(res.data.msg)
-  } else if (res.data.code !== 401) {
-    showError = true
   }
 
   return res

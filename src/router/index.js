@@ -96,11 +96,14 @@ import PaidAccount from '../components/view/financial_management/paid_account/Pa
 import PaymentApprove from '../components/view/financial_management/payment_approve/PaymentApprove'
 
 // data_report
-import ClinicSellRecord from '../components/view/data_report/sell_record/ClinicSellRecord'
 import AllSellRecord from '../components/view/data_report/sell_record/AllSellRecord'
+import ClinicSellRecord from '../components/view/data_report/sell_record/ClinicSellRecord'
+import AllSortSellRecord from '../components/view/data_report/sort_sell_record/AllSortSellRecord'
+import ClinicSortSellRecord from '../components/view/data_report/sort_sell_record/ClinicSortSellRecord'
 import SelfUsedRecord from '../components/view/data_report/self_used_record/SelfUsedRecord'
 import LossRecord from '../components/view/data_report/loss_record/LossRecord'
 import AllVisitRecord from '../components/view/data_report/visit_record/AllVisitRecord'
+import ClinicalHistoryCheck from '../components/view/data_report/clinical_history_check/ClinicalHistoryCheck'
 import AllBillingTypeReport from '../components/view/data_report/billing_type_report/AllBillingTypeReport'
 import ClinicBillingTypeReport from '../components/view/data_report/billing_type_report/ClinicBillingTypeReport'
 import AllPaymentRecordReport from '../components/view/data_report/payment_record_report/AllPaymentRecordReport'
@@ -534,12 +537,20 @@ export default new Router({
       component: Main,
       children: [
         {
+          path: 'allSellRecord',
+          component: AllSellRecord
+        },
+        {
           path: 'clinicSellRecord',
           component: ClinicSellRecord
         },
         {
-          path: 'allSellRecord',
-          component: AllSellRecord
+          path: 'allSortSellRecord',
+          component: AllSortSellRecord
+        },
+        {
+          path: 'clinicSortSellRecord',
+          component: ClinicSortSellRecord
         },
         {
           path: 'selfUsedRecord',
@@ -552,6 +563,10 @@ export default new Router({
         {
           path: 'allVisitRecord',
           component: AllVisitRecord
+        },
+        {
+          path: 'clinicalHistoryCheck',
+          component: ClinicalHistoryCheck
         },
         {
           path: 'allBillingTypeReport',

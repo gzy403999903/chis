@@ -77,7 +77,8 @@
           </div>
         </el-col> <!-- end left-info -->
         <el-col :span="11" class="right-info">
-          <el-card shadow="hover" v-for="(prescription, index) in prescriptionList" :key="index" style="margin-bottom: 10px;">
+          <el-card shadow="hover" v-for="(prescription, index) in prescriptionList" :key="index"
+                   style="margin-bottom: 10px; margin-left: 10px;">
             <div v-html="parsePrescription(prescription)"></div>
           </el-card>
         </el-col>
@@ -229,7 +230,7 @@ export default {
         // 解析西药处方
         // 阿莫西林胶囊 250mg×12# sig:500mg Potid [药名是阿莫西林，剂型是胶囊，单位剂量是每粒250毫克，领取数量是12粒，用法是每次500毫克(2粒)，口服，每日3次]
         // 药品名称_剂型_基本剂量+基本剂量单位_X销售数量+销售单位_sig:_基本剂量*单次剂量+基本剂量单位_给药途径_用药频次
-        if (row.entityTypeId === this.goodsType.WESTERN_DRUGS) {
+        if (row.sysSellTypeId === this.sellType.GOODS && row.entityTypeId === this.goodsType.WESTERN_DRUGS) {
           // 解析用法 JSON
           let sig = JSON.parse(row.sigJson)
           // 拼接西药处方格式 [药品名称_剂型_基本剂量+基本剂量单位_X销售数量+销售单位_sig:_基本剂量*单次剂量+基本剂量单位_给药途径_用药频次]
@@ -242,7 +243,7 @@ export default {
         }
 
         // 中药处方
-        if (row.entityTypeId === this.goodsType.CHINESE_DRUGS) {
+        if (row.sysSellTypeId === this.sellType.GOODS && row.entityTypeId === this.goodsType.CHINESE_DRUGS) {
           let sig = JSON.parse(row.sigJson)
           let rp = row.name + '&nbsp;&nbsp;' + row.quantity + row.unitsName /* + (sig.drugsPrepareMethodName ? (' [' + sig.drugsPrepareMethodName + ']') : '') */
           // 返回中药处方
@@ -250,6 +251,12 @@ export default {
           if ((prescription.length - 1) === index) {
             detail = detail + '<div style="clear: both;"></div><hr style="margin: 10px 0;"/> sig: ' + sig.sig
           }
+        }
+
+        // 医疗服务项目
+        if (row.sysSellTypeId === this.sellType.ITEM) {
+          let rp = row.name + '&nbsp;&nbsp;' + row.quantity + row.unitsName
+          detail = detail + '<div style="margin-top: 5px;">' + rp + '</div>'
         }
       })
 
@@ -311,6 +318,7 @@ export default {
     float: left;
     width: 500px;
     padding-left: 10px;
+    padding-right: 10px;
   }
   .clinical-history .r-word, .p-word {
     color: #606266;
@@ -329,9 +337,11 @@ export default {
     top: 22%;
   }
   .right-info {
-    border-top: #606266 2px solid;
-    border-bottom: #606266 2px solid;
+    border-left: #3BB878 1px dashed;
+     /* border-top: #606266 2px solid;
+    border-bottom: #606266 2px solid; */
   }
+
 </style>
 
 <style>
