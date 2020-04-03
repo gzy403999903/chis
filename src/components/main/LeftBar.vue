@@ -159,15 +159,10 @@
           <el-menu-item index="/main/systemManagement/manufacturer">生产厂家</el-menu-item>
           <el-menu-item index="/main/systemManagement/origin">产地信息</el-menu-item>
         </el-submenu>
-        <el-submenu index="/goodsManagement-2">
-          <template slot="title">
-            <i class="el-icon-crop"></i>
-            <span slot="title">新品维护</span>
-          </template>
-          <el-menu-item index="/main/goodsManagement/newGoodsApply">新品申请</el-menu-item>
-          <el-menu-item index="/main/goodsManagement/newGoodsPricing">新品定价</el-menu-item>
-          <el-menu-item index="/main/goodsManagement/newGoodsApprove">新品审批</el-menu-item>
-        </el-submenu>
+        <el-menu-item index="/main/goodsManagement/goodsApply">
+          <i class="el-icon-crop"></i>
+          <span slot="title">新品维护</span>
+        </el-menu-item>
         <el-submenu index="/goodsManagement-3">
           <template slot="title">
             <i class="el-icon-crop"></i>
@@ -295,6 +290,12 @@
           <el-menu-item index="/main/itemsManagement/newItemPricing">项目定价</el-menu-item>
           <el-menu-item index="/main/itemsManagement/newItemApprove">项目审批</el-menu-item>
         </el-submenu>
+        <!--
+        <el-menu-item index="/main/itemsManagement/itemApply">
+          <i class="el-icon-crop"></i>
+          <span slot="title">新项目维护</span>
+        </el-menu-item>
+        -->
         <el-submenu index="/itemsManagement-2">
           <template slot="title">
             <i class="el-icon-crop"></i>

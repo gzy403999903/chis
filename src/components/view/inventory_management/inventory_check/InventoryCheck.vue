@@ -80,6 +80,7 @@
         <el-table-column prop="gsmGoodsName" label="名称" width="200" show-overflow-tooltip/>
         <el-table-column prop="gsmGoodsSpecs" label="规格" width="130" show-overflow-tooltip/>
         <el-table-column prop="goodsUnitsName" label="单位(整)" width="80" show-overflow-tooltip/>
+        <el-table-column prop="retailPrice" label="零售单价(整)" width="110" show-overflow-tooltip/>
         <el-table-column prop="splitUnitsName" label="单位(拆)" width="80" show-overflow-tooltip/>
         <el-table-column prop="originName" label="产地" width="100" show-overflow-tooltip/>
         <el-table-column prop="manufacturerName" label="生产厂家" min-width="250" show-overflow-tooltip/>

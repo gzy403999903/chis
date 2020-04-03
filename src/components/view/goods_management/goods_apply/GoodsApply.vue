@@ -19,8 +19,8 @@
             end-placeholder="结束日期"
             :picker-options="pickerOptions"/>
         </el-form-item>
-        <el-form-item label="项目名称" prop="name">
-          <el-input v-model.trim="queryForm.name" placeholder="项目名称 / 助记码"/>
+        <el-form-item label="商品名称" prop="name">
+          <el-input v-model.trim="queryForm.name" placeholder="商品名称 / 助记码" style="width: 150px;"/>
         </el-form-item>
         <el-form-item label="审批状态" prop="approveState">
           <el-select v-model="queryForm.approveState" placeholder="请选择" style="width: 100px;">
@@ -30,12 +30,22 @@
             <el-option label="通过" :value="approveState.APPROVED"/>
             <el-option label="驳回" :value="approveState.UNAPPROVED"/>
             <el-option label="撤销" :value="approveState.CANCEL"/>
+            <!--<el-option label="撤销" :value="approveState.CANCEL"/>-->
           </el-select>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" round icon="el-icon-search"  @click="dataGridLoadData">查询</el-button>
           <el-button type="default" round icon="el-icon-refresh" @click="$refs.queryForm.resetFields()">重置</el-button>
-          <el-button type="default" round icon="el-icon-plus"    @click="dialogOpen({})" v-if="action === 'apply'">新品申请</el-button>
+          <el-dropdown  @command="val => {dialogOpen(val,{})}">
+            <el-button size="mini" round icon="el-icon-plus">
+              新品申请<i class="el-icon-arrow-down el-icon--right"></i>
+            </el-button>
+            <el-dropdown-menu slot="dropdown">
+              <el-dropdown-item :command="belongGoodsType.WESTERN_DRUGS">西药 / 中成药</el-dropdown-item>
+              <el-dropdown-item :command="belongGoodsType.CHINESE_DRUGS">中药</el-dropdown-item>
+              <el-dropdown-item :command="belongGoodsType.HYGIENIC_MATERIAL">卫生材料</el-dropdown-item>
+            </el-dropdown-menu>
+          </el-dropdown>
         </el-form-item>
       </el-form>
     </el-card>
@@ -50,21 +60,24 @@
         stripe
         size="mini">
         <el-table-column fixed="left" type="index" width="50"/>
-        <el-table-column fixed="left" label="操作" align="center" width="80">
+        <el-table-column fixed="left" label="操作" align="center" width="200">
           <template slot-scope="scope">
-            <el-button size="mini"  @click="dialogOpen(scope.row)">查看</el-button>
+            <el-button size="mini" type="success" plain icon="el-icon-s-check" @click="approveDialogOpen(scope.row)">审批流程</el-button>
+            <el-button size="mini" icon="el-icon-edit" @click="dialogOpen(scope.row.gsmGoodsTypeId, scope.row)">编 辑</el-button>
           </template>
         </el-table-column>
+        <el-table-column fixed="left" prop="approveState" label="审批状态" width="80" :formatter="dataGridFormatterApproveSate" show-overflow-tooltip/>
         <el-table-column prop="gsmGoodsTypeName" label="商品分类" width="100" show-overflow-tooltip/>
-        <el-table-column prop="name" label="通用名" width="150" show-overflow-tooltip/>
-        <el-table-column prop="creatorName" label="申请人" width="80" show-overflow-tooltip/>
-        <el-table-column prop="creationDate" label="申请日期" width="110" show-overflow-tooltip/>
+        <el-table-column prop="oid" label="商品编码" width="150" show-overflow-tooltip/>
+        <el-table-column prop="name" label="商品名" width="150" show-overflow-tooltip/>
+        <el-table-column prop="creatorName" label="发起人" width="80" show-overflow-tooltip/>
+        <el-table-column prop="creationDate" label="发起日期" width="110" show-overflow-tooltip/>
         <el-table-column prop="pricerName" label="定价人" width="80" show-overflow-tooltip/>
-        <el-table-column prop="pricingDate" label="定价日期" width="100" show-overflow-tooltip/>
-        <el-table-column prop="approverName" label="审批人" width="80" show-overflow-tooltip/>
-        <el-table-column prop="approveDate" label="审批日期" width="110" show-overflow-tooltip/>
-        <el-table-column prop="approveState" label="审批状态" width="80" :formatter="dataGridFormatterApproveSate" show-overflow-tooltip/>
-        <el-table-column prop="creatorClinicName" label="所属机构" min-width="300" show-overflow-tooltip/>
+        <el-table-column prop="pricingDate" label="定价日期" width="110" show-overflow-tooltip/>
+        <el-table-column prop="approverName" label="审核人" width="80" show-overflow-tooltip/>
+        <el-table-column prop="approveDate" label="审核日期" width="110" show-overflow-tooltip/>
+        <el-table-column prop="lastApproverName" label="审批人" width="80" show-overflow-tooltip/>
+        <el-table-column prop="lastApproveDate" label="审批日期" min-width="110" show-overflow-tooltip/>
       </el-table>
       <el-pagination
         :page-size="pagination.pageSize"
@@ -78,35 +91,46 @@
       </el-pagination>
     </el-card>
 
-    <!--编辑模态框-->
-    <Edit :action="action" :row="dataGrid.row" :visible="dialog.visible" :approveState="approveState"
-          :dialogClose="dialogClose" :dataGridLoadData="dataGridLoadData"/>
+    <!-- 新品申请 -->
+    <GoodsApplyEdit :title="title" :goodsType="goodsType" :action="action" :row="dataGrid.row" :visible="dialog.visible"
+                    :dialog-close="dialogClose" :data-grid-load-data="dataGridLoadData"/>
+
+    <!-- 新品审批流程 -->
+    <GoodsApprove :row="dataGrid.row" :visible="dialog.approveVisible"
+                  :dialogClose="approveDialogClose" :dataGridLoadData="dataGridLoadData"/>
 
   </div>
 </template>
 
 <script>
-import Edit from './NewGoodsEdit'
-
+import GoodsApplyEdit from '../goods/GoodsEdit'
+import GoodsApprove from './GoodsApprove'
+import jwtDecode from 'jwt-decode'
 export default {
   components: {
-    Edit
+    GoodsApplyEdit,
+    GoodsApprove
   },
 
   data () {
     return {
-      approveState: this.$store.getters.approveState,
       pickerOptions: {
         disabledDate (time) {
           return time.getTime() > Date.now()
         }
       },
+      payload: jwtDecode(this.$store.getters.token),
+      approveState: this.$store.getters.approveState,
+      goodsType: 0, // 商品类型
+      belongGoodsType: this.$store.getters.goodsType, // 属于哪个商品类型
       queryForm: {
         name: '',
         creationDate: this.$store.getters.queryDate,
         approveState: null,
         useCreatorId: false
       },
+      title: '',
+      action: '',
       dataGrid: {
         data: [],
         row: {}
@@ -120,15 +144,9 @@ export default {
         layout: this.$store.getters.pagination.layout
       },
       dialog: {
-        visible: false
+        visible: false,
+        approveVisible: false
       }
-    }
-  },
-
-  props: {
-    action: {
-      type: String,
-      required: true
     }
   },
 
@@ -138,6 +156,7 @@ export default {
       this.pagination.pageSize = value
       this.dataGridLoadData()
     },
+
     paginationCurrentChange (value) {
       this.pagination.currentPage = value
       this.dataGridLoadData()
@@ -172,14 +191,75 @@ export default {
     },
 
     /* -------------------------------------------------------------------------------------------------------------- */
-    dialogOpen (row) {
+    /**
+     * 打开商品申请界面
+     * @param command
+     * @param row
+     */
+    dialogOpen (command, row) {
+      // 判断是哪个商品类型的操作
+      switch (command) {
+        case this.belongGoodsType.WESTERN_DRUGS:
+          this.title = '西药 / 中成药'
+          this.goodsType = this.belongGoodsType.WESTERN_DRUGS
+          this.action = 'goodsApply/westernDrugs'
+          break
+        case this.belongGoodsType.CHINESE_DRUGS:
+          this.title = '中药'
+          this.goodsType = this.belongGoodsType.CHINESE_DRUGS
+          this.action = 'goodsApply/chineseDrugs'
+          break
+        case this.belongGoodsType.HYGIENIC_MATERIAL:
+          this.title = '卫生材料'
+          this.goodsType = this.belongGoodsType.HYGIENIC_MATERIAL
+          this.action = 'goodsApply/hygienicMaterial'
+          break
+      }
+
+      // 如果可以获取到商品类型ID 说明是一个编辑操作
+      if (row.gsmGoodsTypeId) {
+        // 判断是否允许编辑
+        if (row.approveState !== this.approveState.UNAPPROVED) {
+          this.$message.error('当前状态不允许编辑')
+          return
+        }
+        // 判断是否操作人和创建人一致
+        if (row.creatorId !== this.payload.userId) {
+          this.$message.error('只能由发起人进行编辑')
+          return
+        }
+        // 更新 action 为编辑
+        this.action = 'goodsApply'
+      }
+
       this.dataGrid.row = row
       this.dialog.visible = true
     },
+
+    /**
+     * 关闭商品申请界面
+     */
     dialogClose () {
       this.dialog.visible = false
+    },
+
+    /**
+     * 开启审批界面
+     * @param row
+     */
+    approveDialogOpen (row) {
+      this.dataGrid.row = row
+      this.dialog.approveVisible = true
+    },
+
+    /**
+     * 关闭审批界面
+     */
+    approveDialogClose () {
+      this.dialog.approveVisible = false
     }
-  }
+
+  } // end methods
 
 }
 </script>

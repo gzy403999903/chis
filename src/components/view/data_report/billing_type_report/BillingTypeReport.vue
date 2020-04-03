@@ -54,6 +54,7 @@
         <el-table-column prop="zlf" label="治疗费" width="100" show-overflow-tooltip/>
         <el-table-column prop="czf" label="出诊费" width="100" show-overflow-tooltip/>
         <el-table-column prop="clf" label="材料费" width="100" show-overflow-tooltip/>
+        <el-table-column prop="xj" label="小计" width="100" show-overflow-tooltip/>
         <el-table-column prop="sysClinicName" label="机构名称" min-width="400" show-overflow-tooltip/>
       </el-table>
       <el-pagination

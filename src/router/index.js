@@ -45,11 +45,10 @@ import PointsRecord from '../components/view/member_management/deposit_expend_re
 import WesternDrugs from '../components/view/goods_management/goods/WesternDrugs'
 import ChineseDrugs from '../components/view/goods_management/goods/ChineseDrugs'
 import HygienicMaterial from '../components/view/goods_management/goods/HygienicMaterial'
-import NewGoodsApply from '../components/view/goods_management/new_goods/NewGoodsApply'
-import NewGoodsPricing from '../components/view/goods_management/new_goods/NewGoodsPricing'
-import NewGoodsApprove from '../components/view/goods_management/new_goods/NewGoodsApprove'
 import GoodsAdjustPriceApply from '../components/view/goods_management/goods_adjust_price/GoodsAdjustPriceApply'
 import GoodsAdjustPriceApprove from '../components/view/goods_management/goods_adjust_price/GoodsAdjustPriceApprove'
+
+import GoodsApply from '../components/view/goods_management/goods_apply/GoodsApply'
 
 // purchase_management
 import Supplier from '../components/view/purchase_management/supplier/Supplier'
@@ -72,6 +71,7 @@ import OtherItem from '../components/view/items_management/item/OtherItem'
 import NewItemApply from '../components/view/items_management/new_item/NewItemApply'
 import NewItemPricing from '../components/view/items_management/new_item/NewItemPricing'
 import NewItemApprove from '../components/view/items_management/new_item/NewItemApprove'
+import ItemApply from '../components/view/items_management/item_apply/ItemApply'
 import ItemAdjustPriceApply from '../components/view/items_management/item_adjust_price/ItemAdjustPriceApply'
 import ItemAdjustPriceApprove from '../components/view/items_management/item_adjust_price/ItemAdjustPriceApprove'
 
@@ -333,24 +333,16 @@ export default new Router({
           component: HygienicMaterial
         },
         {
-          path: 'newGoodsApply',
-          component: NewGoodsApply
-        },
-        {
-          path: 'newGoodsPricing',
-          component: NewGoodsPricing
-        },
-        {
-          path: 'newGoodsApprove',
-          component: NewGoodsApprove
-        },
-        {
           path: 'goodsAdjustPriceApply',
           component: GoodsAdjustPriceApply
         },
         {
           path: 'goodsAdjustPriceApprove',
           component: GoodsAdjustPriceApprove
+        },
+        {
+          path: 'goodsApply',
+          component: GoodsApply
         }
       ]
     },
@@ -495,6 +487,10 @@ export default new Router({
         {
           path: 'newItemApprove',
           component: NewItemApprove
+        },
+        {
+          path: 'itemApply',
+          component: ItemApply
         },
         {
           path: 'itemAdjustPriceApply',

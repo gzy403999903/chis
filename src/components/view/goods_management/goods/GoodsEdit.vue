@@ -207,7 +207,7 @@
           </el-form-item>
         </el-col>
         <el-col :span="4">
-          <el-form-item label="销售分类" prop="sellClassifyId">
+          <el-form-item label="主推分类" prop="sellClassifyId">
             <el-select
               ref="sellClassifyId"
               v-model.trim="editForm.sellClassifyId"
@@ -307,7 +307,7 @@
 
       <el-divider content-position="left">药品属性</el-divider>
 
-      <el-row v-show="action === 'westernDrugs'">
+      <el-row v-show="goodsType === belongGoodsType.WESTERN_DRUGS">
         <el-col :span="4">
           <el-form-item label="药品剂型" prop="doseTypeId">
             <el-select
@@ -396,7 +396,7 @@
                              ref="conservationDays" @keyup.enter.native="editFormValidateField('conservationDays', 'approvalNum')"/>
           </el-form-item>
         </el-col>
-        <el-col :span="6" v-show="action !== 'hygienicMaterial'">
+        <el-col :span="6" v-show="goodsType !== belongGoodsType.HYGIENIC_MATERIAL">
           <el-form-item label="处方药品" prop="prescription">
             <el-radio-group v-model="editForm.prescription">
               <el-radio :label="true">是</el-radio>
@@ -422,7 +422,7 @@
       </el-row>
 
       <el-row>
-        <el-col :span="4" v-show="action !== 'hygienicMaterial'">
+        <el-col :span="4" v-show="goodsType !== belongGoodsType.HYGIENIC_MATERIAL">
           <el-form-item label="医保药品" prop="ybDrug">
             <el-radio-group v-model="editForm.ybDrug">
               <el-radio :label="true">是</el-radio>
@@ -430,13 +430,13 @@
             </el-radio-group>
           </el-form-item>
         </el-col>
-        <el-col :span="4" v-show="action !== 'hygienicMaterial'">
+        <el-col :span="4" v-show="goodsType !== belongGoodsType.HYGIENIC_MATERIAL">
           <el-form-item label="医保编码" prop="ybOid">
             <el-input v-model.trim="editForm.ybOid" :disabled="!editForm.ybDrug" ref="ybOid"
                       @keyup.enter.native="editFormValidateField('ybOid', 'ybPrice')"/>
           </el-form-item>
         </el-col>
-        <el-col :span="4" v-show="action !== 'hygienicMaterial'">
+        <el-col :span="4" v-show="goodsType !== belongGoodsType.HYGIENIC_MATERIAL">
           <el-form-item label="医保售价" prop="ybPrice">
             <el-input-number v-model.trim="editForm.ybPrice" :controls="false" :max="99999" :min="0" :precision="4"
                              ref="ybPrice" style="width: 80%;" :disabled="!editForm.ybDrug"
@@ -471,6 +471,37 @@
 import {getPyCode} from '../../../../common/py'
 
 export default {
+  props: {
+    title: {
+      type: String,
+      required: true
+    },
+    goodsType: {
+      type: Number,
+      required: true
+    },
+    action: {
+      type: String,
+      required: true
+    },
+    row: {
+      type: Object,
+      required: true
+    },
+    visible: {
+      type: Boolean,
+      required: true
+    },
+    dialogClose: {
+      type: Function,
+      required: true
+    },
+    dataGridLoadData: {
+      type: Function,
+      required: true
+    }
+  }, // end props
+
   data () {
     let splitValidate = (rule, value, callback) => {
       if (this.editForm.splitable && !value) {
@@ -497,7 +528,7 @@ export default {
     */
 
     let westernDrugsValidate = (rule, value, callback) => {
-      if (this.action === 'westernDrugs' && !value) {
+      if (this.goodsType === this.belongGoodsType.WESTERN_DRUGS && !value) {
         callback(new Error('不能为空'))
       } else {
         callback()
@@ -521,15 +552,16 @@ export default {
     }
 
     return {
-      dialog: {
-        url: '',
-        method: '',
-        editable: true
-      },
       pickerOptions: {
         disabledDate (time) {
           return time.getTime() < Date.now()
         }
+      },
+      belongGoodsType: this.$store.getters.goodsType, // 属于哪个商品类型
+      dialog: {
+        url: '',
+        method: '',
+        editable: true
       },
       editForm: {
         id: null,
@@ -661,33 +693,6 @@ export default {
     }
   },
 
-  props: {
-    title: {
-      type: String,
-      required: true
-    },
-    action: {
-      type: String,
-      required: true
-    },
-    row: {
-      type: Object,
-      required: true
-    },
-    visible: {
-      type: Boolean,
-      required: true
-    },
-    dialogClose: {
-      type: Function,
-      required: true
-    },
-    dataGridLoadData: {
-      type: Function,
-      required: true
-    }
-  },
-
   computed: {
     goodsUnitsList: function () {
       return this.$store.getters.goodsUnitsList
@@ -730,7 +735,7 @@ export default {
       let row = this.row
       if (row.id) {
         for (let key in this.editForm) {
-          if (row[key] !== undefined) {
+          if (this.editForm.hasOwnProperty(key) && row[key] !== undefined) {
             this.editForm[key] = row[key]
           }
         }
@@ -792,6 +797,10 @@ export default {
       })
     },
 
+    /**
+     * 检索生产厂家
+     * @param name
+     */
     editFormQueryManufacturer (name) {
       if (name.trim()) {
         this.select.loading = true
@@ -809,6 +818,9 @@ export default {
       }
     },
 
+    /**
+     * 当可拆零属性发生改变时执行的内容
+     */
     editFormSplitableChange () {
       if (this.editForm.splitable && this.editForm.retailPrice > 0 && this.editForm.splitQuantity > 0) {
         /*
@@ -825,6 +837,9 @@ export default {
       }
     },
 
+    /**
+     * 提交数据
+     */
     editFormSubmit () {
       this.$refs.editForm.validate((valid) => {
         if (!valid) {

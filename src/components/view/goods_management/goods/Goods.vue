@@ -74,8 +74,9 @@
     </el-card>
 
     <!-- 添加功能 -->
-    <GoodsEdit :title="title" :action="action" :row="dataGrid.row" :visible="dialog.visible"
-          :dialogClose="dialogClose" :dataGridLoadData="dataGridLoadData"/>
+    <GoodsEdit :title="title" :goodsType="goodsType"
+               :action="action" :row="dataGrid.row" :visible="dialog.visible"
+               :dialogClose="dialogClose" :dataGridLoadData="dataGridLoadData"/>
   </div>
 </template>
 
@@ -85,6 +86,21 @@ import GoodsEdit from './GoodsEdit'
 export default {
   components: {
     GoodsEdit
+  },
+
+  props: {
+    title: {
+      type: String,
+      required: true
+    },
+    goodsType: {
+      type: Number,
+      required: true
+    },
+    action: {
+      type: String,
+      required: true
+    }
   },
 
   data () {
@@ -110,17 +126,6 @@ export default {
       dialog: {
         visible: false
       }
-    }
-  },
-
-  props: {
-    title: {
-      type: String,
-      required: true
-    },
-    action: {
-      type: String,
-      required: true
     }
   },
 
