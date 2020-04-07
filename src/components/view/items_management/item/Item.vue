@@ -256,6 +256,16 @@
 import {getPyCode} from '../../../../common/py'
 
 export default {
+  props: {
+    title: {
+      type: String,
+      required: true
+    },
+    action: {
+      type: String,
+      required: true
+    }
+  },
 
   data () {
     return {
@@ -327,17 +337,6 @@ export default {
           {max: 30, message: '长度不合法[1-30]'}
         ]
       }
-    }
-  },
-
-  props: {
-    title: {
-      type: String,
-      required: true
-    },
-    action: {
-      type: String,
-      required: true
     }
   },
 

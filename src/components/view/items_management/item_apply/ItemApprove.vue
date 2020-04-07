@@ -14,7 +14,7 @@
       </el-col>
       <el-col :span="18" style="text-align: right;">
         <span style="font-size: 14px; font-weight: 600;" v-if="step.active === 1">零售单价&nbsp;&nbsp;
-          <el-input-number size="mini" v-model="retailPrice" :controls="false" :max="99999" :min="0" :precision="0"
+          <el-input-number size="mini" v-model="retailPrice" :controls="false" :max="99999" :min="0" :precision="2"
                            @change="retailPriceChange"
                            style="width: 100px; margin-right: -2px;"/>
           <el-button size="mini" type="default" plain icon="el-icon-money" @click="doPricing">商品定价</el-button>&nbsp;&nbsp;

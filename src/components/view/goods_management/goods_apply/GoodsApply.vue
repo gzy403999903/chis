@@ -25,12 +25,11 @@
         <el-form-item label="审批状态" prop="approveState">
           <el-select v-model="queryForm.approveState" placeholder="请选择" style="width: 100px;">
             <el-option label="全部" :value="null"/>
+            <el-option label="待审批" :value="approveState.APPROVED"/>
             <el-option label="待审核" :value="approveState.PENDING"/>
             <el-option label="待定价" :value="approveState.PRICING"/>
-            <el-option label="通过" :value="approveState.APPROVED"/>
             <el-option label="驳回" :value="approveState.UNAPPROVED"/>
-            <el-option label="撤销" :value="approveState.CANCEL"/>
-            <!--<el-option label="撤销" :value="approveState.CANCEL"/>-->
+            <el-option label="通过" :value="approveState.LAST_APPROVED"/>
           </el-select>
         </el-form-item>
         <el-form-item>
@@ -68,8 +67,8 @@
         </el-table-column>
         <el-table-column fixed="left" prop="approveState" label="审批状态" width="80" :formatter="dataGridFormatterApproveSate" show-overflow-tooltip/>
         <el-table-column prop="gsmGoodsTypeName" label="商品分类" width="100" show-overflow-tooltip/>
-        <el-table-column prop="oid" label="商品编码" width="150" show-overflow-tooltip/>
-        <el-table-column prop="name" label="商品名" width="150" show-overflow-tooltip/>
+        <el-table-column prop="oid" label="商品编码" width="100" show-overflow-tooltip/>
+        <el-table-column prop="name" label="商品名" width="200" show-overflow-tooltip/>
         <el-table-column prop="creatorName" label="发起人" width="80" show-overflow-tooltip/>
         <el-table-column prop="creationDate" label="发起日期" width="110" show-overflow-tooltip/>
         <el-table-column prop="pricerName" label="定价人" width="80" show-overflow-tooltip/>
@@ -165,11 +164,11 @@ export default {
     /* -------------------------------------------------------------------------------------------------------------- */
     dataGridFormatterApproveSate (row, column, cellValue) {
       switch (cellValue) {
-        case this.$store.getters.approveState.UNAPPROVED: return '驳回'
-        case this.$store.getters.approveState.APPROVED: return '通过'
-        case this.$store.getters.approveState.CANCEL: return '撤销'
+        case this.$store.getters.approveState.APPROVED: return '待审批'
         case this.$store.getters.approveState.PRICING: return '待定价'
         case this.$store.getters.approveState.PENDING: return '待审核'
+        case this.$store.getters.approveState.UNAPPROVED: return '驳回'
+        case this.$store.getters.approveState.LAST_APPROVED: return '通过'
         default: return '未知状态'
       }
     },
@@ -218,14 +217,14 @@ export default {
 
       // 如果可以获取到商品类型ID 说明是一个编辑操作
       if (row.gsmGoodsTypeId) {
-        // 判断是否允许编辑
-        if (row.approveState !== this.approveState.UNAPPROVED) {
-          this.$message.error('当前状态不允许编辑')
-          return
-        }
         // 判断是否操作人和创建人一致
         if (row.creatorId !== this.payload.userId) {
           this.$message.error('只能由发起人进行编辑')
+          return
+        }
+        // 判断是否允许编辑
+        if (row.approveState !== this.approveState.UNAPPROVED) {
+          this.$message.error('当前状态不允许编辑')
           return
         }
         // 更新 action 为编辑

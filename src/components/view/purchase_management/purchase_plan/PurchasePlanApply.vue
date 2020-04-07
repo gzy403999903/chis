@@ -29,7 +29,6 @@
             <el-option label="待采购" :value="approveState.PURCHASING"/>
             <el-option label="已采购" :value="approveState.APPROVED"/>
             <el-option label="驳回" :value="approveState.UNAPPROVED"/>
-            <el-option label="撤销" :value="approveState.CANCEL"/>
           </el-select>
         </el-form-item>
         <el-form-item>
@@ -144,12 +143,10 @@ export default {
      */
     dataGridFormatterApproveSate (row, column, cellValue) {
       switch (cellValue) {
+        case this.$store.getters.approveState.PURCHASING: return '待采购'
+        case this.$store.getters.approveState.PENDING: return '待审核'
         case this.$store.getters.approveState.UNAPPROVED: return '驳回'
         case this.$store.getters.approveState.APPROVED: return '已采购'
-        case this.$store.getters.approveState.CANCEL: return '撤销'
-        case this.$store.getters.approveState.PURCHASING: return '待采购'
-        case this.$store.getters.approveState.PRICING: return '待定价'
-        case this.$store.getters.approveState.PENDING: return '待审核'
         default: return '未知状态'
       }
     },

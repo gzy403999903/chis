@@ -14,9 +14,9 @@
       </el-col>
       <el-col :span="18" style="text-align: right;">
         <span style="font-size: 14px; font-weight: 600;" v-if="step.active === 1">零售单价&nbsp;&nbsp;
-          <el-input-number size="mini" v-model="retailPrice" :controls="false" :max="99999" :min="0" :precision="0"
+          <el-input-number size="mini" v-model="retailPrice" :controls="false" :max="99999" :min="0" :precision="4"
                            @change="retailPriceChange"
-                           style="width: 100px; margin-right: -2px;"/>
+                           style="width: 130px; margin-right: -2px;"/>
           <el-button size="mini" type="default" plain icon="el-icon-money" @click="doPricing">商品定价</el-button>&nbsp;&nbsp;
         </span>
 
@@ -28,11 +28,11 @@
                    v-if="step.active === 2">审核通过</el-button>
 
         <el-button size="mini" type="danger" plain icon="el-icon-close" @click="doAction('lastCancelPricing')"
-                   v-if="step.active === 3 && !row.lastApproverId">定价驳回</el-button>
+                   v-if="step.active === 3">定价驳回</el-button>
         <el-button size="mini" type="danger" plain icon="el-icon-close" @click="doAction('lastUnapproved')"
-                   v-if="step.active === 3 && !row.lastApproverId">商品驳回</el-button>
+                   v-if="step.active === 3">商品驳回</el-button>
         <el-button size="mini" type="success" plain icon="el-icon-check" @click="doAction('lastApproved')"
-                   v-if="step.active === 3 && !row.lastApproverId">审批通过</el-button>
+                   v-if="step.active === 3">审批通过</el-button>
         <el-button size="mini" type="warning" icon="el-icon-right" @click="dialogClose">返 回</el-button>
       </el-col>
     </el-row>
@@ -43,6 +43,7 @@
         <el-step title="商品定价" icon="el-icon-user-solid" :description="step.description1"/>
         <el-step title="商品审核" icon="el-icon-user-solid" :description="step.description2"/>
         <el-step title="商品审批" icon="el-icon-user-solid" :description="step.description3"/>
+        <el-step title="审批通过" icon="el-icon-success"/>
       </el-steps>
 
       <el-form size="small" label-width="110px" class="goods-approve-show-from">
@@ -57,24 +58,14 @@
               {{this.row.oid}}
             </el-form-item>
           </el-col>
-          <el-col :span="4">
+          <el-col :span="8">
             <el-form-item label="通用名">
               {{this.row.name}}
             </el-form-item>
           </el-col>
-          <el-col :span="4">
-            <el-form-item label="助记码">
-              {{this.row.code}}
-            </el-form-item>
-          </el-col>
-          <el-col :span="4">
+          <el-col :span="8">
             <el-form-item label="商品名">
               {{this.row.spName}}
-            </el-form-item>
-          </el-col>
-          <el-col :span="4">
-            <el-form-item label="助记码">
-              {{this.row.spCode}}
             </el-form-item>
           </el-col>
         </el-row>
@@ -98,6 +89,11 @@
           <el-col :span="4">
             <el-form-item label="二级分类">
               {{this.row.sysSecondClassifyName}}
+            </el-form-item>
+          </el-col>
+          <el-col :span="4">
+            <el-form-item label="主推分类">
+              {{this.row.sellClassifyName}}
             </el-form-item>
           </el-col>
         </el-row>
@@ -149,11 +145,6 @@
           <el-col :span="4">
             <el-form-item label="购进基数">
               {{this.row.minPurchaseQuantity}}
-            </el-form-item>
-          </el-col>
-          <el-col :span="4">
-            <el-form-item label="销售分类">
-              {{this.row.sellClassifyName}}
             </el-form-item>
           </el-col>
         </el-row>
@@ -358,8 +349,11 @@ export default {
           this.step.description2 = '待审核'
           break
         case this.approveState.APPROVED:
-          this.step.description3 = '待审批'
           this.step.active = 3
+          this.step.description3 = '待审批'
+          break
+        case this.approveState.LAST_APPROVED:
+          this.step.active = 4
           break
       }
 
@@ -373,7 +367,7 @@ export default {
       if (this.step.active > 2) {
         this.step.description2 = this.row.approverName + ' [' + this.row.approveDate + ']'
       }
-      if (this.step.active === 3 && this.row.lastApproverId) {
+      if (this.step.active > 3) {
         this.step.description3 = this.row.lastApproverName + ' [' + this.row.lastApproveDate + ']'
       }
     },

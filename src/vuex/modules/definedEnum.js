@@ -5,8 +5,8 @@ export default {
     // 审批状态
     approveState: {
       UNAPPROVED: 0, // 驳回
-      APPROVED: 1, // 通过
-      CANCEL: 2, // 撤销
+      APPROVED: 1, // 审核通过
+      LAST_APPROVED: 2, // 审批通过
       PURCHASING: 97, // 待采购
       PRICING: 98, // 待定价
       PENDING: 99 // 待审核

@@ -213,14 +213,14 @@ export default {
 
       // 如果可以获取到项目类型ID 说明是一个编辑操作
       if (row.cimItemTypeId) {
-        // 判断是否允许编辑
-        if (row.approveState !== this.approveState.UNAPPROVED) {
-          this.$message.error('当前状态不允许编辑')
-          return
-        }
         // 判断是否操作人和创建人一致
         if (row.creatorId !== this.payload.userId) {
           this.$message.error('只能由发起人进行编辑')
+          return
+        }
+        // 判断是否允许编辑
+        if (row.approveState !== this.approveState.UNAPPROVED) {
+          this.$message.error('当前状态不允许编辑')
           return
         }
         // 更新 action 为编辑

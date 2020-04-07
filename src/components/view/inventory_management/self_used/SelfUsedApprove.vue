@@ -28,7 +28,6 @@
             <el-option label="待审核" :value="approveState.PENDING"/>
             <el-option label="通过" :value="approveState.APPROVED"/>
             <el-option label="驳回" :value="approveState.UNAPPROVED"/>
-            <el-option label="撤销" :value="approveState.CANCEL"/>
           </el-select>
         </el-form-item>
         <el-form-item>
@@ -141,10 +140,9 @@ export default {
      */
     formatterApproveSate (row, column, cellValue) {
       switch (cellValue) {
+        case this.$store.getters.approveState.PENDING: return '待审核'
         case this.$store.getters.approveState.UNAPPROVED: return '驳回'
         case this.$store.getters.approveState.APPROVED: return '通过'
-        case this.$store.getters.approveState.CANCEL: return '撤销'
-        case this.$store.getters.approveState.PENDING: return '待审核'
         default: return '未知状态'
       }
     },
