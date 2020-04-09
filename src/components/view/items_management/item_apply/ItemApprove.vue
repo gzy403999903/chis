@@ -10,29 +10,29 @@
     <!-- 模态框标题栏与功能按钮-->
     <el-row slot="title">
       <el-col :span="6" style="font-size: 20px;">
-        <span>新品审批</span>
+        <span>项目审批</span>
       </el-col>
       <el-col :span="18" style="text-align: right;">
         <span style="font-size: 14px; font-weight: 600;" v-if="step.active === 1">零售单价&nbsp;&nbsp;
           <el-input-number size="mini" v-model="retailPrice" :controls="false" :max="99999" :min="0" :precision="2"
                            @change="retailPriceChange"
-                           style="width: 100px; margin-right: -2px;"/>
-          <el-button size="mini" type="default" plain icon="el-icon-money" @click="doPricing">商品定价</el-button>&nbsp;&nbsp;
+                           style="width: 130px; margin-right: -2px;"/>
+          <el-button size="mini" type="default" plain icon="el-icon-money" @click="doPricing">项目定价</el-button>&nbsp;&nbsp;
         </span>
 
         <el-button size="mini" type="danger" plain icon="el-icon-close" @click="doAction('cancelPricing')"
                    v-if="step.active === 2">定价驳回</el-button>
         <el-button size="mini" type="danger" plain icon="el-icon-close" @click="doAction('unapproved')"
-                   v-if="step.active === 2">商品驳回</el-button>
+                   v-if="step.active === 2">项目驳回</el-button>
         <el-button size="mini" type="success" plain icon="el-icon-check" @click="doAction('approved')"
                    v-if="step.active === 2">审核通过</el-button>
 
         <el-button size="mini" type="danger" plain icon="el-icon-close" @click="doAction('lastCancelPricing')"
-                   v-if="step.active === 3 && !row.lastApproverId">定价驳回</el-button>
+                   v-if="step.active === 3">定价驳回</el-button>
         <el-button size="mini" type="danger" plain icon="el-icon-close" @click="doAction('lastUnapproved')"
-                   v-if="step.active === 3 && !row.lastApproverId">商品驳回</el-button>
+                   v-if="step.active === 3">项目驳回</el-button>
         <el-button size="mini" type="success" plain icon="el-icon-check" @click="doAction('lastApproved')"
-                   v-if="step.active === 3 && !row.lastApproverId">审批通过</el-button>
+                   v-if="step.active === 3">审批通过</el-button>
         <el-button size="mini" type="warning" icon="el-icon-right" @click="dialogClose">返 回</el-button>
       </el-col>
     </el-row>
@@ -40,87 +40,22 @@
     <div :style="`height:${$store.getters.dialogDataGridHeight}px;`" style="background-color: white; padding-top: 20px;">
       <el-steps :active="step.active" align-center style="height: 50px;">
         <el-step title="发起" icon="el-icon-s-promotion" :description="step.description0"/>
-        <el-step title="商品定价" icon="el-icon-user-solid" :description="step.description1"/>
-        <el-step title="商品审核" icon="el-icon-user-solid" :description="step.description2"/>
-        <el-step title="商品审批" icon="el-icon-user-solid" :description="step.description3"/>
+        <el-step title="项目定价" icon="el-icon-user-solid" :description="step.description1"/>
+        <el-step title="项目审核" icon="el-icon-user-solid" :description="step.description2"/>
+        <el-step title="项目审批" icon="el-icon-user-solid" :description="step.description3"/>
+        <el-step title="审批通过" icon="el-icon-success"/>
       </el-steps>
 
       <el-form size="small" label-width="110px" class="goods-approve-show-from">
         <el-row>
           <el-col :span="4">
-            <el-form-item label="商品类型">
-              {{this.row.gsmGoodsTypeName}}
+            <el-form-item label="项目类型">
+              {{this.row.cimItemTypeName}}
             </el-form-item>
           </el-col>
-          <el-col :span="4">
-            <el-form-item label="商品编码">
-              {{this.row.oid}}
-            </el-form-item>
-          </el-col>
-          <el-col :span="4">
-            <el-form-item label="通用名">
-              {{this.row.name}}
-            </el-form-item>
-          </el-col>
-          <el-col :span="4">
-            <el-form-item label="助记码">
-              {{this.row.code}}
-            </el-form-item>
-          </el-col>
-          <el-col :span="4">
-            <el-form-item label="商品名">
-              {{this.row.spName}}
-            </el-form-item>
-          </el-col>
-          <el-col :span="4">
-            <el-form-item label="助记码">
-              {{this.row.spCode}}
-            </el-form-item>
-          </el-col>
-        </el-row>
-
-        <el-row>
-          <el-col :span="4">
-            <el-form-item label="商品规格">
-              {{this.row.specs}}
-            </el-form-item>
-          </el-col>
-          <el-col :span="4">
-            <el-form-item label="包装单位">
-              {{this.row.goodsUnitsName}}
-            </el-form-item>
-          </el-col>
-          <el-col :span="4">
-            <el-form-item label="商品分类">
-              {{this.row.goodsClassifyName}}
-            </el-form-item>
-          </el-col>
-          <el-col :span="4">
-            <el-form-item label="二级分类">
-              {{this.row.sysSecondClassifyName}}
-            </el-form-item>
-          </el-col>
-        </el-row>
-
-        <el-row>
           <el-col :span="8">
-            <el-form-item label="生产厂家">
-              {{this.row.manufacturerName}}
-            </el-form-item>
-          </el-col>
-          <el-col :span="4">
-            <el-form-item label="产地">
-              {{this.row.originName}}
-            </el-form-item>
-          </el-col>
-          <el-col :span="4">
-            <el-form-item label="计费类型">
-              {{this.row.billingTypeName}}
-            </el-form-item>
-          </el-col>
-          <el-col :span="4">
-            <el-form-item label="电子条码">
-              {{this.row.barcode}}
+            <el-form-item label="项目名称">
+              {{this.row.name}}
             </el-form-item>
           </el-col>
         </el-row>
@@ -132,28 +67,28 @@
             </el-form-item>
           </el-col>
           <el-col :span="4">
-            <el-form-item label="毛利提成">
-              {{this.row.profitCommissionRate}}&nbsp;&nbsp;%
+            <el-form-item label="可执行次数">
+              {{this.row.quantity}}
             </el-form-item>
           </el-col>
           <el-col :span="4">
-            <el-form-item label="进货税率">
-              {{this.row.purchaseTaxRate}}&nbsp;&nbsp;%
+            <el-form-item label="单位">
+              {{this.row.itemUnitsName}}
             </el-form-item>
           </el-col>
           <el-col :span="4">
-            <el-form-item label="销售税率">
-              {{this.row.sellTaxRate}}&nbsp;&nbsp;%
+            <el-form-item label="适用性别">
+              {{this.row.befitGenderName ? this.row.befitGenderName : '全部'}}
             </el-form-item>
           </el-col>
           <el-col :span="4">
-            <el-form-item label="购进基数">
-              {{this.row.minPurchaseQuantity}}
+            <el-form-item label="计费类型">
+              {{this.row.billingTypeName}}
             </el-form-item>
           </el-col>
           <el-col :span="4">
-            <el-form-item label="销售分类">
-              {{this.row.sellClassifyName}}
+            <el-form-item label="项目分类">
+              {{this.row.itemClassifyName}}
             </el-form-item>
           </el-col>
         </el-row>
@@ -165,18 +100,13 @@
             </el-form-item>
           </el-col>
           <el-col :span="4">
-            <el-form-item label="可以退货">
+            <el-form-item label="是否可退">
               {{this.row.returnable ? '是' : '否'}}
             </el-form-item>
           </el-col>
           <el-col :span="4">
-            <el-form-item label="是否赠品">
-              {{this.row.freeGoods ? '是' : '否'}}
-            </el-form-item>
-          </el-col>
-          <el-col :span="4">
-            <el-form-item label="允许倒挂">
-              {{this.row.lossable ? '是' : '否'}}
+            <el-form-item label="是否医保">
+              {{this.row.ybItem ? '是' : '否'}}
             </el-form-item>
           </el-col>
           <el-col :span="4">
@@ -187,110 +117,9 @@
         </el-row>
 
         <el-row>
-          <el-col :span="4">
-            <el-form-item label="可拆零">
-              {{this.row.splitable ? '是' : '否'}}
-            </el-form-item>
-          </el-col>
-          <el-col :span="4">
-            <el-form-item label="拆零数量">
-              {{this.row.splitQuantity}}
-            </el-form-item>
-          </el-col>
-          <el-col :span="4">
-            <el-form-item label="拆零单位">
-              {{this.row.splitUnitsName}}
-            </el-form-item>
-          </el-col>
-          <el-col :span="4">
-            <el-form-item label="拆零单价">
-              {{this.row.splitPrice}}&nbsp;&nbsp;元
-            </el-form-item>
-          </el-col>
-        </el-row>
-
-        <el-row v-show="row.gsmGoodsTypeId === belongGoodsType.WESTERN_DRUGS">
-          <el-col :span="4">
-            <el-form-item label="药品剂型">
-              {{this.row.doseTypeName}}
-            </el-form-item>
-          </el-col>
-          <el-col :span="4">
-            <el-form-item label="基本剂量">
-              {{this.row.dose}}
-            </el-form-item>
-          </el-col>
-          <el-col :span="4">
-            <el-form-item label="剂量单位">
-              {{this.row.doseUnitsName}}
-            </el-form-item>
-          </el-col>
-          <el-col :span="6">
-            <el-form-item label="给药途径">
-              {{this.row.drugUsageName}}
-            </el-form-item>
-          </el-col>
-          <el-col :span="6">
-            <el-form-item label="特殊药品">
-              {{this.row.specialDrugName}}
-            </el-form-item>
-          </el-col>
-        </el-row>
-
-        <el-row>
-          <el-col :span="4">
-            <el-form-item label="是否串味">
-              {{this.row.odored ? '是' : '否'}}
-            </el-form-item>
-          </el-col>
-          <el-col :span="4">
-            <el-form-item label="存储条件">
-              {{this.row.storageTemperatureName}}
-            </el-form-item>
-          </el-col>
-          <el-col :span="4">
-            <el-form-item label="养护天数">
-              {{this.row.conservationDays}}
-            </el-form-item>
-          </el-col>
-          <el-col :span="6" v-show="row.gsmGoodsTypeId !== belongGoodsType.HYGIENIC_MATERIAL">
-            <el-form-item label="处方药品">
-              {{this.row.prescription ? '是' : '否'}}
-            </el-form-item>
-          </el-col>
-
-          <el-col :span="6">
-            <el-form-item label="处方类型">
-              {{this.row.prescriptionTypeName}}
-            </el-form-item>
-          </el-col>
-
-        </el-row>
-
-        <el-row>
-          <el-col :span="4" v-show="row.gsmGoodsTypeId !== belongGoodsType.HYGIENIC_MATERIAL">
-            <el-form-item label="医保药品">
-              {{this.row.ybDrug ? '是' : '否'}}
-            </el-form-item>
-          </el-col>
-          <el-col :span="4" v-show="row.gsmGoodsTypeId !== belongGoodsType.HYGIENIC_MATERIAL">
-            <el-form-item label="医保编码" prop="ybOid">
-              {{this.row.ybOid}}
-            </el-form-item>
-          </el-col>
-          <el-col :span="4" v-show="row.gsmGoodsTypeId !== belongGoodsType.HYGIENIC_MATERIAL">
-            <el-form-item label="医保售价">
-              {{this.row.ybPrice}}&nbsp;&nbsp;元
-            </el-form-item>
-          </el-col>
-          <el-col :span="6">
-            <el-form-item label="批准文号">
-              {{this.row.approvalNum}}
-            </el-form-item>
-          </el-col>
-          <el-col :span="6">
-            <el-form-item label="批准文号效期">
-              {{this.row.approvalNumExpiryDate}}
+          <el-col :span="24">
+            <el-form-item label="项目说明">
+              {{this.row.explains}}
             </el-form-item>
           </el-col>
         </el-row>
@@ -324,7 +153,6 @@ export default {
   data () {
     return {
       approveState: this.$store.getters.approveState, // 审批状态
-      belongGoodsType: this.$store.getters.goodsType, // 属于哪个商品类型
       step: {
         active: 0,
         description0: '',
@@ -358,8 +186,11 @@ export default {
           this.step.description2 = '待审核'
           break
         case this.approveState.APPROVED:
-          this.step.description3 = '待审批'
           this.step.active = 3
+          this.step.description3 = '待审批'
+          break
+        case this.approveState.LAST_APPROVED:
+          this.step.active = 4
           break
       }
 
@@ -373,7 +204,7 @@ export default {
       if (this.step.active > 2) {
         this.step.description2 = this.row.approverName + ' [' + this.row.approveDate + ']'
       }
-      if (this.step.active === 3 && this.row.lastApproverId) {
+      if (this.step.active > 3) {
         this.step.description3 = this.row.lastApproverName + ' [' + this.row.lastApproveDate + ']'
       }
     },
@@ -406,13 +237,13 @@ export default {
         return
       }
 
-      this.$confirm(`当前商品定价为:&nbsp;&nbsp;
-                     <span style="color: red; font-size: 18px; font-weight: 600;">${this.retailPrice}&nbsp;元</span><br/>
-                     确认执行该操作吗?`, '提示', {
+      this.$confirm(`当前项目定价为:&nbsp;&nbsp;
+                   <span style="color: red; font-size: 18px; font-weight: 600;">${this.retailPrice}&nbsp;元</span><br/>
+                   确认执行该操作吗?`, '提示', {
         confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning', showClose: false, dangerouslyUseHTMLString: true
       }).then(() => {
         this.$loading()
-        const url = `/chisAPI/goodsApply/pricing`
+        const url = `/chisAPI/itemApply/pricing`
         let method = 'PUT'
         let params = {
           id: this.row.id,
@@ -440,7 +271,7 @@ export default {
         confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning', showClose: false
       }).then(() => {
         this.$loading()
-        const url = `/chisAPI/goodsApply/${action}`
+        const url = `/chisAPI/itemApply/${action}`
         let method = 'PUT'
         let params = {
           id: this.row.id

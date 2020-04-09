@@ -19,6 +19,7 @@
                    @click="dataGridDoAction('unapproved')" v-if="row.approveState === approveState.PENDING">驳 回</el-button>
         <el-button size="mini" type="success" icon="el-icon-circle-check"
                    @click="dataGridDoAction('approved')" v-if="row.approveState === approveState.PENDING">通 过</el-button>
+        <el-button size="mini" type="default" icon="el-icon-printer" @click="printPurchaseAddBill">打 印</el-button>
         <el-button size="mini" type="warning" icon="el-icon-right" @click="dialogClose">返 回</el-button>
       </el-col>
     </el-row>
@@ -44,11 +45,19 @@
       <el-table-column prop="manufacturerName" label="生产厂家" min-width="250" show-overflow-tooltip sortable/>
     </el-table>
 
+    <!-- 打印组件 -->
+    <PurchaseAddBill :data="dataGrid.data" ref="PurchaseAddBill"/>
+
   </el-dialog>
 </template>
 
 <script>
+import PurchaseAddBill from '../../print_page/PurchaseAddBill'
+import jwtDecode from 'jwt-decode'
 export default {
+  components: {
+    PurchaseAddBill
+  },
 
   props: {
     visible: {
@@ -72,6 +81,7 @@ export default {
   data () {
     return {
       approveState: this.$store.getters.approveState,
+      payload: jwtDecode(this.$store.getters.token),
       dataGrid: {
         data: []
       }
@@ -129,11 +139,53 @@ export default {
             this.$message.success(res.data.msg)
             this.dialogClose()
             this.dataGridLoadData()
+            // 如果为通过操作则执行对应的操作
+            /*
+            if (action === 'approved') {
+              this.afterApproved()
+            }
+            */
           } else {
             this.$loading().close()
           }
         })
       }).catch(() => {})
+    },
+
+    /**
+     * 审核通过后执行的操作
+     */
+    afterApproved () {
+      // 将当前所有数据变为通过状态
+      this.dataGrid.data.forEach(item => {
+        item.approveState = this.approveState.APPROVED
+        item.approverId = this.payload.userId
+        item.approverName = this.payload.userName
+      })
+
+      // 执行打印
+      this.printPurchaseAddBill()
+    },
+
+    /**
+     * 打印采购入库单
+     */
+    printPurchaseAddBill () {
+      // 如果单据为非审核通过状态则终止
+      if (this.dataGrid.data[0].approveState !== this.approveState.APPROVED) {
+        this.$message.error('单据审核通过后方可进行打印')
+        return
+      }
+
+      // 获取权限打印
+      this.$loading()
+      const url = '/chisAPI/inventoryAdd/printPurchaseAddBill'
+      this.$http.get(url).then((res) => {
+        if (res.data.code === 200) {
+          this.$refs.PurchaseAddBill.printPage()
+        }
+        this.$loading().close()
+      })
     }
 
   } // end methods

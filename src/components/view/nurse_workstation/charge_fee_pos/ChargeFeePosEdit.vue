@@ -149,7 +149,7 @@
                   </el-form-item>
                 </el-col>
                 <el-col :span="6">
-                  <el-form-item label="ID">
+                  <el-form-item label="销售员ID">
                     <el-input v-model="editForm.sellerId" disabled/>
                   </el-form-item>
                 </el-col>
@@ -505,7 +505,7 @@ export default {
       row.editable = true // 该行是否可编辑
       row.showCostPrice = false // 是否显示成本价
       row.id = '' // 库存ID
-      row.quantity = 1 // 库存数量
+      row.quantity = undefined // 销售数量
       row.actualRetailPrice = 0 // 实收单价
 
       // 将新建行指向当前行

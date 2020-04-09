@@ -144,9 +144,9 @@ export default {
       this.$loading()
       let url = ''
       if (this.action === 'all') {
-        url = '/chisAPI/inventory/getPhGroupListByCriteria'
+        url = '/chisAPI/inventory/getPhListByCriteria'
       } else {
-        url = '/chisAPI/inventory/getClinicPhGroupListByCriteria'
+        url = '/chisAPI/inventory/getClinicPhListByCriteria'
       }
       let params = this.queryForm
       params.pageNum = this.pagination.currentPage

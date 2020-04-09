@@ -68,17 +68,15 @@ import PurchaseSubtractApprove from '../components/view/purchase_management/purc
 import MedicalItem from '../components/view/items_management/item/MedicalItem'
 import AdjuvantItem from '../components/view/items_management/item/AdjuvantItem'
 import OtherItem from '../components/view/items_management/item/OtherItem'
-import NewItemApply from '../components/view/items_management/new_item/NewItemApply'
-import NewItemPricing from '../components/view/items_management/new_item/NewItemPricing'
-import NewItemApprove from '../components/view/items_management/new_item/NewItemApprove'
 import ItemApply from '../components/view/items_management/item_apply/ItemApply'
 import ItemAdjustPriceApply from '../components/view/items_management/item_adjust_price/ItemAdjustPriceApply'
 import ItemAdjustPriceApprove from '../components/view/items_management/item_adjust_price/ItemAdjustPriceApprove'
 
 // inventory_management
-import ClinicPhInventory from '../components/view/inventory_management/inventory/ClinicPhInventory'
-import AllPhInventory from '../components/view/inventory_management/inventory/AllPhInventory'
-import PchInventory from '../components/view/inventory_management/inventory/PchInventory'
+import ClinicPhInventory from '../components/view/inventory_management/inventory_ph/ClinicPhInventory'
+import AllPhInventory from '../components/view/inventory_management/inventory_ph/AllPhInventory'
+import ClinicPchInventory from '../components/view/inventory_management/inventory_pch/ClinicPchInventory'
+import AllPchInventory from '../components/view/inventory_management/inventory_pch/AllPchInventory'
 import InventoryAllotApply from '../components/view/inventory_management/inventory_allot/InventoryAllotApply'
 import InventoryAllotApprove from '../components/view/inventory_management/inventory_allot/InventoryAllotApprove'
 import SelfUsedApply from '../components/view/inventory_management/self_used/SelfUsedApply'
@@ -417,8 +415,12 @@ export default new Router({
           component: AllPhInventory
         },
         {
-          path: 'pchInventory',
-          component: PchInventory
+          path: 'clinicPchInventory',
+          component: ClinicPchInventory
+        },
+        {
+          path: 'allPchInventory',
+          component: AllPchInventory
         },
         {
           path: 'inventoryAllotApply',
@@ -475,18 +477,6 @@ export default new Router({
         {
           path: 'otherItem',
           component: OtherItem
-        },
-        {
-          path: 'newItemApply',
-          component: NewItemApply
-        },
-        {
-          path: 'newItemPricing',
-          component: NewItemPricing
-        },
-        {
-          path: 'newItemApprove',
-          component: NewItemApprove
         },
         {
           path: 'itemApply',

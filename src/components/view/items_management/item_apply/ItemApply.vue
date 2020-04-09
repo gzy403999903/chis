@@ -25,12 +25,11 @@
         <el-form-item label="审批状态" prop="approveState">
           <el-select v-model="queryForm.approveState" placeholder="请选择" style="width: 100px;">
             <el-option label="全部" :value="null"/>
+            <el-option label="待审批" :value="approveState.APPROVED"/>
             <el-option label="待审核" :value="approveState.PENDING"/>
             <el-option label="待定价" :value="approveState.PRICING"/>
-            <el-option label="通过" :value="approveState.APPROVED"/>
             <el-option label="驳回" :value="approveState.UNAPPROVED"/>
-            <el-option label="撤销" :value="approveState.CANCEL"/>
-            <!--<el-option label="撤销" :value="approveState.CANCEL"/>-->
+            <el-option label="通过" :value="approveState.LAST_APPROVED"/>
           </el-select>
         </el-form-item>
         <el-form-item>
@@ -89,21 +88,22 @@
         @current-change="paginationCurrentChange">
       </el-pagination>
     </el-card>
-    <!--
-    <GoodsApplyEdit :title="title" :goodsType="goodsType" :action="action" :row="dataGrid.row" :visible="dialog.visible"
-                    :dialog-close="dialogClose" :data-grid-load-data="dataGridLoadData"/>
 
-    <GoodsApprove :row="dataGrid.row" :visible="dialog.approveVisible"
+    <ItemEdit :title="title" :action="action" :row="dataGrid.row"
+              :visible="dialog.visible" :dialogClose="dialogClose" :dataGridLoadData="dataGridLoadData"/>
+
+    <ItemApprove :row="dataGrid.row" :visible="dialog.approveVisible"
                   :dialogClose="approveDialogClose" :dataGridLoadData="dataGridLoadData"/>
-    -->
   </div>
 </template>
 
 <script>
+import ItemEdit from '../item/ItemEdit'
 import ItemApprove from './ItemApprove'
 import jwtDecode from 'jwt-decode'
 export default {
   components: {
+    ItemEdit,
     ItemApprove
   },
 
@@ -160,11 +160,11 @@ export default {
     /* -------------------------------------------------------------------------------------------------------------- */
     dataGridFormatterApproveSate (row, column, cellValue) {
       switch (cellValue) {
-        case this.$store.getters.approveState.UNAPPROVED: return '驳回'
-        case this.$store.getters.approveState.APPROVED: return '通过'
-        case this.$store.getters.approveState.CANCEL: return '撤销'
+        case this.$store.getters.approveState.APPROVED: return '待审批'
         case this.$store.getters.approveState.PRICING: return '待定价'
         case this.$store.getters.approveState.PENDING: return '待审核'
+        case this.$store.getters.approveState.UNAPPROVED: return '驳回'
+        case this.$store.getters.approveState.LAST_APPROVED: return '通过'
         default: return '未知状态'
       }
     },

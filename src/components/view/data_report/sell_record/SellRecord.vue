@@ -24,7 +24,7 @@
 
     <!-- 查询条件界面 -->
     <el-dialog
-      top="4%"
+      top="2%"
       width="45%"
       :show-close="false"
       :close-on-click-modal="false"
@@ -104,8 +104,11 @@
         <el-form-item label="会员手机" prop="phone">
           <el-input v-model.trim="queryForm.phone" placeholder="会员手机"/>
         </el-form-item>
+        <el-form-item label="销售人ID" prop="sellerId">
+          <el-input v-model.trim="queryForm.sellerId" placeholder="销售人ID"/>
+        </el-form-item>
         <el-form-item label="销售人" prop="sellerName">
-          <el-input v-model.trim="queryForm.sellerName" placeholder="姓名 / 助记码"/>
+          <el-input v-model.trim="queryForm.sellerName" placeholder="销售人姓名 / 助记码"/>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -164,6 +167,7 @@
         <el-table-column prop="invoiceTypeName" label="发票类型" width="120" show-overflow-tooltip/>
         <el-table-column prop="invoiceNo" label="发票号" width="100" show-overflow-tooltip/>
         <el-table-column prop="invoiceDate" label="开票日期" width="160" show-overflow-tooltip/>
+        <el-table-column prop="sellerId" label="销售人ID" width="100" show-overflow-tooltip/>
         <el-table-column prop="sellerName" label="销售人" width="100" show-overflow-tooltip/>
         <el-table-column prop="operatorId" label="出库人ID" width="100" show-overflow-tooltip/>
         <el-table-column prop="operatorName" label="出库人" width="100" show-overflow-tooltip/>
@@ -219,6 +223,7 @@ export default {
         entityName: null,
         mrmMemberName: null,
         phone: null,
+        sellerId: null,
         sellerName: null
       },
       dataGrid: {

@@ -220,8 +220,9 @@
             <i class="el-icon-receiving"></i>
             <span slot="title">库存查询</span>
           </template>
-          <el-menu-item index="/main/inventoryManagement/pchInventory">本机构批次库存</el-menu-item>
+          <el-menu-item index="/main/inventoryManagement/clinicPchInventory">本机构批次库存</el-menu-item>
           <el-menu-item index="/main/inventoryManagement/clinicPhInventory">本机构批号库存</el-menu-item>
+          <el-menu-item index="/main/inventoryManagement/allPchInventory">各机构批次库存</el-menu-item>
           <el-menu-item index="/main/inventoryManagement/allPhInventory">各机构批号库存</el-menu-item>
         </el-submenu>
         <el-menu-item index="/main/inventoryManagement/inventoryAllotApply">
@@ -281,21 +282,10 @@
           <i class="el-icon-s-promotion"></i>
           <span slot="title">其他项目</span>
         </el-menu-item>
-        <el-submenu index="/itemsManagement-1">
-          <template slot="title">
-            <i class="el-icon-crop"></i>
-            <span slot="title">新项目维护</span>
-          </template>
-          <el-menu-item index="/main/itemsManagement/newItemApply">项目申请</el-menu-item>
-          <el-menu-item index="/main/itemsManagement/newItemPricing">项目定价</el-menu-item>
-          <el-menu-item index="/main/itemsManagement/newItemApprove">项目审批</el-menu-item>
-        </el-submenu>
-        <!--
         <el-menu-item index="/main/itemsManagement/itemApply">
           <i class="el-icon-crop"></i>
           <span slot="title">新项目维护</span>
         </el-menu-item>
-        -->
         <el-submenu index="/itemsManagement-2">
           <template slot="title">
             <i class="el-icon-crop"></i>
