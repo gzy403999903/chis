@@ -16,7 +16,8 @@
         <span>处方明细</span>
       </el-col>
       <el-col :span="19" style="text-align: right;">
-        <el-button size="mini" type="success" plain icon="el-icon-s-promotion" @click="submitData">审 核</el-button>
+        <el-button size="mini" type="default" plain icon="el-icon-plus" @click="mergeRows">合并拆分行</el-button>
+        <el-button size="mini" type="success" plain icon="el-icon-s-check" @click="submitData">审 核</el-button>
         <el-button size="mini" type="warning" icon="el-icon-right" @click="dialogClose">返 回</el-button>
       </el-col>
     </el-row>
@@ -26,13 +27,15 @@
       :height="$store.getters.dialogDataGridHeight"
       :data="dataGrid.data"
       @row-dblclick="editRow"
+      @selection-change="tableSelectionChange"
       :row-class-name="dataGridRowClassName"
       size="mini">
       <el-table-column fixed="left" type="index" width="50"/>
+      <el-table-column fixed="left" type="selection" width="55"/>
       <el-table-column fixed="left" label="操作" align="center" width="130">
         <template slot-scope="scope">
           <el-button size="mini" type="danger" icon="el-icon-delete" @click="dataGridDeleteRow(scope.$index, scope.row)"/>
-          <el-button size="mini" type="default" plain @click="dataGridSplitRow(scope.$index, scope.row)" :disabled="scope.row.quantity < 2">拆分</el-button>
+          <el-button size="mini" type="default" plain @click="dataGridSplitRow(scope.$index, scope.row)" :disabled="scope.row.quantity < 2">拆 分</el-button>
         </template>
       </el-table-column>
       <el-table-column prop="oid" label="商品编码" width="120" show-overflow-tooltip/>
@@ -116,7 +119,8 @@ export default {
       payload: jwtDecode(this.$store.getters.token),
       dataGrid: {
         data: [],
-        currentRow: {}
+        currentRow: {},
+        selectedData: []
       },
       selectData: {
         inventoryList: []
@@ -145,6 +149,7 @@ export default {
     dialogClosed () {
       this.dataGrid.data = []
       this.dataGrid.currentRow = {}
+      this.dataGrid.selectedData = []
       this.selectData.inventoryList = []
     },
 
@@ -189,11 +194,11 @@ export default {
      * [从前台获取, 从后台获取后无法手动选取]
      */
     async loadInventoryPchList (goodsData) {
-      // 获取商品ID集合, 如果没有则不继续执行
-      let gsmGoodsIdList = goodsData.map(item => item.entityId)
       if (goodsData.length === 0) {
         return
       }
+      // 获取商品ID集合
+      let gsmGoodsIdList = goodsData.map(item => item.entityId)
 
       const url = `/chisAPI/inventory/getClinicPchListByGoodsIdList`
       let params = {
@@ -438,6 +443,47 @@ export default {
       this.dataGrid.data = this.dataGrid.data.filter((item, i) => {
         return i !== index
       })
+      // 设置当前行
+      this.dataGrid.currentRow = this.dataGrid.data[this.dataGrid.data.length - 1]
+    },
+
+    /**
+     * 当勾选发生改变时执行的操作
+     * @param selection
+     */
+    tableSelectionChange (selection) {
+      this.dataGrid.selectedData = selection
+    },
+
+    /**
+     * 合并行
+     */
+    mergeRows () {
+      let rows = this.dataGrid.selectedData
+      if (rows.length < 2) {
+        this.$message.error('至少勾选两行才能进行合并操作')
+        return
+      }
+
+      for (let i = 0; i < rows.length; i++) {
+        if (rows[0].entityId !== rows[i].entityId || rows[0].splitQuantity !== rows[i].splitQuantity) {
+          this.$message.error('非同一商品不能进行合并操作')
+          return
+        }
+      }
+
+      // 为所有数据行添加唯一行号以便进行删除操作
+      this.dataGrid.data.forEach((row, index) => {
+        row.index = index
+      })
+
+      // 累加数量到第一行 并 删除除第一行以外的合并行
+      for (let i = 1; i < rows.length; i++) {
+        rows[0].quantity += rows[i].quantity
+        this.dataGrid.data = this.dataGrid.data.filter(row => row.index !== rows[i].index)
+      }
+      // 设置当前行
+      this.dataGrid.currentRow = this.dataGrid.data[this.dataGrid.data.length - 1]
     },
 
     /**

@@ -582,8 +582,8 @@ export default {
         }
 
         // 检查是否上限
-        if (this.dataGrid.data.length > 50) {
-          this.$message.error('单次录入最大数量为 50')
+        if (this.dataGrid.data.length > 200) {
+          this.$message.error('单次录入最大数量为 200')
           return false
         }
 

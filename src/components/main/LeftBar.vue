@@ -82,7 +82,7 @@
         </el-submenu>
         <el-menu-item index="/main/nurseWorkstation/goodsOutInventory">
           <i class="el-icon-files"></i>
-          <span slot="title">商品出库</span>
+          <span slot="title">出库审核</span>
         </el-menu-item>
         <el-menu-item index="/main/nurseWorkstation/performDrugs">
           <i class="el-icon-tickets"></i>
