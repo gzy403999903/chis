@@ -4,7 +4,7 @@
       <img src="../../../assets/images/butterfly.png"/>
     </div>
     <div class="user-info">
-      <div>姓名: <b>{{ payload.userName}}</b></div><hr/> <!--+ '&nbsp;&nbsp;[' + payload.userId + ']'-->
+      <div>姓名: <b>{{payload.userName + '&nbsp;&nbsp;[' + payload.userId + '] &nbsp;'}}</b></div><hr/>
       <div>角色: <b>{{payload.roleName}}</b></div><hr/>
       <div>{{payload.clinicName}}</div>
     </div>

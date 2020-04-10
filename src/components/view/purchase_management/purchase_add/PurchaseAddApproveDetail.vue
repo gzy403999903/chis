@@ -139,32 +139,11 @@ export default {
             this.$message.success(res.data.msg)
             this.dialogClose()
             this.dataGridLoadData()
-            // 如果为通过操作则执行对应的操作
-            /*
-            if (action === 'approved') {
-              this.afterApproved()
-            }
-            */
           } else {
             this.$loading().close()
           }
         })
       }).catch(() => {})
-    },
-
-    /**
-     * 审核通过后执行的操作
-     */
-    afterApproved () {
-      // 将当前所有数据变为通过状态
-      this.dataGrid.data.forEach(item => {
-        item.approveState = this.approveState.APPROVED
-        item.approverId = this.payload.userId
-        item.approverName = this.payload.userName
-      })
-
-      // 执行打印
-      this.printPurchaseAddBill()
     },
 
     /**

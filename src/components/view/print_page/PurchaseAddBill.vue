@@ -29,6 +29,7 @@
           <th>规格</th>
           <th>入库数量</th>
           <th>单价(含税)</th>
+          <th>小计/元</th>
           <th>批号</th>
           <th>生产日期</th>
           <th>有效期至</th>
@@ -42,6 +43,7 @@
           <td>{{item.gsmGoodsSpecs}}</td>
           <td>{{item.quantity}}</td>
           <td>{{item.costPrice}}</td>
+          <td>{{(item.quantity * item.costPrice).toFixed(2)}}</td>
           <td>{{item.ph}}</td>
           <td>{{item.producedDate}}</td>
           <td>{{item.expiryDate}}</td>
@@ -52,7 +54,7 @@
           <td>合计</td>
           <td colspan="2">{{totalAmount()}}&nbsp;元</td>
           <td>合计大写</td>
-          <td colspan="7">{{formatTotalAmount()}}</td>
+          <td colspan="8">{{formatTotalAmount()}}</td>
         </tr>
       </table>
 

@@ -20,10 +20,14 @@
       <hr style="background-color: #FFFFFF; border: none; height: 1px; margin-bottom: 5px;"/>
       <!------------------------------------------------医生工作站------------------------------------------------------>
       <template v-if="moduleName==='doctorWorkstation'">
-        <el-menu-item index="/main/doctorWorkstation/registrationList">
-          <i class="el-icon-edit-outline"></i>
-          <span slot="title">医生问诊</span>
-        </el-menu-item>
+        <el-submenu index="/doctorWorkstation-0">
+          <template slot="title">
+            <i class="el-icon-edit-outline"></i>
+            <span slot="title">医生问诊</span>
+          </template>
+          <el-menu-item index="/main/doctorWorkstation/registrationList">待诊患者</el-menu-item>
+          <el-menu-item index="/main/doctorWorkstation/clinicalHistoryDoctorCheck">接诊记录</el-menu-item>
+        </el-submenu>
         <el-submenu index="/doctorWorkstation-1">
           <template slot="title">
             <i class="el-icon-s-claim"></i>

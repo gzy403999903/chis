@@ -13,6 +13,7 @@ import Home from '../components/view/home/Home'
 
 // doctor_workstation
 import RegistrationList from '../components/view/doctor_workstation/treatment/RegistrationList'
+import ClinicalHistoryDoctorCheck from '../components/view/doctor_workstation/clinical_history_doctor_check/ClinicalHistoryDoctorCheck'
 import WesternCommonDiagnose from '../components/view/doctor_workstation/common_diagnose/WesternCommonDiagnose'
 import ChineseCommonDiagnose from '../components/view/doctor_workstation/common_diagnose/ChineseCommonDiagnose'
 import PerformItem from '../components/view/doctor_workstation/perform_item/PerformItem'
@@ -201,6 +202,10 @@ export default new Router({
         {
           path: 'registrationList',
           component: RegistrationList
+        },
+        {
+          path: 'clinicalHistoryDoctorCheck',
+          component: ClinicalHistoryDoctorCheck
         },
         {
           path: 'westernCommonDiagnose',
