@@ -1,14 +1,14 @@
 <template>
   <div>
-    <SortSellRecord action="all"/>
+    <PurchaseCostAmount action="clinic"/>
   </div>
 </template>
 
 <script>
-import SortSellRecord from './SortSellRecord'
+import PurchaseCostAmount from './PurchaseCostAmount'
 export default {
   components: {
-    SortSellRecord
+    PurchaseCostAmount
   }
 }
 </script>

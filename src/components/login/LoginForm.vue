@@ -66,7 +66,7 @@ export default {
               this.$store.dispatch('setToken', res.data.resultSet.Authorization)
               // 路由跳转视图
               this.$router.replace('/main/home')
-              this.$message.success('登陆成功')
+              this.$message.success({showClose: true, message: '登陆成功'})
             } else {
               this.$store.dispatch('removeToken')
             }

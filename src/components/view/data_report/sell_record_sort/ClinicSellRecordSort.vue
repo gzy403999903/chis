@@ -1,14 +1,14 @@
 <template>
   <div>
-    <SortSellRecord action="clinic"/>
+    <SellRecordSort action="clinic"/>
   </div>
 </template>
 
 <script>
-import SortSellRecord from './SortSellRecord'
+import SellRecordSort from './SellRecordSort'
 export default {
   components: {
-    SortSellRecord
+    SellRecordSort
   }
 }
 </script>

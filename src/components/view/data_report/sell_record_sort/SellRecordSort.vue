@@ -189,8 +189,8 @@ export default {
       this.$loading()
       let url = (
         this.action === 'all'
-          ? '/chisAPI/sellRecordReport/getSortSellRecordByCriteria'
-          : '/chisAPI/sellRecordReport/getClinicSortSellRecordByCriteria'
+          ? '/chisAPI/sellRecordReport/getSellRecordSortByCriteria'
+          : '/chisAPI/sellRecordReport/getClinicSellRecordSortByCriteria'
       )
       let params = this.queryForm
       params.pageNum = this.pagination.currentPage

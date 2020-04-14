@@ -97,8 +97,8 @@ import PaymentApprove from '../components/view/financial_management/payment_appr
 // data_report
 import AllSellRecord from '../components/view/data_report/sell_record/AllSellRecord'
 import ClinicSellRecord from '../components/view/data_report/sell_record/ClinicSellRecord'
-import AllSortSellRecord from '../components/view/data_report/sort_sell_record/AllSortSellRecord'
-import ClinicSortSellRecord from '../components/view/data_report/sort_sell_record/ClinicSortSellRecord'
+import AllSellRecordSort from '../components/view/data_report/sell_record_sort/AllSellRecordSort'
+import ClinicSellRecordSort from '../components/view/data_report/sell_record_sort/ClinicSellRecordSort'
 import SelfUsedRecord from '../components/view/data_report/self_used_record/SelfUsedRecord'
 import LossRecord from '../components/view/data_report/loss_record/LossRecord'
 import AllVisitRecord from '../components/view/data_report/visit_record/AllVisitRecord'
@@ -107,15 +107,23 @@ import AllBillingTypeReport from '../components/view/data_report/billing_type_re
 import ClinicBillingTypeReport from '../components/view/data_report/billing_type_report/ClinicBillingTypeReport'
 import AllPaymentRecordReport from '../components/view/data_report/payment_record_report/AllPaymentRecordReport'
 import ClinicPaymentRecordReport from '../components/view/data_report/payment_record_report/ClinicPaymentRecordReport'
+import AllPaymentRecordReport2 from '../components/view/data_report/payment_record_report2/AllPaymentRecordReport2'
+import ClinicPaymentRecordReport2 from '../components/view/data_report/payment_record_report2/ClinicPaymentRecordReport2'
 import AllDepositPaymentRecordReport from '../components/view/data_report/deposit_payment_record_report/AllDepositPaymentRecordReport'
 import ClinicDepositPaymentRecordReport from '../components/view/data_report/deposit_payment_record_report/ClinicDepositPaymentRecordReport'
+import AllDepositPaymentRecordReport2 from '../components/view/data_report/deposit_payment_record_report2/AllDepositPaymentRecordReport2'
+import ClinicDepositPaymentRecordReport2 from '../components/view/data_report/deposit_payment_record_report2/ClinicDepositPaymentRecordReport2'
 import AllExpirydateWarning from '../components/view/data_report/expirydate_warning/AllExpirydateWarning'
 import ClinicExpirydateWarning from '../components/view/data_report/expirydate_warning/ClinicExpirydateWarning'
 import AllLshMarginRate from '../components/view/data_report/lsh_margin_rate/AllLshMarginRate'
 import ClinicLshMarginRate from '../components/view/data_report/lsh_margin_rate/ClinicLshMarginRate'
 import AllSellFrequency from '../components/view/data_report/sell_frequency/AllSellFrequency'
 import ClinicSellFrequency from '../components/view/data_report/sell_frequency/ClinicSellFrequency'
-import DaySellRecord from '../components/view/data_report/day_sell_record/DaySellRecord'
+import SellRecordDaily from '../components/view/data_report/sell_record_daily/SellRecordDaily'
+import AllSellRecordStatistics from '../components/view/data_report/sell_record_statistics/AllSellRecordStatistics'
+import ClinicSellRecordStatistics from '../components/view/data_report/sell_record_statistics/ClinicSellRecordStatistics'
+import AllPurchaseCostAmount from '../components/view/data_report/purchase_cost_amount/AllPurchaseCostAmount'
+import ClinicPurchaseCostAmount from '../components/view/data_report/purchase_cost_amount/ClinicPurchaseCostAmount'
 
 // system_management
 import Clinic from '../components/view/system_management/sys_setup/Clinic'
@@ -536,12 +544,12 @@ export default new Router({
           component: ClinicSellRecord
         },
         {
-          path: 'allSortSellRecord',
-          component: AllSortSellRecord
+          path: 'allSellRecordSort',
+          component: AllSellRecordSort
         },
         {
-          path: 'clinicSortSellRecord',
-          component: ClinicSortSellRecord
+          path: 'clinicSellRecordSort',
+          component: ClinicSellRecordSort
         },
         {
           path: 'selfUsedRecord',
@@ -576,12 +584,28 @@ export default new Router({
           component: ClinicPaymentRecordReport
         },
         {
+          path: 'allPaymentRecordReport2',
+          component: AllPaymentRecordReport2
+        },
+        {
+          path: 'clinicPaymentRecordReport2',
+          component: ClinicPaymentRecordReport2
+        },
+        {
           path: 'allDepositPaymentRecordReport',
           component: AllDepositPaymentRecordReport
         },
         {
           path: 'clinicDepositPaymentRecordReport',
           component: ClinicDepositPaymentRecordReport
+        },
+        {
+          path: 'allDepositPaymentRecordReport2',
+          component: AllDepositPaymentRecordReport2
+        },
+        {
+          path: 'clinicDepositPaymentRecordReport2',
+          component: ClinicDepositPaymentRecordReport2
         },
         {
           path: 'allExpirydateWarning',
@@ -608,8 +632,24 @@ export default new Router({
           component: ClinicSellFrequency
         },
         {
-          path: 'daySellRecord',
-          component: DaySellRecord
+          path: 'sellRecordDaily',
+          component: SellRecordDaily
+        },
+        {
+          path: 'allSellRecordStatistics',
+          component: AllSellRecordStatistics
+        },
+        {
+          path: 'clinicSellRecordStatistics',
+          component: ClinicSellRecordStatistics
+        },
+        {
+          path: 'allPurchaseCostAmount',
+          component: AllPurchaseCostAmount
+        },
+        {
+          path: 'clinicPurchaseCostAmount',
+          component: ClinicPurchaseCostAmount
         }
       ]
     },

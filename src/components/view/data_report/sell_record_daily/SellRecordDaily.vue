@@ -133,7 +133,7 @@ export default {
      */
     dataGridLoadData () {
       this.$loading()
-      let url = '/chisAPI/sellRecordReport/getDaySellRecordByCreationDate'
+      let url = '/chisAPI/sellRecordReport/getSellRecordDailyByCreationDate'
       let params = this.queryForm
       params.pageNum = this.pagination.currentPage
       params.pageSize = this.pagination.pageSize
@@ -154,7 +154,7 @@ export default {
     downloadExcel () {
       this.$loading()
       let params = this.queryForm
-      let url = '/chisAPI/sellRecordReport/downloadDaySellRecordExcel'
+      let url = '/chisAPI/sellRecordReport/downloadSellRecordDailyExcel'
       this.$http({method: 'GET', url, params, responseType: 'blob'}).then(res => {
         const blob = new Blob([res.data], {type: 'application/vnd.ms-excel;charset=utf-8'}) // 创建 Blob 对象
         const url = window.URL.createObjectURL(blob) // 获取下载地址

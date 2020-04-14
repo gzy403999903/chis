@@ -356,9 +356,9 @@
           </template>
           <el-menu-item index="/main/dataReport/allSellRecord" v-if="hqReport">销售明细*</el-menu-item>
           <el-menu-item index="/main/dataReport/clinicSellRecord" v-if="!hqReport">销售明细</el-menu-item>
-          <el-menu-item index="/main/dataReport/allSortSellRecord" v-if="hqReport">销售排行*</el-menu-item>
-          <el-menu-item index="/main/dataReport/clinicSortSellRecord" v-if="!hqReport">销售排行</el-menu-item>
-          <el-menu-item index="/main/dataReport/daySellRecord" v-if="hqReport">日销售报表(含税)*</el-menu-item>
+          <el-menu-item index="/main/dataReport/allSellRecordSort" v-if="hqReport">销售排行(按门店)*</el-menu-item>
+          <el-menu-item index="/main/dataReport/clinicSellRecordSort" v-if="!hqReport">销售排行(按门店)</el-menu-item>
+          <el-menu-item index="/main/dataReport/sellRecordDaily" v-if="hqReport">日销售报表(含税)*</el-menu-item>
           <el-menu-item index="/main/dataReport/selfUsedRecord" v-if="hqReport">领用明细*</el-menu-item>
           <el-menu-item index="/main/dataReport/lossRecord" v-if="hqReport">报损明细*</el-menu-item>
           <el-menu-item index="/main/dataReport/allVisitRecord" v-if="hqReport">回访情况*</el-menu-item>
@@ -366,8 +366,8 @@
           <el-menu-item index="/main/dataReport/ClinicExpirydateWarning" v-if="!hqReport">效期预警</el-menu-item>
           <el-menu-item index="/main/dataReport/allLshMarginRate" v-if="hqReport">流水毛利分析*</el-menu-item>
           <el-menu-item index="/main/dataReport/clinicLshMarginRate" v-if="!hqReport">流水毛利分析</el-menu-item>
-          <el-menu-item index="/main/dataReport/allSellFrequency" v-if="hqReport">库存动销分析*</el-menu-item>
-          <el-menu-item index="/main/dataReport/clinicSellFrequency" v-if="!hqReport">库存动销分析</el-menu-item>
+          <el-menu-item index="/main/dataReport/allSellFrequency" v-if="hqReport">库存动销分析(按门店)*</el-menu-item>
+          <el-menu-item index="/main/dataReport/clinicSellFrequency" v-if="!hqReport">库存动销分析(按门店)</el-menu-item>
           <el-menu-item index="/main/dataReport/clinicalHistoryCheck" v-if="hqReport">病历合规检查*</el-menu-item>
 
           <!--
@@ -380,12 +380,20 @@
            <i class="el-icon-tickets"></i>
            <span slot="title">财务报表</span>
          </template>
-         <el-menu-item index="/main/dataReport/allPaymentRecordReport" v-if="hqReport">收费方式汇总*</el-menu-item>
-         <el-menu-item index="/main/dataReport/clinicPaymentRecordReport" v-if="!hqReport">收费方式汇总</el-menu-item>
-         <el-menu-item index="/main/dataReport/allDepositPaymentRecordReport" v-if="hqReport">储值方式汇总*</el-menu-item>
-         <el-menu-item index="/main/dataReport/clinicDepositPaymentRecordReport" v-if="!hqReport">储值方式汇总</el-menu-item>
-         <el-menu-item index="/main/dataReport/allBillingTypeReport" v-if="hqReport">计费类型汇总*</el-menu-item>
-         <el-menu-item index="/main/dataReport/clinicBillingTypeReport" v-if="!hqReport">计费类型汇总</el-menu-item>
+         <el-menu-item index="/main/dataReport/allPaymentRecordReport" v-if="hqReport">收费方式汇总(按人员)*</el-menu-item>
+         <el-menu-item index="/main/dataReport/clinicPaymentRecordReport" v-if="!hqReport">收费方式汇总(按人员)</el-menu-item>
+         <el-menu-item index="/main/dataReport/allPaymentRecordReport2" v-if="hqReport">收费方式汇总(按门店)*</el-menu-item>
+         <el-menu-item index="/main/dataReport/clinicPaymentRecordReport2" v-if="!hqReport">收费方式汇总(按门店)</el-menu-item>
+         <el-menu-item index="/main/dataReport/allDepositPaymentRecordReport" v-if="hqReport">储值方式汇总(按人员)*</el-menu-item>
+         <el-menu-item index="/main/dataReport/clinicDepositPaymentRecordReport" v-if="!hqReport">储值方式汇总(按人员)</el-menu-item>
+         <el-menu-item index="/main/dataReport/allDepositPaymentRecordReport2" v-if="hqReport">储值方式汇总(按门店)*</el-menu-item>
+         <el-menu-item index="/main/dataReport/clinicDepositPaymentRecordReport2" v-if="!hqReport">储值方式汇总(按门店)</el-menu-item>
+         <el-menu-item index="/main/dataReport/allBillingTypeReport" v-if="hqReport">计费类型汇总(按门店)*</el-menu-item>
+         <el-menu-item index="/main/dataReport/clinicBillingTypeReport" v-if="!hqReport">计费类型汇总(按门店)</el-menu-item>
+         <el-menu-item index="/main/dataReport/allSellRecordStatistics" v-if="hqReport">销售统计(按门店)*</el-menu-item>
+         <el-menu-item index="/main/dataReport/clinicSellRecordStatistics" v-if="!hqReport">销售统计(按门店)</el-menu-item>
+         <el-menu-item index="/main/dataReport/allPurchaseCostAmount" v-if="hqReport">采购成本(按门店)*</el-menu-item>
+         <el-menu-item index="/main/dataReport/clinicPurchaseCostAmount" v-if="!hqReport">采购成本(按门店)</el-menu-item>
          <!--
          <el-menu-item index="/main/error/404#82-2">提成查询</el-menu-item>
          -->
@@ -601,7 +609,7 @@ export default {
   }
   /* 设置侧边栏 二级菜单与一级菜单的缩进 */
   .left-bar .el-submenu .el-menu-item {
-    padding-left: 32% !important;
+    padding-left: 25% !important;
   }
   /* 设置侧边栏二级菜单滚动样式*/
   .left-bar .el-menu{

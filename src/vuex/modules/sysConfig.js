@@ -6,7 +6,7 @@ export default {
       pageSize: 30, /* 每页显示的行数 */
       currentPage: 1, /* 当前页页码 */
       pagerCount: 5, /* 分页页码按钮的数量 */
-      pageSizes: [30, 50], /* 选取每页显示的行数 */
+      pageSizes: [30, 50, 100], /* 选取每页显示的行数 */
       layout: 'total, sizes, prev, pager, next, jumper'
     },
 
