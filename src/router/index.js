@@ -64,6 +64,7 @@ import PurchaseAloneAddApply from '../components/view/purchase_management/purcha
 import PurchaseAddApprove from '../components/view/purchase_management/purchase_add/PurchaseAddApprove'
 import PurchaseSubtractApply from '../components/view/purchase_management/purchase_subtract/PurchaseSubtractApply'
 import PurchaseSubtractApprove from '../components/view/purchase_management/purchase_subtract/PurchaseSubtractApprove'
+import PurchaseSubtractApproveHQ from '../components/view/purchase_management/purchase_subtract/PurchaseSubtractApproveHQ'
 
 // items_management
 import MedicalItem from '../components/view/items_management/item/MedicalItem'
@@ -410,6 +411,10 @@ export default new Router({
         {
           path: 'purchaseSubtractApprove',
           component: PurchaseSubtractApprove
+        },
+        {
+          path: 'purchaseSubtractApproveHQ',
+          component: PurchaseSubtractApproveHQ
         }
       ]
     },

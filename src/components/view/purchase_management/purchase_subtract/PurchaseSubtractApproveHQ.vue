@@ -33,7 +33,6 @@
         <el-form-item>
           <el-button type="primary" round icon="el-icon-search" @click="dataGridLoadData">查询</el-button>
           <el-button type="default" round icon="el-icon-refresh" @click="$refs.queryForm.resetFields()">重置</el-button>
-          <el-button type="default" round icon="el-icon-plus" @click="dialogOpen">新建入库单</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -48,26 +47,20 @@
         stripe
         size="mini">
         <el-table-column fixed="left" type="index" width="50"/>
+        <el-table-column fixed="left" label="操作" align="center" width="80">
+          <template slot-scope="scope">
+            <el-button size="mini" @click="dialogOpen(scope.row)">明 细</el-button>
+          </template>
+        </el-table-column>
         <el-table-column prop="creationDate" label="单据日期" width="160" show-overflow-tooltip/>
         <el-table-column prop="lsh" label="流水号" width="220" show-overflow-tooltip/>
-        <el-table-column prop="iymInventoryTypeName" label="仓库名称" width="100" show-overflow-tooltip/>
-        <el-table-column prop="gsmGoodsTypeName" label="商品类型" width="110" show-overflow-tooltip/>
-        <el-table-column prop="gsmGoodsOid" label="编码" width="100" show-overflow-tooltip/>
-        <el-table-column prop="gsmGoodsName" label="商品名称" width="180" show-overflow-tooltip/>
-        <el-table-column prop="goodsUnitsName" label="单位" width="90" show-overflow-tooltip/>
-        <el-table-column prop="gsmGoodsSpecs" label="规格" width="150" show-overflow-tooltip/>
-        <el-table-column prop="quantity" label="入库数量" width="80" show-overflow-tooltip/>
-        <el-table-column prop="costPrice" label="入库单价" width="80" show-overflow-tooltip/>
-        <el-table-column prop="ph" label="批号" width="120" show-overflow-tooltip/>
-        <el-table-column prop="producedDate" label="生产日期" width="100" show-overflow-tooltip/>
-        <el-table-column prop="expiryDate" label="有效期至" width="100" show-overflow-tooltip/>
-        <el-table-column prop="originName" label="产地" width="120" show-overflow-tooltip sortable/>
-        <el-table-column prop="manufacturerName" label="生产厂家" min-width="250" show-overflow-tooltip sortable/>
-        <el-table-column prop="pemSupplierName" label="供应商名称" width="200" show-overflow-tooltip sortable/>
-        <el-table-column prop="creatorName" label="操作人" width="110" show-overflow-tooltip sortable/>
-        <el-table-column prop="approveDate" label="审批时间" width="160" show-overflow-tooltip sortable/>
-        <el-table-column prop="approverName" label="审批人" width="110" show-overflow-tooltip sortable/>
-        <el-table-column prop="approveState" label="审批状态" min-width="110" :formatter="dataGridFormatterApproveSate" show-overflow-tooltip sortable/>
+        <el-table-column prop="pemSupplierName" label="供应商名称" width="300" show-overflow-tooltip sortable/>
+        <el-table-column prop="totalCostPrice" label="退货总额" width="100" show-overflow-tooltip sortable/>
+        <el-table-column prop="creatorName" label="操作人" width="100" show-overflow-tooltip sortable/>
+        <el-table-column prop="approverName" label="审核人" width="100" show-overflow-tooltip/>
+        <el-table-column prop="approveDate" label="审核日期" width="160" show-overflow-tooltip/>
+        <el-table-column prop="approveState" label="审批状态" width="110" :formatter="dataGridFormatterApproveSate" sortable/>
+        <el-table-column prop="sysClinicName" label="机构名称" min-width="400" show-overflow-tooltip/>
       </el-table>
       <el-pagination
         :page-size="pagination.pageSize"
@@ -81,19 +74,18 @@
       </el-pagination>
     </el-card>
 
-    <!-- 采购入库单 -->
-    <PurchaseAloneAddApplyEdit :visible="dialog.visible"
-                               :dialogClose="dialogClose" :dataGridLoadData="dataGridLoadData"/>
+    <!-- 编辑入库明细 -->
+    <PurchaseSubtractApproveDetail :visible="dialog.visible" :row="dataGrid.row"
+                                   :dialogClose="dialogClose" :dataGridLoadData="dataGridLoadData"/>
 
   </div>
 </template>
 
 <script>
-import PurchaseAloneAddApplyEdit from './PurchaseAloneAddApplyEdit'
-
+import PurchaseSubtractApproveDetail from './PurchaseSubtractApproveDetail'
 export default {
   components: {
-    PurchaseAloneAddApplyEdit
+    PurchaseSubtractApproveDetail
   },
 
   data () {
@@ -110,7 +102,8 @@ export default {
         approveState: null
       },
       dataGrid: {
-        data: []
+        data: [],
+        row: {}
       },
       pagination: {
         total: this.$store.getters.pagination.total, /* 总记录数 */
@@ -124,7 +117,7 @@ export default {
         visible: false
       }
     }
-  }, // end data
+  },
 
   methods: {
     /* -------------------------------------------------------------------------------------------------------------- */
@@ -149,7 +142,7 @@ export default {
 
     dataGridLoadData () {
       this.$loading()
-      const url = '/chisAPI/inventoryAdd/getClinicListByCriteriaForAlone'
+      const url = '/chisAPI/inventorySubtract/getLshGroupListByCriteria'
       let params = this.queryForm
       params.pageNum = this.pagination.currentPage
       params.pageSize = this.pagination.pageSize
@@ -164,12 +157,15 @@ export default {
     },
 
     /* -------------------------------------------------------------------------------------------------------------- */
-    dialogOpen () {
+    dialogOpen (row) {
+      this.dataGrid.row = row
       this.dialog.visible = true
     },
+
     dialogClose () {
       this.dialog.visible = false
     }
+
   } // end methods
 }
 </script>

@@ -215,6 +215,7 @@
           </template>
           <el-menu-item index="/main/purchaseManagement/purchaseSubtractApply">采购退货</el-menu-item>
           <el-menu-item index="/main/purchaseManagement/purchaseSubtractApprove">退货审批</el-menu-item>
+          <el-menu-item index="/main/purchaseManagement/purchaseSubtractApproveHQ">退货审批 [总部级]</el-menu-item>
         </el-submenu>
       </template>
       <!-------------------------------------------------库存管理------------------------------------------------------->

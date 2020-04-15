@@ -6,7 +6,7 @@
       body-style="padding: 5px;"
       class="el-card-menus">
       <el-form :model="queryForm" ref="queryForm" :inline="true" size="mini">
-        <el-form-item label="入库日期" prop="creationDate">
+        <el-form-item label="单据日期" prop="creationDate">
           <el-date-picker
             style="width: 280px;"
             v-model="queryForm.creationDate"
@@ -25,6 +25,7 @@
         <el-form-item label="审批状态" prop="approveState">
           <el-select v-model="queryForm.approveState" placeholder="请选择" style="width: 120px;">
             <el-option label="全部" :value="null"/>
+            <el-option label="待审核" :value="approveState.PENDING"/>
             <el-option label="通过" :value="approveState.APPROVED"/>
             <el-option label="驳回" :value="approveState.UNAPPROVED"/>
           </el-select>
