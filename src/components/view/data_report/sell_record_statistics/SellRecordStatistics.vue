@@ -73,7 +73,7 @@
           <el-table-column label="商品(未开票)" align="center">
             <el-table-column prop="goodsWkpHscb" label="含税成本额" align="center" width="120" show-overflow-tooltip/>
             <el-table-column prop="goodsWkpWscb" label="无税成本额" align="center" width="120" show-overflow-tooltip/>
-            <el-table-column prop="goodsWkpXxs" label="销售税额" align="center" width="120" show-overflow-tooltip/>
+            <el-table-column prop="goodsWkpJxs" label="采购税额" align="center" width="120" show-overflow-tooltip/>
           </el-table-column>
           <el-table-column prop="goodsCbHj" label="成本合计" align="center" width="120" show-overflow-tooltip/>
         </el-table-column>

@@ -176,6 +176,7 @@ import DoctorTitles from '../components/view/system_management/other_dict/Doctor
 
 import ClinicRoom from '../components/view/system_management/clinic_setup/ClinicRoom'
 import Doctor from '../components/view/system_management/clinic_setup/Doctor'
+import ClinicSellTarget from '../components/view/system_management/clinic_setup/ClinicSellTarget'
 
 Vue.use(Router)
 
@@ -671,6 +672,10 @@ export default new Router({
         {
           path: 'doctor',
           component: Doctor
+        },
+        {
+          path: 'clinicSellTarget',
+          component: ClinicSellTarget
         },
 
         {

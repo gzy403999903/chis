@@ -9,6 +9,7 @@
         <el-form-item label="销售日期" prop="creationDate">
           <el-date-picker
             v-model="queryForm.creationDate"
+            @change="getQueryMonth"
             type="daterange"
             align="right"
             unlink-panels
@@ -36,7 +37,6 @@
         :data="dataGrid.data"
         stripe
         border
-        show-summary
         highlight-current-row
         size="mini">
         <el-table-column fixed="left" type="index" width="50"/>
@@ -49,6 +49,12 @@
         <el-table-column prop="qtxmf" label="其他项目" width="100" show-overflow-tooltip/>
         <el-table-column prop="rxs" label="日销售" width="100" show-overflow-tooltip/>
         <el-table-column prop="yxs" label="月销售" min-width="100" show-overflow-tooltip/>
+        <el-table-column prop="yzb" :label="queryForm.queryMonth + '月指标'" min-width="100" show-overflow-tooltip/>
+        <el-table-column label="完成率" min-width="100" show-overflow-tooltip>
+          <template slot-scope="props">
+            {{props.row.wcl ? props.row.wcl + '%' : ''}}
+          </template>
+        </el-table-column>
       </el-table>
       <el-pagination
         :page-size="pagination.pageSize"
@@ -74,7 +80,8 @@ export default {
         }
       },
       queryForm: {
-        creationDate: this.$store.getters.queryDate
+        creationDate: this.$store.getters.queryDate,
+        queryMonth: ''
       },
       dataGrid: {
         data: []
@@ -89,6 +96,11 @@ export default {
       }
     }
   }, // end data
+
+  mounted () {
+    // 获取当前的查询月份
+    this.getQueryMonth()
+  },
 
   methods: {
     /**
@@ -107,6 +119,21 @@ export default {
     paginationCurrentChange (value) {
       this.pagination.currentPage = value
       this.dataGridLoadData()
+    },
+
+    /**
+     * 获取查询月份
+     */
+    getQueryMonth () {
+      let endDate = this.queryForm.creationDate[1]
+      if (endDate) {
+        this.queryForm.queryMonth = new Date(endDate).getMonth() + 1
+        /*
+        if (new Date(endDate).getDate() <= 25) {
+          this.queryForm.queryMonth = new Date(endDate).getMonth() + 1
+        }
+        */
+      }
     },
 
     /**

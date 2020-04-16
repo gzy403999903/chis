@@ -409,6 +409,7 @@
           </template>
           <el-menu-item index="/main/systemManagement/clinicRoom">门诊科室设置</el-menu-item>
           <el-menu-item index="/main/systemManagement/doctor">门诊医生注册</el-menu-item>
+          <el-menu-item index="/main/systemManagement/clinicSellTarget">门诊销售指标</el-menu-item>
         </el-submenu>
         <!--
         <el-menu-item index="/main/error/404#systemManagement-2-1">
