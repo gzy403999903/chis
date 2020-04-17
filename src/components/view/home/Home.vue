@@ -1,6 +1,7 @@
 <template>
   <div>
     <div class="home-body" :style="`height: ${$store.getters.dialogDataGridHeight}px;`">
+      <!--
       <div class="top-div">
         <el-row>
           <el-col :span="4">
@@ -25,9 +26,41 @@
           </el-col>
           <el-col :span="4"></el-col>
         </el-row>
-      </div> <!-- end top-div -->
+      </div> --><!-- end top-div -->
 
-      <div class="bottom-div" :style="`height: ${$store.getters.dialogDataGridHeight - 120}px;`">
+      <div class="info-card-wrapper">
+        <div class="info-card info-card-danger">
+          <div>本月指标</div>
+          <hr/>
+          <div>{{sellSituation.yzb}}元</div>
+        </div>
+
+        <div class="info-card info-card-info">
+          <div>本月已完成</div>
+          <hr/>
+          <div>{{sellSituation.yxs}}元</div>
+        </div>
+
+        <div class="info-card info-card-warning">
+          <div>今日指标</div>
+          <hr/>
+          <div>{{daySellTarget}}元</div>
+        </div>
+
+        <div class="info-card info-card-success">
+          <div>今日已完成</div>
+          <hr/>
+          <div>{{sellSituation.rxs}}元</div>
+        </div>
+
+        <div class="info-card info-card-primary">
+          <div>本月完成进度</div>
+          <hr/>
+          <div>{{sellSituation.wcl}}%</div>
+        </div>
+      </div>
+
+      <div class="bottom-div" :style="`height: ${$store.getters.dialogDataGridHeight - 140}px;`">
         <div style="padding: 20px 0 20px 20px; background: linear-gradient(to bottom, #e9f2f9 , white);">
           <div style="float: left;"><h3>疫情要闻实时播报</h3></div>
           <div style="font-size: 14px; text-align: right; padding-right: 40px;">
@@ -56,11 +89,16 @@
 </template>
 
 <script>
+import jwtDecode from 'jwt-decode'
 import moment from 'moment'
+import accountPeriod from '../../../common/accountPeriod'
 export default {
   data () {
     return {
-      epidemicData: []
+      payload: jwtDecode(this.$store.getters.token),
+      epidemicData: [], // 疫情数据
+      sellSituation: {}, // 销售概况
+      daySellTarget: 0 // 日销售目标
     }
   }, // end data
 
@@ -69,6 +107,8 @@ export default {
     this.getEpidemicSituations()
     // 获取推送消息
     this.getMessageList()
+    // 获取销售概况
+    this.getSellSituation()
   }, // end mounted
 
   methods: {
@@ -115,6 +155,31 @@ export default {
           })
         }
       })
+    },
+
+    /**
+     * 获取销售概况
+     */
+    getSellSituation () {
+      let url = '/chisAPI/sellRecordReport/getSellRecordDailyByCreationDate'
+      let params = {
+        creationDate: [accountPeriod.getBeginDate(), accountPeriod.getCurrentDate()],
+        queryMonth: accountPeriod.getCurrentMonth()
+      }
+      params.pageNum = 1
+      params.pageSize = 30
+
+      this.$http.get(url, {params}).then((res) => {
+        if (res.data.code === 200) {
+          let data = res.data.resultSet.page.list
+          // 如果当前人员所属机构为总部则显示合计行数据(sysClinicId = 0) 否则显示对应门店数据
+          let sysClinicId = this.payload.clinicId === this.$store.getters.HQID ? 0 : this.payload.clinicId
+          this.sellSituation = data.find(row => row.sysClinicId === sysClinicId)
+          // 计算今日销售指标
+          let surplusTarget = this.sellSituation.yzb - this.sellSituation.yxs
+          this.daySellTarget = surplusTarget <= 0 ? 0 : (surplusTarget / accountPeriod.getSurplusDays()).toFixed(2)
+        }
+      })
     }
 
   } // end methods
@@ -125,6 +190,50 @@ export default {
   .home-body {
     background-color: white;
   }
+
+  .info-card-wrapper {
+    padding: 10px;
+    display: flex;
+    justify-content: space-around;
+  }
+  .info-card {
+    width: 250px;
+    height: 100px;
+    border-radius: 8px;
+    color: white;
+    text-align: center;
+  }
+  .info-card div:nth-child(1) {
+    padding: 5px 0;
+    font-size: 1.3em;
+  }
+  .info-card div:nth-child(3) {
+    font-size: 2.5em;
+    padding-top: 10px;
+  }
+  .info-card hr {
+    border:none;
+    border-top: 1px solid white;
+    width: 150px;
+    margin: 0 auto;
+  }
+  .info-card-primary {
+    background-color: rgb(100, 190, 243);
+  }
+  .info-card-success {
+    background-color: rgb(103, 205, 166);
+  }
+  .info-card-warning {
+    background-color: rgb(243, 197, 99);
+  }
+  .info-card-danger {
+    background-color: rgb(255, 149 ,110);
+  }
+  .info-card-info {
+    background-color: rgb(75, 196, 207);
+  }
+
+  /*style="width: 100px; height:1px; text-align: center; border:none;border-top:1px solid white;"*/
   .top-div {
     height: 110px;
     text-align: center;

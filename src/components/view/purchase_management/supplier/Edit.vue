@@ -575,7 +575,7 @@ export default {
           {max: 30, message: '长度不合法[1-30]'}
         ],
         accountLicence: [
-          {required: true, message: '不能为空'},
+          /* {required: true, message: '不能为空'}, */
           {max: 30, message: '长度不合法[1-30]'}
         ],
         bankName: [
