@@ -38,7 +38,7 @@
         <div class="info-card info-card-info">
           <div>本月已完成</div>
           <hr/>
-          <div>{{sellSituation.yxs}}元</div>
+          <div>{{parseInt(sellSituation.yxs)}}元</div>
         </div>
 
         <div class="info-card info-card-warning">
@@ -50,7 +50,7 @@
         <div class="info-card info-card-success">
           <div>今日已完成</div>
           <hr/>
-          <div>{{sellSituation.rxs}}元</div>
+          <div>{{parseInt(sellSituation.rxs)}}元</div>
         </div>
 
         <div class="info-card info-card-primary">
@@ -177,7 +177,7 @@ export default {
           this.sellSituation = data.find(row => row.sysClinicId === sysClinicId)
           // 计算今日销售指标
           let surplusTarget = this.sellSituation.yzb - this.sellSituation.yxs
-          this.daySellTarget = surplusTarget <= 0 ? 0 : (surplusTarget / accountPeriod.getSurplusDays()).toFixed(2)
+          this.daySellTarget = surplusTarget <= 0 ? 0 : parseInt(surplusTarget / accountPeriod.getSurplusDays())
         }
       })
     }
