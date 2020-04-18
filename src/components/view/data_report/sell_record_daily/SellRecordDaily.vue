@@ -129,7 +129,8 @@ export default {
       if (endDate) {
         let currentMonth = new Date(endDate).getMonth() + 1
         let currentDay = new Date(endDate).getDate()
-        this.queryForm.queryMonth = currentMonth === 1 ? currentMonth : (currentDay <= 25 ? currentMonth : currentMonth + 1)
+        let month = currentMonth === 1 ? currentMonth : (currentDay <= 25 ? currentMonth : currentMonth + 1)
+        this.queryForm.queryMonth = month > 12 ? 12 : month
       }
     },
 

@@ -6,7 +6,7 @@
       body-style="padding: 5px;"
       class="el-card-menus">
       <el-form :model="queryForm" ref="queryForm" inline size="mini">
-        <el-form-item label="单据日期" prop="creationDate">
+        <el-form-item label="销售日期" prop="creationDate">
           <el-date-picker
             v-model="queryForm.creationDate"
             type="daterange"
@@ -42,7 +42,7 @@
         highlight-current-row
         size="mini">
         <el-table-column fixed="left" type="index" width="50"/>
-        <el-table-column prop="creationDate" label="单据日期" width="120" show-overflow-tooltip/>
+        <el-table-column prop="creationDate" label="销售日期" width="120" show-overflow-tooltip/>
         <el-table-column prop="xyf" label="西药费" width="100" show-overflow-tooltip/>
         <el-table-column prop="zyf" label="中药费" width="100" show-overflow-tooltip/>
         <el-table-column prop="zcyf" label="中成药费" width="100" show-overflow-tooltip/>
@@ -55,7 +55,7 @@
         <el-table-column prop="czf" label="出诊费" width="100" show-overflow-tooltip/>
         <el-table-column prop="clf" label="材料费" width="100" show-overflow-tooltip/>
         <el-table-column prop="xj" label="小计" width="100" show-overflow-tooltip/>
-        <el-table-column prop="sysClinicName" label="机构名称" min-width="400" show-overflow-tooltip/>
+        <el-table-column prop="sysClinicName" label="机构名称" min-width="400" show-overflow-tooltip v-if="groupBy==='sysClinicId'"/>
       </el-table>
       <el-pagination
         :page-size="pagination.pageSize"
@@ -75,6 +75,10 @@
 export default {
   props: {
     action: {
+      type: String,
+      required: true
+    },
+    groupBy: {
       type: String,
       required: true
     }
@@ -154,6 +158,7 @@ export default {
           : '/chisAPI/sellRecordReport/getClinicBillingTypeGroupListByCriteria'
       )
       let params = this.queryForm
+      params.groupBy = this.groupBy
       params.pageNum = this.pagination.currentPage
       params.pageSize = this.pagination.pageSize
 

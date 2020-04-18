@@ -99,6 +99,7 @@ import PaymentApprove from '../components/view/financial_management/payment_appr
 import AllSellRecord from '../components/view/data_report/sell_record/AllSellRecord'
 import ClinicSellRecord from '../components/view/data_report/sell_record/ClinicSellRecord'
 import AllSellRecordSort from '../components/view/data_report/sell_record_sort/AllSellRecordSort'
+import AllSellRecordSort2 from '../components/view/data_report/sell_record_sort/AllSellRecordSort2'
 import ClinicSellRecordSort from '../components/view/data_report/sell_record_sort/ClinicSellRecordSort'
 import SelfUsedRecord from '../components/view/data_report/self_used_record/SelfUsedRecord'
 import LossRecord from '../components/view/data_report/loss_record/LossRecord'
@@ -106,14 +107,15 @@ import AllVisitRecord from '../components/view/data_report/visit_record/AllVisit
 import ClinicalHistoryCheck from '../components/view/data_report/clinical_history_check/ClinicalHistoryCheck'
 import AllBillingTypeReport from '../components/view/data_report/billing_type_report/AllBillingTypeReport'
 import ClinicBillingTypeReport from '../components/view/data_report/billing_type_report/ClinicBillingTypeReport'
+import AllBillingTypeReport2 from '../components/view/data_report/billing_type_report/AllBillingTypeReport2'
 import AllPaymentRecordReport from '../components/view/data_report/payment_record_report/AllPaymentRecordReport'
 import ClinicPaymentRecordReport from '../components/view/data_report/payment_record_report/ClinicPaymentRecordReport'
-import AllPaymentRecordReport2 from '../components/view/data_report/payment_record_report2/AllPaymentRecordReport2'
-import ClinicPaymentRecordReport2 from '../components/view/data_report/payment_record_report2/ClinicPaymentRecordReport2'
+import AllPaymentRecordReport2 from '../components/view/data_report/payment_record_report/AllPaymentRecordReport2'
+import ClinicPaymentRecordReport2 from '../components/view/data_report/payment_record_report/ClinicPaymentRecordReport2'
 import AllDepositPaymentRecordReport from '../components/view/data_report/deposit_payment_record_report/AllDepositPaymentRecordReport'
 import ClinicDepositPaymentRecordReport from '../components/view/data_report/deposit_payment_record_report/ClinicDepositPaymentRecordReport'
-import AllDepositPaymentRecordReport2 from '../components/view/data_report/deposit_payment_record_report2/AllDepositPaymentRecordReport2'
-import ClinicDepositPaymentRecordReport2 from '../components/view/data_report/deposit_payment_record_report2/ClinicDepositPaymentRecordReport2'
+import AllDepositPaymentRecordReport2 from '../components/view/data_report/deposit_payment_record_report/AllDepositPaymentRecordReport2'
+import ClinicDepositPaymentRecordReport2 from '../components/view/data_report/deposit_payment_record_report/ClinicDepositPaymentRecordReport2'
 import AllExpirydateWarning from '../components/view/data_report/expirydate_warning/AllExpirydateWarning'
 import ClinicExpirydateWarning from '../components/view/data_report/expirydate_warning/ClinicExpirydateWarning'
 import AllLshMarginRate from '../components/view/data_report/lsh_margin_rate/AllLshMarginRate'
@@ -125,6 +127,7 @@ import AllSellRecordStatistics from '../components/view/data_report/sell_record_
 import ClinicSellRecordStatistics from '../components/view/data_report/sell_record_statistics/ClinicSellRecordStatistics'
 import AllPurchaseCostAmount from '../components/view/data_report/purchase_cost_amount/AllPurchaseCostAmount'
 import ClinicPurchaseCostAmount from '../components/view/data_report/purchase_cost_amount/ClinicPurchaseCostAmount'
+import MemberAnalysis from '../components/view/data_report/member_analysis/MemberAnalysis'
 
 // system_management
 import Clinic from '../components/view/system_management/sys_setup/Clinic'
@@ -558,6 +561,10 @@ export default new Router({
           component: ClinicSellRecordSort
         },
         {
+          path: 'allSellRecordSort2',
+          component: AllSellRecordSort2
+        },
+        {
           path: 'selfUsedRecord',
           component: SelfUsedRecord
         },
@@ -580,6 +587,10 @@ export default new Router({
         {
           path: 'clinicBillingTypeReport',
           component: ClinicBillingTypeReport
+        },
+        {
+          path: 'allBillingTypeReport2',
+          component: AllBillingTypeReport2
         },
         {
           path: 'allPaymentRecordReport',
@@ -656,6 +667,10 @@ export default new Router({
         {
           path: 'clinicPurchaseCostAmount',
           component: ClinicPurchaseCostAmount
+        },
+        {
+          path: 'memberAnalysis',
+          component: MemberAnalysis
         }
       ]
     },

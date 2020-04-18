@@ -91,11 +91,30 @@
         <el-table-column prop="specs" label="规格" width="150" show-overflow-tooltip/>
         <el-table-column prop="quantity" label="销售数量" width="100" show-overflow-tooltip/>
         <el-table-column prop="unitsName" label="销售单位" width="100" show-overflow-tooltip/>
+        <el-table-column prop="hscb" label="成本总额(含税) / 元" width="140" show-overflow-tooltip/>
+        <el-table-column prop="hsxs" label="销售总额(含税) / 元" width="140" show-overflow-tooltip/>
+        <el-table-column label="毛利总额(含税) / 元" width="140" show-overflow-tooltip>
+          <template slot-scope="props">
+           {{(props.row.hsxs - props.row.hscb).toFixed(2)}}
+          </template>
+        </el-table-column>
+        <el-table-column prop="wscb" label="成本总额(无税) / 元" width="140" show-overflow-tooltip/>
+        <el-table-column prop="wsxs" label="销售总额(无税) / 元" width="140" show-overflow-tooltip/>
+        <el-table-column label="毛利总额(无税) / 元" width="140" show-overflow-tooltip>
+          <template slot-scope="props">
+            {{(props.row.wsxs - props.row.wscb).toFixed(2)}}
+          </template>
+        </el-table-column>
+        <el-table-column label="毛利率" width="100" show-overflow-tooltip>
+          <template slot-scope="props">
+            {{((props.row.wsxs - props.row.wscb) / props.row.wsxs * 100).toFixed(2)}}%
+          </template>
+        </el-table-column>
         <el-table-column prop="originName" label="产地" width="100" show-overflow-tooltip/>
         <el-table-column prop="manufacturerName" label="生产厂家" width="300" show-overflow-tooltip/>
         <el-table-column prop="billingTypeName" label="计费类型" width="120" show-overflow-tooltip/>
         <el-table-column prop="goodsClassifyName" label="商品分类" width="150" show-overflow-tooltip/>
-        <el-table-column prop="sysClinicName" label="机构名称" min-width="400" show-overflow-tooltip/>
+        <el-table-column prop="sysClinicName" label="机构名称" min-width="400" show-overflow-tooltip v-if="groupBy === 'sysClinicId'"/>
       </el-table>
       <el-pagination
         :page-size="pagination.pageSize"
@@ -116,6 +135,10 @@
 export default {
   props: {
     action: {
+      type: String,
+      required: true
+    },
+    groupBy: {
       type: String,
       required: true
     }
@@ -193,6 +216,7 @@ export default {
           : '/chisAPI/sellRecordReport/getClinicSellRecordSortByCriteria'
       )
       let params = this.queryForm
+      params.groupBy = this.groupBy
       params.pageNum = this.pagination.currentPage
       params.pageSize = this.pagination.pageSize
 

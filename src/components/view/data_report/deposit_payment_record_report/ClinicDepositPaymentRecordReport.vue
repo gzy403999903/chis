@@ -1,5 +1,5 @@
 <template>
-  <DepositPaymentRecordReport action="clinic"/>
+  <DepositPaymentRecordReport action="clinic" groupBy="creatorId"/>
 </template>
 
 <script>

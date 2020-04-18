@@ -44,7 +44,7 @@ export default {
   }
   /* 进入动画的过度效果 */
   .move-enter-active {
-    transition: all 0.8s; /*过渡效果*/
+    transition: all 0.5s; /*过渡效果*/
   }
   /* 进入动画结束时的效果 */
   .move-leave-to {

@@ -1,5 +1,5 @@
-import moment from 'moment'
-
+// import moment from 'moment'
+import accountPeriod from '../../common/accountPeriod'
 export default {
   state: {
     // 审批状态
@@ -73,7 +73,8 @@ export default {
     ],
 
     // 查询日期跨度
-    queryDate: [moment().subtract(1, 'months').format('YYYY-MM-DD'), moment().format('YYYY-MM-DD')]
+    // queryDate: [moment().subtract(1, 'months').format('YYYY-MM-DD'), moment().format('YYYY-MM-DD')]
+    queryDate: [accountPeriod.getBeginDate(), accountPeriod.getCurrentDate()]
   },
 
   /**

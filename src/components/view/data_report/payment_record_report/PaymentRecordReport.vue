@@ -6,7 +6,7 @@
       body-style="padding: 5px;"
       class="el-card-menus">
       <el-form :model="queryForm" ref="queryForm" inline size="mini">
-        <el-form-item label="单据日期" prop="creationDate">
+        <el-form-item label="销售日期" prop="creationDate">
           <el-date-picker
             v-model="queryForm.creationDate"
             type="daterange"
@@ -45,7 +45,7 @@
         highlight-current-row
         size="mini">
         <el-table-column fixed="left" type="index" width="50"/>
-        <el-table-column prop="creationDate" label="单据日期" width="120" show-overflow-tooltip/>
+        <el-table-column prop="creationDate" label="销售日期" width="120" show-overflow-tooltip/>
         <el-table-column prop="cash" label="现金" width="100" show-overflow-tooltip/>
         <el-table-column prop="memberBalance" label="会员卡(储值)" width="120" show-overflow-tooltip/>
         <el-table-column prop="unionpay" label="银联" width="100" show-overflow-tooltip/>
@@ -60,12 +60,12 @@
         <el-table-column prop="yky" label="一卡易" width="100" show-overflow-tooltip/>
         <el-table-column prop="actualAmount" label="小计" width="100" show-overflow-tooltip/>
         <el-table-column prop="disparityAmount" label="差额" width="100" show-overflow-tooltip/>
-        <el-table-column label="收银员ID" width="120" show-overflow-tooltip>
+        <el-table-column label="收银员ID" width="120" show-overflow-tooltip v-if="groupBy === 'creatorId'">
           <template slot-scope="props">
             {{props.row.creatorId + ' '}}
           </template>
         </el-table-column>
-        <el-table-column prop="creatorName" label="收银员姓名" width="120" show-overflow-tooltip/>
+        <el-table-column prop="creatorName" label="收银员姓名" width="120" show-overflow-tooltip v-if="groupBy === 'creatorId'"/>
         <el-table-column prop="sysClinicName" label="机构名称" min-width="400" show-overflow-tooltip/>
       </el-table>
       <el-pagination
@@ -86,6 +86,10 @@
 export default {
   props: {
     action: {
+      type: String,
+      required: true
+    },
+    groupBy: {
       type: String,
       required: true
     }
@@ -168,6 +172,7 @@ export default {
       let params = this.queryForm
       params.pageNum = this.pagination.currentPage
       params.pageSize = this.pagination.pageSize
+      params.groupBy = this.groupBy
 
       this.$http.get(url, {params}).then((res) => {
         if (res.data.code === 200) {

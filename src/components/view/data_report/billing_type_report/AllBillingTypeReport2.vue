@@ -1,5 +1,5 @@
 <template>
-  <BillingTypeReport action="clinic" groupBy="sysClinicId"/>
+  <BillingTypeReport action="all" groupBy="billingTypeId"/>
 </template>
 
 <script>

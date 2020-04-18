@@ -1,6 +1,6 @@
 <template>
   <div>
-    <SellRecordSort action="all"/>
+    <SellRecordSort action="all" groupBy="sysClinicId"/>
   </div>
 </template>
 
