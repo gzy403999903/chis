@@ -52,7 +52,7 @@
       </el-row>
 
       <el-form :model="queryForm" ref="queryForm" :inline="false" size="mini" label-width="120px" label-position="left" style="padding: 0 20px;">
-        <el-form-item label="消费周期天数" prop="sellDays">
+        <el-form-item label="分析天数" prop="sellDays">
           <el-input-number v-model="queryForm.sellDays" :controls="false" :min="1"  :max="366" :precision="0"
                            style="width: 100px;"/>
         </el-form-item>
@@ -154,12 +154,12 @@
         <el-table-column prop="birth" label="生日" width="120" show-overflow-tooltip/>
         <el-table-column prop="birthSurplusDays" label="距离生日天数" width="120" show-overflow-tooltip/>
         <el-table-column prop="balance" label="会员卡余额" width="120" show-overflow-tooltip/>
-        <el-table-column prop="czpc" label="储值频次" width="120" show-overflow-tooltip/>
+        <el-table-column prop="czpc" :label="queryForm.sellDays + '天内储值频次'" width="130" show-overflow-tooltip/>
         <el-table-column prop="czhj" label="储值合计" width="120" show-overflow-tooltip/>
         <el-table-column prop="maxCz" label="最大一次储值" width="120" show-overflow-tooltip/>
         <el-table-column prop="minCz" label="最小一次储值" width="120" show-overflow-tooltip/>
         <el-table-column prop="czLastDate" label="最后储值日期" width="160" show-overflow-tooltip/>
-        <el-table-column prop="xfpc" label="消费频次" width="120" show-overflow-tooltip/>
+        <el-table-column prop="xfpc" :label="queryForm.sellDays + '天内消费频次'" width="130" show-overflow-tooltip/>
         <el-table-column prop="xfhj" label="消费合计" width="120" show-overflow-tooltip/>
         <el-table-column prop="maxXfje" label="最大一次消费" width="120" show-overflow-tooltip/>
         <el-table-column prop="minXfje" label="最小一次消费" width="120" show-overflow-tooltip/>
