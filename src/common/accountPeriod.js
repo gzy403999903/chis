@@ -19,7 +19,7 @@ export default {
    * @returns {string}
    */
   getEndDate () {
-    return currentYear + '-' + this.getCurrentMonth() + '-' + (this.getCurrentMonth() === 12 ? 31 : 25)
+    return currentYear + '-' + (this.getCurrentMonth() < 10 ? 0 + '' + this.getCurrentMonth() : this.getCurrentMonth()) + '-' + (this.getCurrentMonth() === 12 ? 31 : 25)
   },
 
   /**
@@ -45,7 +45,7 @@ export default {
    * @returns {number}
    */
   getSurplusDays () {
-    let currentDate = new Date().getTime()
+    let currentDate = new Date(this.getCurrentDate()).getTime()
     let periodDate = new Date(this.getEndDate()).getTime()
     return parseInt((periodDate - currentDate) / 1000 / 60 / 60 / 24) + 1
   }

@@ -360,14 +360,14 @@
           <el-menu-item index="/main/dataReport/allSellRecordSort" v-if="hqReport">销售排行(按门店)*</el-menu-item>
           <el-menu-item index="/main/dataReport/allSellRecordSort2" v-if="hqReport">销售排行(按商品)*</el-menu-item>
           <el-menu-item index="/main/dataReport/clinicSellRecordSort" v-if="!hqReport">销售排行(按门店)</el-menu-item>
-          <el-menu-item index="/main/dataReport/memberAnalysis">会员分析</el-menu-item>
+          <el-menu-item index="/main/dataReport/allSellFrequency" v-if="hqReport">库存动销分析(按门店)*</el-menu-item>
+          <el-menu-item index="/main/dataReport/clinicSellFrequency" v-if="!hqReport">库存动销分析(按门店)</el-menu-item>
           <el-menu-item index="/main/dataReport/sellRecordDaily" v-if="hqReport">日销售报表(含税)*</el-menu-item>
+          <el-menu-item index="/main/dataReport/memberAnalysis">会员分析</el-menu-item>
           <el-menu-item index="/main/dataReport/allExpirydateWarning" v-if="hqReport">效期预警*</el-menu-item>
           <el-menu-item index="/main/dataReport/ClinicExpirydateWarning" v-if="!hqReport">效期预警</el-menu-item>
           <el-menu-item index="/main/dataReport/allLshMarginRate" v-if="hqReport">流水毛利分析*</el-menu-item>
           <el-menu-item index="/main/dataReport/clinicLshMarginRate" v-if="!hqReport">流水毛利分析</el-menu-item>
-          <el-menu-item index="/main/dataReport/allSellFrequency" v-if="hqReport">库存动销分析(按门店)*</el-menu-item>
-          <el-menu-item index="/main/dataReport/clinicSellFrequency" v-if="!hqReport">库存动销分析(按门店)</el-menu-item>
           <el-menu-item index="/main/dataReport/clinicalHistoryCheck" v-if="hqReport">病历合规检查*</el-menu-item>
           <el-menu-item index="/main/dataReport/selfUsedRecord" v-if="hqReport">领用明细*</el-menu-item>
           <el-menu-item index="/main/dataReport/lossRecord" v-if="hqReport">报损明细*</el-menu-item>
