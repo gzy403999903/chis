@@ -12,7 +12,7 @@
       <div class="system-logo">
         <img src="../../assets/images/system-logo.png"/>
         <div v-show="!isFoldLeftBar">
-          <!--{{payload.clinicName}}-->
+          <!--<div class="system-cn-name">{{payload.clinicName}}</div>-->
           <div class="system-cn-name">雨思社区卫生信息系统</div>
           <div class="system-en-name">Community Health Information System</div>
         </div>
@@ -357,6 +357,8 @@
           </template>
           <el-menu-item index="/main/dataReport/allSellRecord" v-if="hqReport">销售明细*</el-menu-item>
           <el-menu-item index="/main/dataReport/clinicSellRecord" v-if="!hqReport">销售明细</el-menu-item>
+          <el-menu-item index="/main/dataReport/allSellRecordCommission" v-if="hqReport">销售汇总(按人员)*</el-menu-item>
+          <el-menu-item index="/main/dataReport/clinicSellRecordCommission" v-if="!hqReport">销售汇总(按人员)</el-menu-item>
           <el-menu-item index="/main/dataReport/allSellRecordSort" v-if="hqReport">销售排行(按门店)*</el-menu-item>
           <el-menu-item index="/main/dataReport/allSellRecordSort2" v-if="hqReport">销售排行(按商品)*</el-menu-item>
           <el-menu-item index="/main/dataReport/clinicSellRecordSort" v-if="!hqReport">销售排行(按门店)</el-menu-item>

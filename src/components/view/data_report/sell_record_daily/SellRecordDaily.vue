@@ -8,6 +8,7 @@
       <el-form :model="queryForm" ref="queryForm" inline size="mini">
         <el-form-item label="销售日期" prop="creationDate">
           <el-date-picker
+            style="width: 280px;"
             v-model="queryForm.creationDate"
             @change="getQueryMonth"
             type="daterange"

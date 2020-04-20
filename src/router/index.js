@@ -128,6 +128,8 @@ import ClinicSellRecordStatistics from '../components/view/data_report/sell_reco
 import AllPurchaseCostAmount from '../components/view/data_report/purchase_cost_amount/AllPurchaseCostAmount'
 import ClinicPurchaseCostAmount from '../components/view/data_report/purchase_cost_amount/ClinicPurchaseCostAmount'
 import MemberAnalysis from '../components/view/data_report/member_analysis/MemberAnalysis'
+import AllSellRecordCommission from '../components/view/data_report/sell_record_commission/AllSellRecordCommission'
+import ClinicSellRecordCommission from '../components/view/data_report/sell_record_commission/ClinicSellRecordCommission'
 
 // system_management
 import Clinic from '../components/view/system_management/sys_setup/Clinic'
@@ -671,6 +673,14 @@ export default new Router({
         {
           path: 'memberAnalysis',
           component: MemberAnalysis
+        },
+        {
+          path: 'allSellRecordCommission',
+          component: AllSellRecordCommission
+        },
+        {
+          path: 'clinicSellRecordCommission',
+          component: ClinicSellRecordCommission
         }
       ]
     },

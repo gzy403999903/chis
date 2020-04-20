@@ -8,6 +8,7 @@
       <el-form :model="queryForm" ref="queryForm" inline size="mini">
         <el-form-item label="销售日期" prop="creationDate">
           <el-date-picker
+            style="width: 280px;"
             v-model="queryForm.creationDate"
             type="daterange"
             align="right"
@@ -20,10 +21,10 @@
             :picker-options="pickerOptions"/>
         </el-form-item>
         <el-form-item label="机构名称" prop="sysClinicName" v-if="action === 'all'">
-          <el-input v-model.trim="queryForm.sysClinicName" placeholder="机构名称 / 助记码"/>
+          <el-input v-model.trim="queryForm.sysClinicName" placeholder="机构名称 / 助记码" style="width: 150px;"/>
         </el-form-item>
         <el-form-item label="收银员" prop="creatorName">
-          <el-input v-model.trim="queryForm.creatorName" placeholder="收银员姓名 / 助记码"/>
+          <el-input v-model.trim="queryForm.creatorName" placeholder="收银员姓名 / 助记码" style="width: 150px;"/>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" round icon="el-icon-search"  @click="dataGridLoadData">查询</el-button>

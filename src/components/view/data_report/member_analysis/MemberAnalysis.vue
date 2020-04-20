@@ -164,7 +164,7 @@
         <el-table-column prop="maxXfje" label="最大一次消费" width="120" show-overflow-tooltip/>
         <el-table-column prop="minXfje" label="最小一次消费" width="120" show-overflow-tooltip/>
         <el-table-column prop="xfLastDate" label="最后消费日期" width="160" show-overflow-tooltip/>
-        <el-table-column prop="sysClinicName" label="机构名称" min-width="400" show-overflow-tooltip/>
+        <el-table-column prop="sysClinicName" label="注册机构名称" min-width="400" show-overflow-tooltip/>
       </el-table>
       <el-pagination
         :page-size="pagination.pageSize"

@@ -214,7 +214,7 @@
               filterable
               default-first-option
               placeholder="请选择">
-              <el-option :value="null" label="无"/>
+              <el-option :value="''" label="无"/>
               <el-option v-for="item in sellClassifyList" :key="item.id" :value="item.id" :label="item.name + ' [' +item.code + ']'"/>
             </el-select>
           </el-form-item>

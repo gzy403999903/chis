@@ -8,6 +8,7 @@
       <el-form :model="queryForm" ref="queryForm" inline size="mini">
         <el-form-item label="预约日期" prop="appointmentDate">
           <el-date-picker
+            style="width: 320px;"
             v-model="queryForm.appointmentDate"
             type="datetimerange"
             align="right"
