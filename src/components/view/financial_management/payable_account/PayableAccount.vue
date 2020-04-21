@@ -82,6 +82,10 @@
           <el-input-number v-model="queryForm.arrearagesAmount" :controls="false" :max="999999" :min="-999999" :precision="2"
                            style="width: 100px;"/>&nbsp;元 &nbsp;[大于等于]
         </el-form-item>
+        <el-form-item label="剩余结款天数" prop="surplusArrearagesDays">
+          <el-input-number v-model="queryForm.surplusArrearagesDays" :controls="false" :max="999999" :min="-999999" :precision="0"
+                           style="width: 100px;"/>&nbsp;天 &nbsp;[小于等于]
+        </el-form-item>
       </el-form>
     </el-dialog>
 
@@ -93,6 +97,7 @@
         :height="$store.getters.dataGridHeight"
         :data="dataGrid.data"
         stripe
+        border
         size="mini">
         <el-table-column fixed="left" type="index" width="50"/>
         <el-table-column fixed="left" label="操作" align="center" width="80">
@@ -104,6 +109,7 @@
         <el-table-column prop="lsh" label="流水号" width="220" show-overflow-tooltip/>
         <el-table-column prop="pemSupplierOid" label="供应商编码" width="120" show-overflow-tooltip/>
         <el-table-column prop="pemSupplierName" label="供应商名称" width="250" show-overflow-tooltip/>
+        <el-table-column prop="surplusArrearagesDays" label="剩余结款天数" width="120" show-overflow-tooltip/>
         <el-table-column prop="payableAmount" label="应付金额/元" width="100" show-overflow-tooltip/>
         <el-table-column prop="paidAmount" label="已付金额/元" width="100" show-overflow-tooltip/>
         <el-table-column label="未付金额/元" width="100" show-overflow-tooltip>
@@ -151,7 +157,8 @@ export default {
         creationDate: this.$store.getters.queryDate,
         pemSupplierId: null,
         sysClinicId: null,
-        arrearagesAmount: undefined
+        arrearagesAmount: undefined,
+        surplusArrearagesDays: undefined
       },
       dataGrid: {
         data: [],

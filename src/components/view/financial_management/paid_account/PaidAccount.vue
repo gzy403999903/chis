@@ -107,6 +107,7 @@
         :data="dataGrid.data"
         @selection-change="tableSelectionChange"
         stripe
+        border
         size="mini">
         <el-table-column fixed="left" type="index" width="50"/>
         <el-table-column fixed="left" type="selection" :selectable="tableSelectable" width="55"/>

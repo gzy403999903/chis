@@ -103,6 +103,7 @@
         :height="$store.getters.dataGridHeight"
         :data="dataGrid.data"
         stripe
+        border
         size="mini">
         <el-table-column fixed="left" type="index" width="50"/>
         <el-table-column fixed="left" label="操作" align="center" width="80">

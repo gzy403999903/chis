@@ -178,6 +178,7 @@
       </template>
       <!-------------------------------------------------采购管理------------------------------------------------------->
       <template v-if="moduleName==='purchaseManagement'">
+        <!--
         <el-submenu index="/purchaseManagement-0">
           <template slot="title">
             <i class="el-icon-user-solid"></i>
@@ -185,8 +186,12 @@
           </template>
           <el-menu-item index="/main/purchaseManagement/supplier">供应商信息</el-menu-item>
           <el-menu-item index="/main/error/404#purchaseManagement-1">供应商证照预警</el-menu-item>
-          <el-menu-item index="/main/error/404#purchaseManagement-2">供应商结款预警</el-menu-item>
         </el-submenu>
+        -->
+        <el-menu-item index="/main/purchaseManagement/supplier">
+          <i class="el-icon-user-solid"></i>
+          <span slot="title">供应商信息</span>
+        </el-menu-item>
         <el-submenu index="/purchaseManagement-1">
           <template slot="title">
             <i class="el-icon-shopping-cart-2"></i>
@@ -357,8 +362,8 @@
           </template>
           <el-menu-item index="/main/dataReport/allSellRecord" v-if="hqReport">销售明细*</el-menu-item>
           <el-menu-item index="/main/dataReport/clinicSellRecord" v-if="!hqReport">销售明细</el-menu-item>
-          <el-menu-item index="/main/dataReport/allSellRecordCommission" v-if="hqReport">销售汇总(按人员)*</el-menu-item>
-          <el-menu-item index="/main/dataReport/clinicSellRecordCommission" v-if="!hqReport">销售汇总(按人员)</el-menu-item>
+          <el-menu-item index="/main/dataReport/allSellRecordCommission" v-if="hqReport">提成销售汇总(按人员)*</el-menu-item>
+          <el-menu-item index="/main/dataReport/clinicSellRecordCommission" v-if="!hqReport">提成销售汇总(按人员)</el-menu-item>
           <el-menu-item index="/main/dataReport/allSellRecordSort" v-if="hqReport">销售排行(按门店)*</el-menu-item>
           <el-menu-item index="/main/dataReport/allSellRecordSort2" v-if="hqReport">销售排行(按商品)*</el-menu-item>
           <el-menu-item index="/main/dataReport/clinicSellRecordSort" v-if="!hqReport">销售排行(按门店)</el-menu-item>
@@ -400,9 +405,6 @@
          <el-menu-item index="/main/dataReport/clinicSellRecordStatistics" v-if="!hqReport">销售统计(按门店)</el-menu-item>
          <el-menu-item index="/main/dataReport/allPurchaseCostAmount" v-if="hqReport">采购成本(按门店)*</el-menu-item>
          <el-menu-item index="/main/dataReport/clinicPurchaseCostAmount" v-if="!hqReport">采购成本(按门店)</el-menu-item>
-         <!--
-         <el-menu-item index="/main/error/404#82-2">提成查询</el-menu-item>
-         -->
        </el-submenu>
       </template>
       <!-------------------------------------------------系统设置------------------------------------------------------->
