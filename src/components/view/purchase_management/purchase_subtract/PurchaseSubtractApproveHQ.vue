@@ -19,11 +19,14 @@
             end-placeholder="结束日期"
             :picker-options="pickerOptions"/>
         </el-form-item>
+        <el-form-item label="机构名称" prop="sysClinicName">
+          <el-input v-model.trim="queryForm.sysClinicName" placeholder="机构名称 / 助记码" style="width: 150px;"/>
+        </el-form-item>
         <el-form-item label="供应商" prop="pemSupplierName">
           <el-input v-model.trim="queryForm.pemSupplierName" placeholder="供应商名称 / 助记码" style="width: 150px;"/>
         </el-form-item>
         <el-form-item label="审批状态" prop="approveState">
-          <el-select v-model="queryForm.approveState" placeholder="请选择" style="width: 120px;">
+          <el-select v-model="queryForm.approveState" placeholder="请选择" style="width: 100px;">
             <el-option label="全部" :value="null"/>
             <el-option label="待审核" :value="approveState.PENDING"/>
             <el-option label="通过" :value="approveState.APPROVED"/>
@@ -98,6 +101,7 @@ export default {
       },
       queryForm: {
         creationDate: this.$store.getters.queryDate,
+        sysClinicName: null,
         pemSupplierName: null,
         approveState: null
       },
