@@ -18,6 +18,7 @@
                    @click="dataGridDoAction('unapproved')" v-if="row.approveState === approveState.PENDING">驳 回</el-button>
         <el-button size="mini" type="success" icon="el-icon-circle-check"
                    @click="dataGridDoAction('approved')" v-if="row.approveState === approveState.PENDING">通 过</el-button>
+        <el-button size="mini" type="default" icon="el-icon-printer" @click="printPurchaseSubtractBill">打 印</el-button>
         <el-button size="mini" type="warning" icon="el-icon-right" @click="dialogClose">返 回</el-button>
       </el-col>
     </el-row>
@@ -44,11 +45,19 @@
       <el-table-column prop="manufacturerName" label="生产厂家" min-width="250" show-overflow-tooltip sortable/>
     </el-table>
 
+    <!-- 采购退货打印模板 -->
+    <PurchaseBill title="退货" :data="dataGrid.data" ref="PurchaseBill"/>
+
   </el-dialog>
 </template>
 
 <script>
+import PurchaseBill from '../../print_page/PurchaseBill'
 export default {
+  components: {
+    PurchaseBill
+  },
+
   props: {
     visible: {
       type: Boolean,
@@ -135,6 +144,27 @@ export default {
           }
         })
       }).catch(() => {})
+    },
+
+    /**
+     * 打印采购退货单
+     */
+    printPurchaseSubtractBill () {
+      // 如果单据为非审核通过状态则终止
+      if (this.dataGrid.data[0].approveState !== this.approveState.APPROVED) {
+        this.$message.error('单据审核通过后方可进行打印')
+        return
+      }
+
+      // 获取权限打印
+      this.$loading()
+      const url = '/chisAPI/inventorySubtract/printPurchaseSubtractBill'
+      this.$http.get(url).then((res) => {
+        if (res.data.code === 200) {
+          this.$refs.PurchaseBill.printPage()
+        }
+        this.$loading().close()
+      })
     }
 
   } // end methods

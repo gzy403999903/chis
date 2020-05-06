@@ -157,7 +157,6 @@ export default {
         this.$loading().close()
       })
     }
-
   } // end methods
 }
 </script>

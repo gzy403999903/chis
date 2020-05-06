@@ -46,17 +46,17 @@
     </el-table>
 
     <!-- 打印组件 -->
-    <PurchaseAddBill :data="dataGrid.data" ref="PurchaseAddBill"/>
+    <PurchaseBill title="入库" :data="dataGrid.data" ref="purchaseBill"/>
 
   </el-dialog>
 </template>
 
 <script>
-import PurchaseAddBill from '../../print_page/PurchaseAddBill'
+import PurchaseBill from '../../print_page/PurchaseBill'
 import jwtDecode from 'jwt-decode'
 export default {
   components: {
-    PurchaseAddBill
+    PurchaseBill
   },
 
   props: {
@@ -161,7 +161,7 @@ export default {
       const url = '/chisAPI/inventoryAdd/printPurchaseAddBill'
       this.$http.get(url).then((res) => {
         if (res.data.code === 200) {
-          this.$refs.PurchaseAddBill.printPage()
+          this.$refs.purchaseBill.printPage()
         }
         this.$loading().close()
       })

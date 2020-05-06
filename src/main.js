@@ -19,18 +19,9 @@ Vue.config.productionTip = false
  */
 axios.interceptors.request.use(config => {
   const token = store.getters.token
-  // 2020-01-30 临时添加 用于请求 肺炎疫情实时数据时不在请求头添加 token
-  if (config.url.indexOf('https://file1.dxycdn.com') !== 0) {
-    if (token) {
-      config.headers.Authorization = token
-    }
-  }
-
-  /*
   if (token) {
     config.headers.Authorization = token
   }
-  */
   return config
 }, error => {
   return Promise.reject(error)

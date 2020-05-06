@@ -3,13 +3,13 @@
     <div style="width: 287mm;">
       <div style="text-align: center; font-size: 18px; font-weight: 600;">
         <div>{{data.length > 0 ? data[0].sysClinicName : ''}}</div>
-        <div>采购入库单</div>
+        <div>采购{{title ? title : ''}}单</div>
       </div>
 
       <div style="margin-top: 10px; display: flex;">
         <div style="width: 60mm;">入库日期: {{data.length > 0 ? data[0].creationDate : ''}}</div>
         <div style="width: 75mm;">流水号: {{data.length > 0 ? data[0].lsh : ''}}</div>
-        <div style="width: 40mm;">入库人: {{data.length > 0 ?  ('[' + data[0].creatorId + ']' + data[0].creatorName) : ''}}</div>
+        <div style="width: 40mm;">操作人: {{data.length > 0 ?  ('[' + data[0].creatorId + ']' + data[0].creatorName) : ''}}</div>
         <div style="width: 40mm;">审核人: {{data.length > 0 ?  ('[' + data[0].approverId + ']' + data[0].approverName) : ''}}</div>
         <div>随货同行: {{data.length > 0 ? data[0].billNo : ''}}</div>
       </div>
@@ -27,7 +27,7 @@
           <th>名称</th>
           <th>单位</th>
           <th>规格</th>
-          <th>入库数量</th>
+          <th>数量</th>
           <th>单价(含税)</th>
           <th>小计/元</th>
           <th>批号</th>
@@ -67,6 +67,10 @@ import {getLodop} from '../../../common/LodopFuncs'
 import {getChineseNumUpperCase} from '../../../common/chineseNumUtils'
 export default {
   props: {
+    title: {
+      type: String,
+      required: true
+    },
     data: {
       type: Array,
       required: true

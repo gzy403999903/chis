@@ -3,16 +3,38 @@
     <!--功能菜单-->
     <el-card
       shadow="never"
-      body-style="padding: 5px;"
+      body-style="padding: 5px 20px 5px 5px;"
       class="el-card-menus">
-      <el-form :model="queryForm" ref="queryForm" :inline="true" size="mini">
+      <el-button type="default" size="mini" round icon="el-icon-search" @click="dialog.queryVisible = true">条件查询</el-button>
+      <el-button type="default" size="mini" round icon="el-icon-plus" @click="dialogOpen">新建入库单</el-button>
+    </el-card>
+
+    <!-- 查询条件界面 -->
+    <el-dialog
+      width="45%"
+      :show-close="false"
+      :close-on-click-modal="false"
+      :visible="dialog.queryVisible">
+      <!-- 模态框标题栏与功能按钮 -->
+      <el-row slot="title">
+        <el-col :span="5" style="font-size: 20px;">
+          <span>条件查询</span>
+        </el-col>
+        <el-col :span="19" style="text-align: right;">
+          <el-button type="primary" size="mini" icon="el-icon-search"  @click="dataGridLoadData">查询</el-button>
+          <el-button type="default" size="mini" icon="el-icon-refresh" @click="$refs.queryForm.resetFields()">重置</el-button>
+          <el-button type="warning" size="mini" icon="el-icon-right" @click="dialog.queryVisible=false">返 回</el-button>
+        </el-col>
+      </el-row>
+
+      <el-form :model="queryForm" ref="queryForm" :inline="false" size="mini" label-width="110px" label-position="left" style="padding: 0 20px;">
         <el-form-item label="单据日期" prop="creationDate">
           <el-date-picker
-            style="width: 280px;"
             v-model="queryForm.creationDate"
             type="daterange"
             align="right"
             unlink-panels
+            :clearable="false"
             value-format="yyyy-MM-dd"
             range-separator="-"
             start-placeholder="开始日期"
@@ -20,7 +42,13 @@
             :picker-options="pickerOptions"/>
         </el-form-item>
         <el-form-item label="供应商" prop="pemSupplierName">
-          <el-input v-model.trim="queryForm.pemSupplierName" placeholder="供应商名称 / 助记码" style="width: 150px;"/>
+          <el-input v-model.trim="queryForm.pemSupplierName" placeholder="供应商名称 / 助记码"/>
+        </el-form-item>
+        <el-form-item label="商品编码" prop="gsmGoodsOid">
+          <el-input v-model.trim="queryForm.gsmGoodsOid" placeholder="商品编码"/>
+        </el-form-item>
+        <el-form-item label="商品名称" prop="gsmGoodsName">
+          <el-input v-model.trim="queryForm.gsmGoodsName" placeholder="商品名称 / 助记码"/>
         </el-form-item>
         <el-form-item label="审批状态" prop="approveState">
           <el-select v-model="queryForm.approveState" placeholder="请选择" style="width: 120px;">
@@ -30,13 +58,8 @@
             <el-option label="驳回" :value="approveState.UNAPPROVED"/>
           </el-select>
         </el-form-item>
-        <el-form-item>
-          <el-button type="primary" round icon="el-icon-search" @click="dataGridLoadData">查询</el-button>
-          <el-button type="default" round icon="el-icon-refresh" @click="$refs.queryForm.resetFields()">重置</el-button>
-          <el-button type="default" round icon="el-icon-plus" @click="dialogOpen">新建入库单</el-button>
-        </el-form-item>
       </el-form>
-    </el-card>
+    </el-dialog>
 
     <!-- 数据表 -->
     <el-card
@@ -107,6 +130,8 @@ export default {
       queryForm: {
         creationDate: this.$store.getters.queryDate,
         pemSupplierName: null,
+        gsmGoodsOid: null,
+        gsmGoodsName: null,
         approveState: null
       },
       dataGrid: {
@@ -121,7 +146,8 @@ export default {
         layout: this.$store.getters.pagination.layout
       },
       dialog: {
-        visible: false
+        visible: false,
+        queryVisible: false
       }
     }
   }, // end data
@@ -159,6 +185,7 @@ export default {
           this.pagination.total = res.data.resultSet.page.total
           this.dataGrid.data = res.data.resultSet.page.list
         }
+        this.dialog.queryVisible = false
         this.$loading().close()
       })
     },
