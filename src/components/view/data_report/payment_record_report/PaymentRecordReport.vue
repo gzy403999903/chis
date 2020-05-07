@@ -55,7 +55,7 @@
         <el-table-column prop="creditpay" label="信用卡" width="100" show-overflow-tooltip/>
         <el-table-column prop="shengyb" label="省医保" width="100" show-overflow-tooltip/>
         <el-table-column prop="shiyb" label="市医保" width="100" show-overflow-tooltip/>
-        <!--<el-table-column prop="dkq" label="抵扣券" width="100" show-overflow-tooltip/>-->
+        <el-table-column prop="dkq" label="抵扣券" width="100" show-overflow-tooltip/>
         <el-table-column prop="ybk" label="亿保卡" width="100" show-overflow-tooltip/>
         <el-table-column prop="bgflk" label="北国福礼卡" width="120" show-overflow-tooltip/>
         <el-table-column prop="yky" label="一卡易" width="100" show-overflow-tooltip/>
