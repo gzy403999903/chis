@@ -37,10 +37,14 @@
       <div>
         <div v-if="payment.cash > 0">现金: {{payment.cash}}</div>
         <div v-if="payment.cashBackAmount > 0">现金找零: {{payment.cashBackAmount}}</div>
-        <div v-if="payment.memberBalance > 0">会员卡: {{payment.memberBalance}}</div>
         <div v-if="payment.unionpay > 0">银联: {{payment.unionpay}}</div>
-        <div v-if="payment.alipay > 0">支付宝: {{payment.alipay}}</div>
         <div v-if="payment.wechatpay > 0">微信: {{payment.wechatpay}}</div>
+        <div v-if="payment.alipay > 0">支付宝: {{payment.alipay}}</div>
+        <div v-if="payment.cmedicare > 0">市医保: {{payment.cmedicare}}</div>
+        <div v-if="payment.pmedicare > 0">省医保: {{payment.pmedicare}}</div>
+        <div v-if="payment.memberBalance > 0">会员卡: {{payment.memberBalance}}</div>
+        <div v-if="payment.creditpay > 0">信用卡: {{payment.creditpay}}</div>
+        <div v-if="payment.coupon > 0">抵扣券: {{payment.coupon}}</div>
         <div v-if="payment.sysPaymentWayAmount > 0">{{getOtherPaymentWay(payment.sysPaymentWayId)}}</div>
       </div>
       <div style="margin: 5px 0; border-bottom: black 1px dashed;"></div>
@@ -113,7 +117,7 @@ export default {
     printPage () {
       let LODOP = getLodop()
       LODOP.PRINT_INIT('收费小票')
-      LODOP.ADD_PRINT_HTM(0, '5mm', '76mm', '297mm', document.getElementById('printContent').innerHTML) // ADD_PRINT_HTM(上边距(不写单位默认为px) 左边距 打印区域宽度 打印区域高度 打印内容)
+      LODOP.ADD_PRINT_HTM(0, '5mm', '76mm', '2970mm', document.getElementById('printContent').innerHTML) // ADD_PRINT_HTM(上边距(不写单位默认为px) 左边距 打印区域宽度 打印区域高度 打印内容)
       // LODOP.PRINT()
       // LODOP.PRINTA()
       LODOP.PREVIEW()

@@ -25,97 +25,128 @@
     </el-row>
 
     <!-- 付款方式 -->
-    <el-form :model="editForm" ref="editForm" :rules="editFormRules" size="small" label-width="80px">
+    <el-form :model="editForm" ref="editForm" :rules="editFormRules" size="mini" label-width="80px" :show-message="false">
+      <el-row class="pay-info">
+        <el-col :span="5">
+          <el-form-item label="会员编码">
+            {{member.oid}}
+          </el-form-item>
+        </el-col>
+        <el-col :span="5">
+          <el-form-item label="会员姓名">
+            {{member.name}}
+          </el-form-item>
+        </el-col>
+        <el-col :span="6">
+          <el-form-item label="联系电话">
+            {{member.phone}}
+          </el-form-item>
+        </el-col>
+        <el-col :span="4">
+          <el-form-item label="本次积分">
+            {{computePoints()}}
+          </el-form-item>
+        </el-col>
+        <el-col :span="4">
+          <el-form-item label="可用余额">
+            {{memberAvailableBalance}}
+          </el-form-item>
+        </el-col>
+      </el-row> <!-- end pay-info -->
+
+      <hr/>
+
       <el-row>
-        <el-col :span="16" class="pay-info">
-          <el-row>
-            <el-col :span="8">
-              <el-form-item label="会员编码">
-                {{member.oid}}
-              </el-form-item>
-            </el-col>
-            <el-col :span="8">
-              <el-form-item label="会员姓名">
-                {{member.name}}
-              </el-form-item>
-            </el-col>
-            <el-col :span="8">
-              <el-form-item label="联系电话">
-                {{member.phone}}
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <hr/>
-
-          <el-row>
-            <el-col :span="8">
-              <el-form-item label="本次积分">
-                {{computePoints()}}
-              </el-form-item>
-            </el-col>
-            <el-col :span="8">
-              <el-form-item label="可用余额">
-                {{memberAvailableBalance}}
-              </el-form-item>
-            </el-col>
-          </el-row>
-          <hr/>
-
+        <el-col :span="11">
           <div class="amount-info">应收金额: {{totalPrice}}&nbsp;元</div>
           <div class="amount-info">实收金额: {{editForm.actualAmount}}&nbsp;元</div>
           <div class="amount-info amount-info-red">现金找零: {{editForm.cashBackAmount}}&nbsp;元</div>
           <div :class="disparityAmountStyle">实收差额: {{editForm.disparityAmount}}&nbsp;元</div>
-        </el-col>
+        </el-col> <!-- end col span 11 -->
 
-        <el-col :span="8">
-          <el-form-item label="现金" prop="cash">
-            <el-input-number v-model="editForm.cash" :controls="false" :max="99999" :min="0" :precision="2"
-                             ref="cash"
-                             @keyup.enter.native="editFormValidateToNextFocus('cash', 'memberBalance')"
-                             @change="sumActualAmount"/>
-          </el-form-item>
-          <el-form-item label="会员卡" prop="memberBalance">
-            <el-input-number v-model="editForm.memberBalance" :controls="false" :max="99999" :min="0" :precision="2"
-                             ref="memberBalance" :disabled="!member.id"
-                             @keyup.enter.native="editFormValidateToNextFocus('memberBalance', 'unionpay')"
-                             @change="sumActualAmount"/>
-          </el-form-item>
-          <el-form-item label="银联" prop="unionpay">
-            <el-input-number v-model="editForm.unionpay" :controls="false" :max="99999" :min="0" :precision="2"
-                             ref="unionpay"
-                             @keyup.enter.native="editFormValidateToNextFocus('unionpay', 'alipay')"
-                             @change="sumActualAmount"/>
-          </el-form-item>
-          <el-form-item label="支付宝" prop="alipay">
-            <el-input-number v-model="editForm.alipay" :controls="false" :max="99999" :min="0" :precision="2"
-                             ref="alipay"
-                             @keyup.enter.native="editFormValidateToNextFocus('alipay', 'wechatpay')"
-                             @change="sumActualAmount"/>
-          </el-form-item>
-          <el-form-item label="微信" prop="wechatpay">
-            <el-input-number v-model="editForm.wechatpay" :controls="false" :max="99999" :min="0" :precision="2"
-                             ref="wechatpay"
-                             @keyup.enter.native="editFormValidateToNextFocus('wechatpay', 'sysPaymentWayId')"
-                             @change="sumActualAmount"/>
-          </el-form-item>
-          <el-form-item label="" prop="sysPaymentWayId">
-            <el-select
-              ref="sysPaymentWayId"
-              @keyup.enter.native="editFormValidateToNextFocus('sysPaymentWayId', 'sysPaymentWayAmount')"
-              v-model.trim="editForm.sysPaymentWayId"
-              filterable
-              default-first-option
-              placeholder="请选择">
-              <el-option v-for="item in paymentWayList" :key="item.id" :value="item.id" :label="item.name"/>
-            </el-select>
-          </el-form-item>
-          <el-form-item prop="sysPaymentWayAmount">
-            <el-input-number v-model="editForm.sysPaymentWayAmount" :disabled="editForm.sysPaymentWayId === ''" :controls="false" :max="99999" :min="0" :precision="2"
-                             ref="sysPaymentWayAmount"
-                             @change="sumActualAmount"/>
-          </el-form-item>
-        </el-col>
+        <el-col :span="13" class="payment">
+          <div>
+            <el-form-item label="现金" prop="cash">
+              <el-input-number v-model="editForm.cash" :controls="false" :max="99999" :min="0" :precision="2"
+                               ref="cash"
+                               @keyup.enter.native="editFormValidateToNextFocus('cash', 'unionpay')"
+                               @change="sumActualAmount"/>
+            </el-form-item>
+            <el-form-item label="银联" prop="unionpay">
+              <el-input-number v-model="editForm.unionpay" :controls="false" :max="99999" :min="0" :precision="2"
+                               ref="unionpay"
+                               @keyup.enter.native="editFormValidateToNextFocus('unionpay', 'wechatpay')"
+                               @change="sumActualAmount"/>
+            </el-form-item>
+            <el-form-item label="微信" prop="wechatpay">
+              <el-input-number v-model="editForm.wechatpay" :controls="false" :max="99999" :min="0" :precision="2"
+                               ref="wechatpay"
+                               @keyup.enter.native="editFormValidateToNextFocus('wechatpay', 'alipay')"
+                               @change="sumActualAmount"/>
+            </el-form-item>
+            <el-form-item label="支付宝" prop="alipay">
+              <el-input-number v-model="editForm.alipay" :controls="false" :max="99999" :min="0" :precision="2"
+                               ref="alipay"
+                               @keyup.enter.native="editFormValidateToNextFocus('alipay', 'cmedicare')"
+                               @change="sumActualAmount"/>
+            </el-form-item>
+            <el-form-item label="市医保" prop="cmedicare">
+              <el-input-number v-model="editForm.cmedicare" :controls="false" :max="99999" :min="0" :precision="2"
+                               ref="cmedicare"
+                               @keyup.enter.native="editFormValidateToNextFocus('cmedicare', 'pmedicare')"
+                               @change="sumActualAmount"/>
+            </el-form-item>
+            <el-form-item label="省医保" prop="pmedicare">
+              <el-input-number v-model="editForm.pmedicare" :controls="false" :max="99999" :min="0" :precision="2"
+                               ref="pmedicare"
+                               @keyup.enter.native="editFormValidateToNextFocus('pmedicare', 'memberBalance')"
+                               @change="sumActualAmount"/>
+            </el-form-item>
+            <el-form-item label="会员卡" prop="memberBalance">
+              <el-input-number v-model="editForm.memberBalance" :controls="false" :max="99999" :min="0" :precision="2"
+                               ref="memberBalance" :disabled="!member.id"
+                               @keyup.enter.native="editFormValidateToNextFocus('memberBalance', 'cash')"
+                               @change="sumActualAmount"/>
+            </el-form-item>
+          </div>
 
+          <div style="margin-left: 10px;">
+            <div style="border: #67CDA6 dashed 1px; padding: 5px;">
+              <el-form-item label="信用卡" prop="creditpay">
+                <el-input-number v-model="editForm.creditpay" :controls="false" :max="99999" :min="0" :precision="2"
+                                 ref="creditpay" disabled
+                                 @change="sumActualAmount"/>
+              </el-form-item>
+            </div>
+            <div style="border: #67CDA6 dashed 1px; padding: 5px; margin-top: 12px;">
+              <el-form-item label="抵扣券" prop="couponNum">
+                <el-input v-model="editForm.couponNum" placeholder="请输入编号" disabled/>
+              </el-form-item>
+              <el-form-item prop="coupon">
+                <el-input-number v-model="editForm.coupon" :controls="false" :max="99999" :min="0" :precision="2"
+                                 @change="sumActualAmount"/>
+              </el-form-item>
+            </div>
+            <div style="border: #67CDA6 dashed 1px; padding: 5px; margin-top: 12px;">
+              <el-form-item label="其他方式" prop="sysPaymentWayId">
+                <el-select
+                  ref="sysPaymentWayId"
+                  @keyup.enter.native="editFormValidateToNextFocus('sysPaymentWayId', 'sysPaymentWayAmount')"
+                  v-model.trim="editForm.sysPaymentWayId"
+                  filterable
+                  default-first-option
+                  placeholder="请选择">
+                  <el-option v-for="item in paymentWayList" :key="item.id" :value="item.id" :label="item.name"/>
+                </el-select>
+              </el-form-item>
+              <el-form-item prop="sysPaymentWayAmount">
+                <el-input-number v-model="editForm.sysPaymentWayAmount" :disabled="editForm.sysPaymentWayId === ''" :controls="false" :max="99999" :min="0" :precision="2"
+                                 ref="sysPaymentWayAmount"
+                                 @change="sumActualAmount"/>
+              </el-form-item>
+            </div>
+          </div>
+        </el-col> <!-- end col span 13 -->
       </el-row>
     </el-form>
 
@@ -177,31 +208,50 @@ export default {
       lsh: '', // 结账成功后返回的流水号
       editForm: {
         cash: 0, // 现金
-        memberBalance: 0, // 会员卡
         unionpay: 0, // 银联
-        alipay: 0, // 支付宝
         wechatpay: 0, // 微信
-        sysPaymentWayId: '', // 付款方式ID
-        sysPaymentWayAmount: 0, // 付款方式金额
-        actualAmount: 0, // 实收金额 ~
-        cashBackAmount: 0, // 现金找零金额 ~
-        disparityAmount: 0 // 差额 ~
+        alipay: 0, // 支付宝
+        cmedicare: 0, // 市医保
+        pmedicare: 0, // 省医保
+        memberBalance: 0, // 会员卡
+
+        creditpay: 0, // 信用卡
+        couponNum: '', // 抵扣券编号
+        coupon: 0, // 抵扣券(优惠券)
+        sysPaymentWayId: '', // 其他方式ID
+        sysPaymentWayAmount: 0, // 其他方式金额
+
+        actualAmount: 0, // 实收金额
+        cashBackAmount: 0, // 现金找零金额
+        disparityAmount: 0 // 差额
       },
       editFormRules: {
         cash: [
+          {required: true, message: '不能为空'}
+        ],
+        unionpay: [
+          {required: true, message: '不能为空'}
+        ],
+        wechatpay: [
+          {required: true, message: '不能为空'}
+        ],
+        alipay: [
+          {required: true, message: '不能为空'}
+        ],
+        cmedicare: [
+          {required: true, message: '不能为空'}
+        ],
+        pmedicare: [
           {required: true, message: '不能为空'}
         ],
         memberBalance: [
           {required: true, message: '不能为空'},
           {validator: validateMemberBalance, trigger: 'blur'}
         ],
-        unionpay: [
+        creditpay: [
           {required: true, message: '不能为空'}
         ],
-        alipay: [
-          {required: true, message: '不能为空'}
-        ],
-        wechatpay: [
+        coupon: [
           {required: true, message: '不能为空'}
         ],
         sysPaymentWayAmount: [
@@ -282,10 +332,14 @@ export default {
 
         // 将所有收费方式金额累加得到 实收金额
         this.editForm.actualAmount = this.editForm.cash +
-                                    this.editForm.memberBalance +
                                     this.editForm.unionpay +
-                                    this.editForm.alipay +
                                     this.editForm.wechatpay +
+                                    this.editForm.alipay +
+                                    this.editForm.cmedicare +
+                                    this.editForm.pmedicare +
+                                    this.editForm.memberBalance +
+                                    this.editForm.creditpay +
+                                    this.editForm.coupon +
                                     this.editForm.sysPaymentWayAmount
         // 约束2位小数
         this.editForm.actualAmount = (this.editForm.actualAmount).toFixed(2) * 1
@@ -376,15 +430,22 @@ export default {
     height: 15px;
   }
 
-  .pay-info hr {
+  .payment {
+    display: flex;
+  }
+  .payment .el-form-item {
+    height: 15px;
+  }
+
+  hr {
     border: #3AA878 solid 1px;
-    margin-bottom: 10px;
+    margin-bottom: 25px;
   }
 
   .amount-info {
-    padding-top: 15px;
     font-size: 18px;
     font-weight: 600;
+    padding-bottom: 10px;
   }
   .amount-info-red {
     color: #F56C6C;

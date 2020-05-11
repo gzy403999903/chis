@@ -48,11 +48,14 @@
         <el-table-column prop="creationDate" label="单据日期" width="160" show-overflow-tooltip/>
         <el-table-column prop="lsh" label="流水号" width="220" show-overflow-tooltip/>
         <el-table-column prop="cash" label="现金" width="85" show-overflow-tooltip/>
-        <el-table-column prop="memberBalance" label="会员卡" width="85" show-overflow-tooltip/>
         <el-table-column prop="unionpay" label="银联" width="85" show-overflow-tooltip/>
-        <el-table-column prop="alipay" label="支付宝" width="85" show-overflow-tooltip/>
         <el-table-column prop="wechatpay" label="微信" width="85" show-overflow-tooltip/>
+        <el-table-column prop="alipay" label="支付宝" width="85" show-overflow-tooltip/>
+        <el-table-column prop="cmedicare" label="市医保" width="100" show-overflow-tooltip/>
+        <el-table-column prop="pmedicare" label="省医保" width="100" show-overflow-tooltip/>
+        <el-table-column prop="memberBalance" label="会员卡" width="85" show-overflow-tooltip/>
         <el-table-column prop="creditpay" label="信用卡" width="85" show-overflow-tooltip/>
+        <el-table-column prop="coupon" label="抵扣券" width="100" show-overflow-tooltip/>
         <el-table-column prop="sysPaymentWayName" label="其他方式" width="100" show-overflow-tooltip/>
         <el-table-column prop="sysPaymentWayAmount" label="其他金额" width="85" show-overflow-tooltip/>
         <el-table-column label="应收金额" width="85" show-overflow-tooltip>

@@ -48,14 +48,14 @@
         <el-table-column fixed="left" type="index" width="50"/>
         <el-table-column prop="creationDate" label="销售日期" width="120" show-overflow-tooltip/>
         <el-table-column prop="cash" label="现金" width="100" show-overflow-tooltip/>
-        <el-table-column prop="memberBalance" label="会员卡(储值)" width="120" show-overflow-tooltip/>
         <el-table-column prop="unionpay" label="银联" width="100" show-overflow-tooltip/>
-        <el-table-column prop="alipay" label="支付宝" width="100" show-overflow-tooltip/>
         <el-table-column prop="wechatpay" label="微信" width="100" show-overflow-tooltip/>
+        <el-table-column prop="alipay" label="支付宝" width="100" show-overflow-tooltip/>
+        <el-table-column prop="cmedicare" label="市医保" width="100" show-overflow-tooltip/>
+        <el-table-column prop="pmedicare" label="省医保" width="100" show-overflow-tooltip/>
+        <!--<el-table-column prop="memberBalance" label="会员卡(储值)" width="120" show-overflow-tooltip/>-->
         <el-table-column prop="creditpay" label="信用卡" width="100" show-overflow-tooltip/>
-        <el-table-column prop="shengyb" label="省医保" width="100" show-overflow-tooltip/>
-        <el-table-column prop="shiyb" label="市医保" width="100" show-overflow-tooltip/>
-        <!--<el-table-column prop="dkq" label="抵扣券" width="100" show-overflow-tooltip/>-->
+        <el-table-column prop="coupon" label="抵扣券" width="100" show-overflow-tooltip/>
         <el-table-column prop="ybk" label="亿保卡" width="100" show-overflow-tooltip/>
         <el-table-column prop="bgflk" label="北国福礼卡" width="120" show-overflow-tooltip/>
         <el-table-column prop="yky" label="一卡易" width="100" show-overflow-tooltip/>
