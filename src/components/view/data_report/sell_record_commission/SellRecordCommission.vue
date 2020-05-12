@@ -64,6 +64,7 @@
           <el-table-column prop="tcxshj" label="小计" width="100" show-overflow-tooltip/>
         </el-table-column>
         <el-table-column prop="xshj" label="销售合计(无税) / 元" width="140" show-overflow-tooltip/>
+        <el-table-column prop="passengerFlow" label="客流 / 人次" width="120" show-overflow-tooltip/>
         <el-table-column prop="sysClinicName" label="机构名称" min-width="400" show-overflow-tooltip/>
       </el-table>
       <el-pagination
