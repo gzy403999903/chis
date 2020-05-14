@@ -36,17 +36,16 @@
       </div>
       <div style="margin: 5px 0; border-bottom: black 1px dashed;"></div>
       <div>
-        <div v-if="paymentRecord.cash > 0">现金: {{paymentRecord.cash}}</div>
-        <div v-if="paymentRecord.cashBackAmount > 0">现金找零: {{paymentRecord.cashBackAmount}}</div>
-        <div v-if="paymentRecord.unionpay > 0">银联: {{paymentRecord.unionpay}}</div>
-        <div v-if="paymentRecord.wechatpay > 0">微信: {{paymentRecord.wechatpay}}</div>
-        <div v-if="paymentRecord.alipay > 0">支付宝: {{paymentRecord.alipay}}</div>
-        <div v-if="paymentRecord.cmedicare > 0">市医保: {{paymentRecord.cmedicare}}</div>
-        <div v-if="paymentRecord.pmedicare > 0">省医保: {{paymentRecord.pmedicare}}</div>
-        <div v-if="paymentRecord.memberBalance > 0">会员卡: {{paymentRecord.memberBalance}}</div>
-        <div v-if="paymentRecord.creditpay > 0">信用卡: {{paymentRecord.creditpay}}</div>
-        <div v-if="paymentRecord.coupon > 0">抵扣券: {{paymentRecord.coupon}}</div>
-        <div v-if="paymentRecord.sysPaymentWayAmount > 0">其他方式: {{paymentRecord.sysPaymentWayAmount}}</div>
+        <div v-if="paymentRecord.cash !== 0">现金: {{paymentRecord.cash}}</div>
+        <div v-if="paymentRecord.unionpay !== 0">银联: {{paymentRecord.unionpay}}</div>
+        <div v-if="paymentRecord.wechatpay !== 0">微信: {{paymentRecord.wechatpay}}</div>
+        <div v-if="paymentRecord.alipay !== 0">支付宝: {{paymentRecord.alipay}}</div>
+        <div v-if="paymentRecord.cmedicare !== 0">市医保: {{paymentRecord.cmedicare}}</div>
+        <div v-if="paymentRecord.pmedicare !== 0">省医保: {{paymentRecord.pmedicare}}</div>
+        <div v-if="paymentRecord.memberBalance !== 0">会员卡: {{paymentRecord.memberBalance}}</div>
+        <div v-if="paymentRecord.creditpay !== 0">信用卡: {{paymentRecord.creditpay}}</div>
+        <div v-if="paymentRecord.coupon !== 0">抵扣券: {{paymentRecord.coupon}}</div>
+        <div v-if="paymentRecord.sysPaymentWayAmount !== 0">其他方式: {{paymentRecord.sysPaymentWayAmount}}</div>
       </div>
       <div style="margin: 5px 0; border-bottom: black 1px dashed;"></div>
       <div style="display: flex; flex-direction: row; justify-content: space-between;">

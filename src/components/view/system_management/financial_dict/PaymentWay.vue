@@ -42,9 +42,11 @@
         </el-table-column>
         <el-table-column prop="name" label="付款方式名称" width="150" show-overflow-tooltip/>
         <el-table-column prop="code" label="助记码" width="150" show-overflow-tooltip/>
+        <!--
         <el-table-column prop="cashFlag" label="现金类型" width="100" :formatter="dataGridFormatterFlag" show-overflow-tooltip/>
         <el-table-column prop="balanceFlag" label="余额类型" width="100" :formatter="dataGridFormatterFlag" show-overflow-tooltip/>
         <el-table-column prop="couponFlag" label="优惠券类型" width="100" :formatter="dataGridFormatterFlag" show-overflow-tooltip/>
+        -->
         <el-table-column prop="state" label="状态" :formatter="dataGridFormatterState"/>
       </el-table>
       <el-pagination
@@ -79,6 +81,7 @@
         <el-form-item label="助记码" prop="code">
           <el-input v-model.trim="editForm.code"/>
         </el-form-item>
+        <!--
         <el-row>
           <el-col :span="8">
             <el-form-item label="现金类型" prop="cashFlag">
@@ -105,6 +108,7 @@
             </el-form-item>
           </el-col>
         </el-row>
+        -->
         <el-form-item label="启用状态" prop="state">
           <el-radio-group v-model="editForm.state">
             <el-radio :label="true">启用</el-radio>

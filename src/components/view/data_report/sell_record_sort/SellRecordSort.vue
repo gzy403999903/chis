@@ -107,7 +107,7 @@
         </el-table-column>
         <el-table-column label="毛利率" width="100" show-overflow-tooltip>
           <template slot-scope="props">
-            {{((props.row.wsxs - props.row.wscb) / props.row.wsxs * 100).toFixed(2)}}%
+            {{((props.row.hsxs - props.row.hscb) / props.row.hsxs * 100).toFixed(2)}}%
           </template>
         </el-table-column>
         <el-table-column prop="originName" label="产地" width="100" show-overflow-tooltip/>

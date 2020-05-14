@@ -89,43 +89,43 @@
             <el-form-item label="现金" prop="cash">
               <el-input-number v-model="editForm.cash" :controls="false" :max="99999" :min="0" :precision="2"
                                ref="cash" :disabled="!memberForm.id"
-                               @keyup.enter.native="editFormValidateToNextFocus('cash', 'unionpay')"
+                               @blur="editForm.cash ? null : editForm.cash = 0"
                                @change="sumActualAmount"/>
             </el-form-item>
             <el-form-item label="银联" prop="unionpay">
               <el-input-number v-model="editForm.unionpay" :controls="false" :max="99999" :min="0" :precision="2"
                                ref="unionpay" :disabled="!memberForm.id"
-                               @keyup.enter.native="editFormValidateToNextFocus('unionpay', 'wechatpay')"
+                               @blur="editForm.unionpay ? null : editForm.unionpay = 0"
                                @change="sumActualAmount"/>
             </el-form-item>
             <el-form-item label="微信" prop="wechatpay">
               <el-input-number v-model="editForm.wechatpay" :controls="false" :max="99999" :min="0" :precision="2"
                                ref="wechatpay" :disabled="!memberForm.id"
-                               @keyup.enter.native="editFormValidateToNextFocus('wechatpay', 'alipay')"
+                               @blur="editForm.wechatpay ? null : editForm.wechatpay = 0"
                                @change="sumActualAmount"/>
             </el-form-item>
             <el-form-item label="支付宝" prop="alipay">
               <el-input-number v-model="editForm.alipay" :controls="false" :max="99999" :min="0" :precision="2"
                                ref="alipay" :disabled="!memberForm.id"
-                               @keyup.enter.native="editFormValidateToNextFocus('alipay', 'cmedicare')"
+                               @blur="editForm.alipay ? null : editForm.alipay = 0"
                                @change="sumActualAmount"/>
             </el-form-item>
             <el-form-item label="市医保" prop="cmedicare">
               <el-input-number v-model="editForm.cmedicare" :controls="false" :max="99999" :min="0" :precision="2"
-                               ref="cmedicare" :disabled="!memberForm.id"
-                               @keyup.enter.native="editFormValidateToNextFocus('cmedicare', 'pmedicare')"
+                               ref="cmedicare" disabled
+                               @blur="editForm.cmedicare ? null : editForm.cmedicare = 0"
                                @change="sumActualAmount"/>
             </el-form-item>
             <el-form-item label="省医保" prop="pmedicare">
               <el-input-number v-model="editForm.pmedicare" :controls="false" :max="99999" :min="0" :precision="2"
-                               ref="pmedicare" :disabled="!memberForm.id"
-                               @keyup.enter.native="editFormValidateToNextFocus('pmedicare', 'cash')"
+                               ref="pmedicare" disabled
+                               @blur="editForm.pmedicare ? null : editForm.pmedicare = 0"
                                @change="sumActualAmount"/>
             </el-form-item>
             <el-form-item label="会员卡" prop="memberBalance">
               <el-input-number v-model="editForm.memberBalance" :controls="false" :max="99999" :min="0" :precision="2"
                                ref="memberBalance" disabled
-                               @keyup.enter.native="editFormValidateToNextFocus('memberBalance', 'cash')"
+                               @blur="editForm.memberBalance ? null : editForm.memberBalance = 0"
                                @change="sumActualAmount"/>
             </el-form-item>
           </div>
@@ -135,6 +135,7 @@
               <el-form-item label="信用卡" prop="creditpay">
                 <el-input-number v-model="editForm.creditpay" :controls="false" :max="99999" :min="0" :precision="2"
                                  ref="creditpay" :disabled="!memberForm.id"
+                                 @blur="editForm.creditpay ? null : editForm.creditpay = 0"
                                  @change="sumActualAmount"/>
               </el-form-item>
             </div>
@@ -144,6 +145,7 @@
               </el-form-item>
               <el-form-item prop="coupon">
                 <el-input-number v-model="editForm.coupon" :controls="false" :max="99999" :min="0" :precision="2"
+                                 @blur="editForm.coupon ? null : editForm.coupon = 0"
                                  @change="sumActualAmount" disabled/>
               </el-form-item>
             </div>
@@ -162,6 +164,7 @@
               <el-form-item prop="sysPaymentWayAmount">
                 <el-input-number v-model="editForm.sysPaymentWayAmount" :disabled="editForm.sysPaymentWayId === ''" :controls="false" :max="99999" :min="0" :precision="2"
                                  ref="sysPaymentWayAmount"
+                                 @blur="editForm.sysPaymentWayAmount ? null : editForm.sysPaymentWayAmount = 0"
                                  @change="sumActualAmount"/>
               </el-form-item>
             </div>

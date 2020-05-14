@@ -79,6 +79,7 @@
           <el-menu-item index="/main/nurseWorkstation/chargeFeePrescription">处方收费</el-menu-item>
           <el-menu-item index="/main/nurseWorkstation/chargeFeePosEdit">POS收费</el-menu-item>
           <el-menu-item index="/main/nurseWorkstation/chargeFeeRecord">收费记录</el-menu-item>
+          <!--<el-menu-item index="/main/nurseWorkstation/chargeFeeRecord">班 结</el-menu-item>-->
         </el-submenu>
         <el-menu-item index="/main/nurseWorkstation/goodsOutInventory">
           <i class="el-icon-files"></i>
@@ -237,7 +238,7 @@
         </el-submenu>
         <el-menu-item index="/main/inventoryManagement/inventoryAllotApply">
           <i class="el-icon-copy-document"></i>
-          <span slot="title">库存调拨</span>
+          <span slot="title">库房调拨</span>
         </el-menu-item>
         <!--
         <el-submenu index="/inventoryManagement-2">
