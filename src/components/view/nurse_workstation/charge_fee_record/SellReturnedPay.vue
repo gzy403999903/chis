@@ -108,7 +108,7 @@
             </el-form-item>
             <el-form-item label="会员卡" prop="memberBalance">
               <el-input-number v-model="editForm.memberBalance" :controls="false" :max="99999" :min="0" :precision="2"
-                               ref="memberBalance" :disabled="!member.id"
+                               ref="memberBalance"
                                @blur="editForm.memberBalance ? null : editForm.memberBalance = 0"
                                @change="sumActualAmount"/>
             </el-form-item>
