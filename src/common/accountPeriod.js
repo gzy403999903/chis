@@ -2,16 +2,30 @@ const currentYear = new Date().getFullYear()
 const currentMonth = new Date().getMonth() + 1
 const currentDay = new Date().getDate()
 
+function getYear () {
+  return currentYear
+}
+
+function getMonth () {
+  let month = currentDay <= 25 ? currentMonth : currentMonth + 1
+  month = month > 12 ? 12 : month
+  return month
+}
+
+function getDateString (year, month, day) {
+  return year + '-' + (month < 10 ? (0 + '' + month) : month) + '-' + (day < 10 ? (0 + '' + day) : day)
+}
+
 export default {
   /**
    * 获取账期起始日期
    * @returns {string}
    */
   getBeginDate () {
-    let month = currentMonth === 1 ? currentMonth : (currentDay <= 25 ? currentMonth - 1 : currentMonth)
-    month = month === 12 ? 11 : month
-    let day = (currentMonth === 1 && currentDay <= 25) ? 1 : 26
-    return currentYear + '-' + (month < 10 ? 0 + '' + month : month) + '-' + (day < 10 ? 0 + '' + day : day)
+    let year = getYear()
+    let month = getMonth() === 1 ? 1 : getMonth() - 1
+    let day = month === 1 ? 1 : 26
+    return getDateString(year, month, day)
   },
 
   /**
@@ -19,7 +33,10 @@ export default {
    * @returns {string}
    */
   getEndDate () {
-    return currentYear + '-' + (this.getCurrentMonth() < 10 ? 0 + '' + this.getCurrentMonth() : this.getCurrentMonth()) + '-' + (this.getCurrentMonth() === 12 ? 31 : 25)
+    let year = getYear()
+    let month = getMonth()
+    let day = month === 12 ? 31 : 25
+    return getDateString(year, month, day)
   },
 
   /**
@@ -27,17 +44,9 @@ export default {
    * @returns {string}
    */
   getCurrentDate () {
-    return currentYear + '-' + (currentMonth < 10 ? 0 + '' + currentMonth : currentMonth) + '-' + (currentDay < 10 ? 0 + '' + currentDay : currentDay)
-  },
-
-  /**
-   * 获取当前账期月份
-   * @returns {number}
-   */
-  getCurrentMonth () {
-    let month = currentMonth === 1 ? currentMonth : (currentDay <= 25 ? currentMonth : currentMonth + 1)
-    month = month > 12 ? 12 : month
-    return month
+    let year = getYear()
+    let month = getMonth()
+    return getDateString(year, month, currentDay)
   },
 
   /**

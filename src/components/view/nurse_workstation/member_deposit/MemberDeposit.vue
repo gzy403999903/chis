@@ -86,14 +86,20 @@
     <!--储值界面-->
     <DepositPay :visible="dialog.visible"
                 :dialogClose="dialogClose" :dataGridLoadData="dataGridLoadData"/>
+
+    <!-- 班次验证 -->
+    <WorkGroupCloseChecker ref="workGroupCloseChecker"/>
+
   </div>
 </template>
 
 <script>
 import DepositPay from './DepositPay'
+import WorkGroupCloseChecker from '../../financial_management/work_group_close/WorkGroupCloseChecker'
 export default {
   components: {
-    DepositPay
+    DepositPay,
+    WorkGroupCloseChecker
   },
 
   data () {
@@ -125,6 +131,11 @@ export default {
       }
     }
   }, // end data
+
+  mounted () {
+    // 验证是否在当前班结中
+    this.$refs.workGroupCloseChecker.checkRegistration()
+  },
 
   methods: {
     /**

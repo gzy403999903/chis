@@ -51,15 +51,21 @@
     <!-- 处方结算 -->
     <ChargeFeePrescriptionEdit :visible="dialog.visible" :mrmMemberId="mrmMemberId"
                                :dialogClose="dialogClose" :dataGridLoadData="dataGridLoadData"/>
+
+    <!-- 班次验证 -->
+    <WorkGroupCloseChecker ref="workGroupCloseChecker"/>
+
   </div>
 </template>
 
 <script>
 import moment from 'moment'
 import ChargeFeePrescriptionEdit from './ChargeFeePrescriptionEdit'
+import WorkGroupCloseChecker from '../../financial_management/work_group_close/WorkGroupCloseChecker'
 export default {
   components: {
-    ChargeFeePrescriptionEdit
+    ChargeFeePrescriptionEdit,
+    WorkGroupCloseChecker
   },
 
   data () {
@@ -82,6 +88,8 @@ export default {
   }, // end data
 
   mounted () {
+    // 验证是否在当前班结中
+    this.$refs.workGroupCloseChecker.checkRegistration()
     // 加载页面载入数据
     this.dataGridLoadData()
   },

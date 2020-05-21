@@ -6,8 +6,15 @@
       body-style="padding: 5px;"
       class="el-card-menus">
       <el-form :model="queryForm" ref="queryForm" :inline="true" size="mini">
-        <el-form-item label="货位名称" prop="name">
-          <el-input v-model.trim="queryForm.name" placeholder="货位名称 / 助记码"/>
+        <el-form-item label="收费班次名称" prop="name">
+          <el-input v-model.trim="queryForm.name" placeholder="收费班次名称 / 助记码"/>
+        </el-form-item>
+        <el-form-item label="状态" prop="state">
+          <el-select v-model="queryForm.state" placeholder="请选择" style="width: 100px;">
+            <el-option label="全部" :value="null"/>
+            <el-option label="启用" :value="true"/>
+            <el-option label="禁用" :value="false"/>
+          </el-select>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" round icon="el-icon-search"  @click="dataGridLoadData">查询</el-button>
@@ -26,14 +33,17 @@
         :data="dataGrid.data"
         :stripe="true"
         size="mini">
-        <el-table-column fixed="left" type="index" width="50"/>
+        <el-table-column fixed="left" type="index"/>
         <el-table-column fixed="left" label="操作" align="center" width="120">
           <template slot-scope="scope">
             <el-button size="mini" icon="el-icon-edit" @click="dialogOpen(scope.row)"/>
             <el-button size="mini" type="danger" icon="el-icon-delete" @click="dataGridDelete(scope.row)"/>
           </template>
         </el-table-column>
-        <el-table-column prop="name" label="货位名称" show-overflow-tooltip/>
+        <el-table-column prop="name" label="收费班次名称" width="150" show-overflow-tooltip/>
+        <el-table-column prop="beginTime" label="起始时间" width="100" :formatter="dataGridFormatterTime" show-overflow-tooltip/>
+        <el-table-column prop="endTime" label="结束时间" width="100" :formatter="dataGridFormatterTime" show-overflow-tooltip/>
+        <el-table-column prop="state" label="状态" :formatter="dataGridFormatterState"/>
       </el-table>
       <el-pagination
         :page-size="pagination.pageSize"
@@ -47,29 +57,56 @@
       </el-pagination>
     </el-card>
 
-    <!-- 添加 / 编辑 -->
+    <!-- 添加功能 -->
     <el-dialog
-      title="货位"
+      title="收费班次"
       width="45%"
       :show-close="false"
       :close-on-click-modal="false"
       :visible="dialog.visible"
       @opened="dialogOpened"
       @closed="dialogClosed">
-      <el-form :model="editForm" ref="editForm" :rules="editFormRules" size="small" label-width="80px">
+      <el-form :model="editForm" ref="editForm" :rules="editFormRules" size="small" label-width="120px">
         <el-form-item prop="id" v-show="false">
           <el-input v-model.trim="editForm.id"/>
         </el-form-item>
-        <el-form-item label="货位名称" prop="name">
+
+        <el-form-item label="收费班次名称" prop="name">
           <el-input v-model.trim="editForm.name" ref="name"
-                    @blur="editFormSetPyCode('name', 'code')" @change="editFormSetPyCode('name', 'code')"/>
+                    @blur="editFormSetPyCode" @change="editFormSetPyCode"/>
         </el-form-item>
+
         <el-form-item label="助记码" prop="code">
           <el-input v-model.trim="editForm.code"/>
         </el-form-item>
+
+        <el-form-item label="起始时间" prop="beginTime">
+          <el-time-picker
+            placeholder="起始时间"
+            v-model="editForm.beginTime"
+            value-format="HH:mm:ss"
+            :clearable="false"
+            :picker-options="{selectableRange: '01:00:00 - 23:59:59'}"/>
+        </el-form-item>
+
+        <el-form-item label="结束时间" prop="endTime">
+          <el-time-picker
+            placeholder="结束时间"
+            v-model="editForm.endTime"
+            value-format="HH:mm:ss"
+            :clearable="false"
+            :picker-options="{selectableRange: '01:00:00 - 23:59:59'}"/>
+        </el-form-item>
+
+        <el-form-item label="状态" prop="state">
+          <el-radio-group v-model="editForm.state">
+            <el-radio :label="true">启用</el-radio>
+            <el-radio :label="false">禁用</el-radio>
+          </el-radio-group>
+        </el-form-item>
       </el-form>
       <span slot="footer">
-        <el-button type="default" size="small" round icon="el-icon-close" @click="dialogClose">取 消</el-button>
+        <el-button type="default" size="small" round icon="el-icon-close" @click="dialog.visible=false">取 消</el-button>
         <el-button type="primary" size="small" round icon="el-icon-check" @click="editFormSubmit">确 定</el-button>
       </span>
     </el-dialog>
@@ -78,13 +115,13 @@
 
 <script>
 import {getPyCode} from '../../../../common/py'
-
+import moment from 'moment'
 export default {
-
   data () {
     return {
       queryForm: {
-        name: null
+        name: '',
+        state: null
       },
       dataGrid: {
         data: [],
@@ -100,13 +137,16 @@ export default {
       },
       dialog: {
         url: '',
-        method: 'POST',
+        method: '',
         visible: false
       },
       editForm: {
         id: '',
         name: '',
-        code: ''
+        code: '',
+        beginTime: '',
+        endTime: '',
+        state: true
       },
       editFormRules: {
         name: [
@@ -116,33 +156,55 @@ export default {
         code: [
           {required: true, message: '不能为空'},
           {max: 20, message: '长度不合法[1-20]'}
+        ],
+        beginTime: [
+          {required: true, message: '不能为空'}
+        ],
+        endTime: [
+          {required: true, message: '不能为空'}
         ]
       }
     }
-  }, // end data
+  },
 
   methods: {
-    /* -------------------------------------------------------------------------------------------------------------- */
     paginationSizeChange (value) {
       this.pagination.pageSize = value
       this.dataGridLoadData()
     },
-
     paginationCurrentChange (value) {
       this.pagination.currentPage = value
       this.dataGridLoadData()
     },
 
-    /* -------------------------------------------------------------------------------------------------------------- */
-    /**
-     * 数据载入
-     */
+    dataGridFormatterTime (row, column, cellValue) {
+      return moment(cellValue).format('HH:mm:ss')
+    },
+    dataGridFormatterState (row, column, cellValue) {
+      return cellValue ? '启用' : '禁用'
+    },
+    editFormSetPyCode () {
+      this.editForm.code = getPyCode(this.editForm.name)
+    },
+    editFormValidateField (currentProp, nextRef) {
+      this.$refs.editForm.validateField(currentProp, (valid) => {
+        if (!valid) {
+          this.$refs[nextRef].focus()
+        } else {
+          return false
+        }
+      })
+    },
+
     dataGridLoadData () {
       this.$loading()
-      const url = `/chisAPI/shelfPosition/getClinicListByCriteria`
-      let params = this.queryForm
-      params.pageNum = this.pagination.currentPage
-      params.pageSize = this.pagination.pageSize
+      const url = `/chisAPI/workGroup/getByCriteria`
+      let params = {
+        pageNum: this.pagination.currentPage,
+        pageSize: this.pagination.pageSize,
+        name: this.queryForm.name,
+        state: this.queryForm.state
+      }
 
       this.$http.get(url, {params}).then((res) => {
         if (res.data.code === 200) {
@@ -153,19 +215,17 @@ export default {
       })
     },
 
-    /**
-     * 删除操作
-     */
     dataGridDelete (row) {
       this.$confirm('确认删除吗? 该操作不可恢复！', '提示', {
         confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning', showClose: false
       }).then(() => {
         this.$loading()
-        const url = `/chisAPI/shelfPosition/delete`
+        const url = `/chisAPI/workGroup/delete`
         let method = 'DELETE'
         let params = {
           id: row.id
         }
+
         this.$http({method, url, params}).then((res) => {
           if (res.data.code === 200) {
             this.$message.success(res.data.msg)
@@ -177,82 +237,55 @@ export default {
       }).catch(() => {})
     },
 
-    /* -------------------------------------------------------------------------------------------------------------- */
-    /**
-     * 打开添加/编辑界面
-     * @param row
-     */
     dialogOpen (row) {
-      this.dataGrid.row = row
       this.dialog.visible = true
+      this.dataGrid.row = row
     },
 
-    /**
-     * 添加/编辑界面打开后执行的内容
-     */
     dialogOpened () {
-      this.$refs.name.focus()
+      this.$refs.name.focus() // 打开编辑界面后自动获取焦点的位置
       let row = this.dataGrid.row
       if (row) {
         for (let key in this.editForm) {
-          if (row[key] !== undefined) {
-            this.editForm[key] = row[key]
-          }
+          this.editForm[key] = row[key]
         }
-        this.dialog.url = `/chisAPI/shelfPosition/update`
+        this.editForm.beginTime = this.dataGridFormatterTime(null, null, this.editForm.beginTime)
+        this.editForm.endTime = this.dataGridFormatterTime(null, null, this.editForm.endTime)
+        this.dialog.url = `/chisAPI/workGroup/update`
         this.dialog.method = 'PUT'
       } else {
-        this.dialog.url = `/chisAPI/shelfPosition/save`
+        this.dialog.url = `/chisAPI/workGroup/save`
         this.dialog.method = 'POST'
       }
     },
 
-    /**
-     * 关闭添加/编辑界面
-     */
-    dialogClose () {
-      this.dialog.visible = false
-    },
-
-    /**
-     * 关闭添加/编辑界面后执行的呢绒
-     */
     dialogClosed () {
       this.$refs.editForm.resetFields()
     },
 
-    /**
-     * 将输入的名称转成拼音助记码
-     */
-    editFormSetPyCode () {
-      this.editForm.code = getPyCode(this.editForm.name)
-    },
-
-    /**
-     * 提交数据
-     */
     editFormSubmit () {
       this.$refs.editForm.validate((valid) => {
-        if (valid) {
-          this.$loading()
-          let url = this.dialog.url
-          let method = this.dialog.method
-          let params = this.editForm
-
-          this.$http({method, url, params}).then((res) => {
-            if (res.data.code === 200) {
-              this.$message.success(res.data.msg)
-              this.dialogClose()
-              this.dataGridLoadData()
-            } else {
-              this.$loading().close()
-            }
-          })
+        if (!valid) {
+          return false
         }
+        this.$loading()
+        let url = this.dialog.url
+        let method = this.dialog.method
+        let params = this.editForm
+
+        this.$http({method, url, params}).then((res) => {
+          if (res.data.code === 200) {
+            this.$message.success(res.data.msg)
+            this.dataGridLoadData()
+            this.dialog.visible = false
+          } else {
+            this.$loading().close()
+          }
+        })
       })
     }
 
-  } // end methods
+  }
 }
 </script>
 

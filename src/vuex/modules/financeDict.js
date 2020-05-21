@@ -16,7 +16,10 @@ export default {
     paymentWayList: null,
 
     // 纳税人类型
-    taxpayerTypeList: null
+    taxpayerTypeList: null,
+
+    // 收费班次
+    workGroupList: null
   }, // end state
 
   /**
@@ -57,6 +60,13 @@ export default {
         store.dispatch('queryTaxpayerTypeList')
       }
       return state.taxpayerTypeList
+    },
+
+    workGroupList: (state) => {
+      if (!state.workGroupList) {
+        store.dispatch('queryWorkGroupList')
+      }
+      return state.workGroupList
     }
   }, // end getters
 
@@ -84,6 +94,10 @@ export default {
 
     taxpayerTypeList (state, data) {
       state.taxpayerTypeList = data
+    },
+
+    workGroupList (state, data) {
+      state.workGroupList = data
     }
   }, // end mutations
 
@@ -130,6 +144,14 @@ export default {
       const url = '/chisAPI/taxpayerType/getEnabledByTypeId'
       axios.get(url).then((res) => {
         context.commit('taxpayerTypeList', res.data)
+      })
+    },
+
+    // 收费班次
+    queryWorkGroupList (context) {
+      const url = '/chisAPI/workGroup/getEnabled'
+      axios.get(url).then((res) => {
+        context.commit('workGroupList', res.data)
       })
     }
   } // end actions

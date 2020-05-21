@@ -94,6 +94,9 @@ import SupplierAccount from '../components/view/financial_management/supplier_ac
 import PayableAccount from '../components/view/financial_management/payable_account/PayableAccount'
 import PaidAccount from '../components/view/financial_management/paid_account/PaidAccount'
 import PaymentApprove from '../components/view/financial_management/payment_approve/PaymentApprove'
+import AllWorkGroupClose from '../components/view/financial_management/work_group_close/AllWorkGroupClose'
+import ClinicWorkGroupClose from '../components/view/financial_management/work_group_close/ClinicWorkGroupClose'
+import WorkDayClose from '../components/view/financial_management/work_day_close/WorkDayClose'
 
 // data_report
 import AllSellRecord from '../components/view/data_report/sell_record/AllSellRecord'
@@ -158,6 +161,7 @@ import InvoiceType from '../components/view/system_management/financial_dict/Inv
 import PaymentType from '../components/view/system_management/financial_dict/PaymentType'
 import PaymentWay from '../components/view/system_management/financial_dict/PaymentWay'
 import TaxpayerType from '../components/view/system_management/financial_dict/TaxpayerType'
+import WorkGroup from '../components/view/system_management/financial_dict/WorkGroup'
 import Nationality from '../components/view/system_management/member_dict/Nationality'
 import Marital from '../components/view/system_management/member_dict/Marital'
 import Education from '../components/view/system_management/member_dict/Education'
@@ -537,6 +541,18 @@ export default new Router({
         {
           path: 'paymentApprove',
           component: PaymentApprove
+        },
+        {
+          path: 'allWorkGroupClose',
+          component: AllWorkGroupClose
+        },
+        {
+          path: 'clinicWorkGroupClose',
+          component: ClinicWorkGroupClose
+        },
+        {
+          path: 'workDayClose',
+          component: WorkDayClose
         }
       ]
     },
@@ -806,6 +822,10 @@ export default new Router({
         {
           path: 'taxpayerType',
           component: TaxpayerType
+        },
+        {
+          path: 'workGroup',
+          component: WorkGroup
         },
         {
           path: 'nationality',

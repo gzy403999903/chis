@@ -83,6 +83,9 @@
     <!-- 销售流水明细 -->
     <SellLshDetail :visible="dialog.billVisible" :row="dataGrid.row"
                    :dialogClose="billDialogClose"/>
+
+    <!-- 班次验证 -->
+    <WorkGroupCloseChecker ref="workGroupCloseChecker"/>
   </div>
 </template>
 
@@ -90,11 +93,13 @@
 import SellInvoice from './SellInvoice'
 import SellReturned from './SellReturned'
 import SellLshDetail from './SellLshDetail'
+import WorkGroupCloseChecker from '../../financial_management/work_group_close/WorkGroupCloseChecker'
 export default {
   components: {
     SellInvoice,
     SellReturned,
-    SellLshDetail
+    SellLshDetail,
+    WorkGroupCloseChecker
   },
 
   data () {
@@ -128,6 +133,11 @@ export default {
       }
     }
   }, // end data
+
+  mounted () {
+    // 验证是否在当前班结中
+    this.$refs.workGroupCloseChecker.checkRegistration()
+  },
 
   methods: {
     /**

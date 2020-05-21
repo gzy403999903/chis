@@ -286,16 +286,21 @@
                        :dialogClose="dialogClose" :pageReset="pageReset"/>
 
     </el-card>
+
+    <!-- 班次验证 -->
+    <WorkGroupCloseChecker ref="workGroupCloseChecker"/>
+
   </div>
 </template>
 
 <script>
 import jwtDecode from 'jwt-decode'
 import ChargeFeePosPay from './ChargeFeePosPay'
-
+import WorkGroupCloseChecker from '../../financial_management/work_group_close/WorkGroupCloseChecker'
 export default {
   components: {
-    ChargeFeePosPay
+    ChargeFeePosPay,
+    WorkGroupCloseChecker
   },
 
   data () {
@@ -342,6 +347,9 @@ export default {
   },
 
   mounted () {
+    // 验证是否在当前班结中
+    this.$refs.workGroupCloseChecker.checkRegistration()
+    // 刷新字典内容
     this.$store.dispatch('queryClinicUserList')
   }, // end mounted
 

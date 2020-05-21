@@ -79,7 +79,15 @@
           <el-menu-item index="/main/nurseWorkstation/chargeFeePrescription">处方收费</el-menu-item>
           <el-menu-item index="/main/nurseWorkstation/chargeFeePosEdit">POS收费</el-menu-item>
           <el-menu-item index="/main/nurseWorkstation/chargeFeeRecord">收费记录</el-menu-item>
-          <!--<el-menu-item index="/main/nurseWorkstation/chargeFeeRecord">班 结</el-menu-item>-->
+        </el-submenu>
+        <el-submenu index="/nurseWorkstation-2-1">
+          <template slot="title">
+            <i class="el-icon-connection"></i>
+            <span slot="title">关账</span>
+          </template>
+          <el-menu-item index="/main/financialManagement/clinicWorkGroupClose">班 结</el-menu-item>
+          <el-menu-item index="/main/financialManagement/workDayClose">日 结</el-menu-item>
+          <el-menu-item index="/main/error/404#memberManagement-workMonthClose">月 结</el-menu-item>
         </el-submenu>
         <el-menu-item index="/main/nurseWorkstation/goodsOutInventory">
           <i class="el-icon-files"></i>
@@ -308,6 +316,13 @@
       </template>
       <!-------------------------------------------------财务管理------------------------------------------------------->
       <template v-if="moduleName==='financialManagement'">
+        <el-submenu index="/financialManagement-0">
+          <template slot="title">
+            <i class="el-icon-tickets"></i>
+            <span slot="title">日结业务</span>
+          </template>
+          <el-menu-item index="/main/financialManagement/allWorkGroupClose">班次收费明细</el-menu-item>
+        </el-submenu>
         <el-submenu index="/financialManagement-1">
           <template slot="title">
             <i class="el-icon-tickets"></i>
@@ -445,6 +460,7 @@
           <el-menu-item index="/main/systemManagement/paymentType">付款类型</el-menu-item>
           <el-menu-item index="/main/systemManagement/paymentWay">付款方式</el-menu-item>
           <el-menu-item index="/main/systemManagement/taxpayerType">纳税人类型</el-menu-item>
+          <el-menu-item index="/main/systemManagement/workGroup">收费班次</el-menu-item>
         </el-submenu>
         <el-submenu index="/systemManagement-5">
           <template slot="title">
