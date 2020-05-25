@@ -116,8 +116,8 @@ export default {
       },
       queryForm: {
         logicDate: this.$store.getters.queryDate,
-        sysClinicName: '',
-        operatorName: ''
+        sysClinicName: null,
+        operatorName: null
       },
       dataGrid: {
         data: [],

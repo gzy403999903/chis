@@ -2,28 +2,36 @@ const currentYear = new Date().getFullYear()
 const currentMonth = new Date().getMonth() + 1
 const currentDay = new Date().getDate()
 
-function getYear () {
-  return currentYear
-}
-
-function getMonth () {
-  let month = currentDay <= 25 ? currentMonth : currentMonth + 1
-  month = month > 12 ? 12 : month
-  return month
-}
-
 function getDateString (year, month, day) {
   return year + '-' + (month < 10 ? (0 + '' + month) : month) + '-' + (day < 10 ? (0 + '' + day) : day)
 }
 
 export default {
   /**
+   * 获取年度
+   * @returns {number}
+   */
+  getYear () {
+    return currentYear
+  },
+
+  /**
+   * 获取月度
+   * @returns {number}
+   */
+  getMonth () {
+    let month = currentDay <= 25 ? currentMonth : currentMonth + 1
+    month = month > 12 ? 12 : month
+    return month
+  },
+
+  /**
    * 获取账期起始日期
    * @returns {string}
    */
   getBeginDate () {
-    let year = getYear()
-    let month = getMonth() === 1 ? 1 : getMonth() - 1
+    let year = this.getYear()
+    let month = this.getMonth() === 1 ? 1 : this.getMonth() - 1
     let day = month === 1 ? 1 : 26
     return getDateString(year, month, day)
   },
@@ -33,8 +41,8 @@ export default {
    * @returns {string}
    */
   getEndDate () {
-    let year = getYear()
-    let month = getMonth()
+    let year = this.getYear()
+    let month = this.getMonth()
     let day = month === 12 ? 31 : 25
     return getDateString(year, month, day)
   },
@@ -44,8 +52,8 @@ export default {
    * @returns {string}
    */
   getCurrentDate () {
-    let year = getYear()
-    let month = getMonth()
+    let year = this.getYear()
+    let month = this.getMonth()
     return getDateString(year, month, currentDay)
   },
 

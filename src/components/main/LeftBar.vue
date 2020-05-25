@@ -87,7 +87,7 @@
           </template>
           <el-menu-item index="/main/financialManagement/clinicWorkGroupClose">班 结</el-menu-item>
           <el-menu-item index="/main/financialManagement/workDayClose">日 结</el-menu-item>
-          <el-menu-item index="/main/error/404#memberManagement-workMonthClose">月 结</el-menu-item>
+          <el-menu-item index="/main/financialManagement/workMonthClose">月 结</el-menu-item>
         </el-submenu>
         <el-menu-item index="/main/nurseWorkstation/goodsOutInventory">
           <i class="el-icon-files"></i>

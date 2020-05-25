@@ -6,23 +6,25 @@
       body-style="padding: 5px;"
       class="el-card-menus">
       <el-form :model="queryForm" ref="queryForm" inline size="mini">
-        <el-form-item label="日结日期" prop="logicDate">
+        <el-form-item label="年度" prop="apYear">
           <el-date-picker
-            style="width: 280px;"
-            v-model="queryForm.logicDate"
-            type="daterange"
-            align="right"
-            unlink-panels
-            value-format="yyyy-MM-dd"
-            range-separator="-"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期"
-            :picker-options="pickerOptions"/>
+            style="width: 150px;"
+            v-model="queryForm.apYear"
+            type="year"
+            placeholder="年度"/>
+        </el-form-item>
+        <el-form-item label="月度" prop="apMonth">
+          <el-date-picker
+            style="width: 150px;"
+            v-model="queryForm.apMonth"
+            type="month"
+            format="M"
+            placeholder="月度"/>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" round icon="el-icon-search"  @click="dataGridLoadData">查 询</el-button>
           <el-button type="default" round icon="el-icon-refresh" @click="$refs.queryForm.resetFields()">重 置</el-button>
-          <el-button type="success" round icon="el-icon-link" @click="updateToClose">日 结</el-button>
+          <el-button type="success" round icon="el-icon-link" @click="updateToClose">月 结</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -39,14 +41,78 @@
         :row-class-name="tableRowClassName"
         size="mini">
         <el-table-column fixed="left" type="index" width="50"/>
-        <el-table-column prop="logicDate" label="逻辑日期" width="120" show-overflow-tooltip/>
-        <el-table-column label="日结状态" width="100" show-overflow-tooltip>
+        <el-table-column prop="apYear" label="年度" width="100" show-overflow-tooltip/>
+        <el-table-column prop="apMonth" label="月度" width="100" show-overflow-tooltip/>
+        <el-table-column label="月结状态" width="100" show-overflow-tooltip>
           <template slot-scope="props">
-            {{props.row.closeState ? '已日结' : '未日结'}}
+            {{props.row.closeState ? '已月结' : '未月结'}}
           </template>
         </el-table-column>
+        <el-table-column label="期初成本" align="center">
+          <el-table-column prop="hsQccb" label="含税" width="100" show-overflow-tooltip/>
+          <el-table-column prop="wsQccb" label="无税" width="100" show-overflow-tooltip/>
+          <el-table-column label="进项税" width="100" show-overflow-tooltip>
+            <template slot-scope="props">
+              {{(props.row.hsQccb - props.row.wsQccb).toFixed(2)}}
+            </template>
+          </el-table-column>
+        </el-table-column>
+        <el-table-column label="采购成本" align="center">
+          <el-table-column prop="hsCgcb" label="含税" width="100" show-overflow-tooltip/>
+          <el-table-column prop="wsCgcb" label="无税" width="100" show-overflow-tooltip/>
+          <el-table-column label="进项税" width="100" show-overflow-tooltip>
+            <template slot-scope="props">
+              {{(props.row.hsCgcb - props.row.wsCgcb).toFixed(2)}}
+            </template>
+          </el-table-column>
+        </el-table-column>
+        <el-table-column label="退货成本" align="center">
+          <el-table-column prop="hsThcb" label="含税" width="100" show-overflow-tooltip/>
+          <el-table-column prop="wsThcb" label="无税" width="100" show-overflow-tooltip/>
+          <el-table-column label="进项税" width="100" show-overflow-tooltip>
+            <template slot-scope="props">
+              {{(props.row.hsThcb - props.row.wsThcb).toFixed(2)}}
+            </template>
+          </el-table-column>
+        </el-table-column>
+        <el-table-column label="销售成本" align="center">
+          <el-table-column prop="hsXscb" label="含税" width="100" show-overflow-tooltip/>
+          <el-table-column prop="wsXscb" label="无税" width="100" show-overflow-tooltip/>
+          <el-table-column label="进项税" width="100" show-overflow-tooltip>
+            <template slot-scope="props">
+              {{(props.row.hsXscb - props.row.wsXscb).toFixed(2)}}
+            </template>
+          </el-table-column>
+        </el-table-column>
+        <el-table-column label="领用成本" align="center">
+          <el-table-column prop="hsLycb" label="含税" width="100" show-overflow-tooltip/>
+          <el-table-column prop="wsLycb" label="无税" width="100" show-overflow-tooltip/>
+          <el-table-column label="进项税" width="100" show-overflow-tooltip>
+            <template slot-scope="props">
+              {{(props.row.hsLycb - props.row.wsLycb).toFixed(2)}}
+            </template>
+          </el-table-column>
+        </el-table-column>
+        <el-table-column label="报损成本" align="center">
+          <el-table-column prop="hsBscb" label="含税" width="100" show-overflow-tooltip/>
+          <el-table-column prop="wsBscb" label="无税" width="100" show-overflow-tooltip/>
+          <el-table-column label="进项税" width="100" show-overflow-tooltip>
+            <template slot-scope="props">
+              {{(props.row.hsBscb - props.row.wsBscb).toFixed(2)}}
+            </template>
+          </el-table-column>
+        </el-table-column>
+        <el-table-column label="期末成本" align="center">
+          <el-table-column prop="hsQmcb" label="含税" width="100" show-overflow-tooltip/>
+          <el-table-column prop="wsQmcb" label="无税" width="100" show-overflow-tooltip/>
+          <el-table-column label="进项税" width="100" show-overflow-tooltip>
+            <template slot-scope="props">
+              {{(props.row.hsQmcb - props.row.wsQmcb).toFixed(2)}}
+            </template>
+          </el-table-column>
+        </el-table-column>
         <el-table-column prop="operatorName" label="操作人" width="100" show-overflow-tooltip/>
-        <el-table-column prop="operateDate" label="日结时间" min-width="160" show-overflow-tooltip/>
+        <el-table-column prop="operateDate" label="月结时间" min-width="160" show-overflow-tooltip/>
       </el-table>
       <el-pagination
         :page-size="pagination.pageSize"
@@ -64,6 +130,7 @@
 
 <script>
 import moment from 'moment'
+import accountPeriod from '../../../../common/accountPeriod'
 export default {
   data () {
     return {
@@ -73,9 +140,8 @@ export default {
         }
       },
       queryForm: {
-        logicDate: this.$store.getters.queryDate,
-        sysClinicName: null,
-        operatorName: null
+        apYear: accountPeriod.getYear().toString(),
+        apMonth: accountPeriod.getMonth().toString()
       },
       dataGrid: {
         data: [],
@@ -91,6 +157,10 @@ export default {
       }
     }
   }, // end data
+
+  mounted () {
+    console.log(moment().year())
+  },
 
   methods: {
     /**
@@ -161,12 +231,12 @@ export default {
     },
 
     /**
-     * 日结操作
+     * 月结操作
      */
     updateToClose () {
       this.$confirm(`当前逻辑日为
-          <span style="font-size: 20px; font-weight: 600; color: red; padding: 0 10px;">${moment(new Date()).format('YYYY-MM-DD')}</span>,
-          确认执行操作吗?`, '提示', {
+        <span style="font-size: 20px; font-weight: 600; color: red; padding: 0 10px;">${moment(new Date()).format('YYYY-MM-DD')}</span>,
+        确认执行操作吗?`, '提示', {
         dangerouslyUseHTMLString: true, confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning', showClose: false
       }).then(() => {
         this.$loading()
