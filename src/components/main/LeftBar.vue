@@ -80,15 +80,6 @@
           <el-menu-item index="/main/nurseWorkstation/chargeFeePosEdit">POS收费</el-menu-item>
           <el-menu-item index="/main/nurseWorkstation/chargeFeeRecord">收费记录</el-menu-item>
         </el-submenu>
-        <el-submenu index="/nurseWorkstation-2-1">
-          <template slot="title">
-            <i class="el-icon-connection"></i>
-            <span slot="title">关账</span>
-          </template>
-          <el-menu-item index="/main/financialManagement/clinicWorkGroupClose">班 结</el-menu-item>
-          <el-menu-item index="/main/financialManagement/workDayClose">日 结</el-menu-item>
-          <el-menu-item index="/main/financialManagement/workMonthClose">月 结</el-menu-item>
-        </el-submenu>
         <el-menu-item index="/main/nurseWorkstation/goodsOutInventory">
           <i class="el-icon-files"></i>
           <span slot="title">出库审核</span>
@@ -319,17 +310,19 @@
         <el-submenu index="/financialManagement-0">
           <template slot="title">
             <i class="el-icon-tickets"></i>
-            <span slot="title">日结业务</span>
+            <span slot="title">财务关账</span>
           </template>
-          <el-menu-item index="/main/financialManagement/allWorkGroupClose">班次收费明细</el-menu-item>
+          <el-menu-item index="/main/financialManagement/clinicWorkGroupClose">班 结</el-menu-item>
+          <el-menu-item index="/main/financialManagement/workDayClose">日 结</el-menu-item>
+          <el-menu-item index="/main/financialManagement/workMonthClose">月 结</el-menu-item>
         </el-submenu>
         <el-submenu index="/financialManagement-1">
           <template slot="title">
             <i class="el-icon-tickets"></i>
-            <span slot="title">月结业务</span>
+            <span slot="title">其他报表</span>
           </template>
-          <el-menu-item index="/main/error/404#financialManagement-1-1">月度结账</el-menu-item>
-          <el-menu-item index="/main/error/404#financialManagement-1-2">月度成本汇总</el-menu-item>
+          <el-menu-item index="/main/financialManagement/allWorkGroupClose">班次收费明细 [全机构]</el-menu-item>
+          <el-menu-item index="/main/financialManagement/workMonthCloseReport">月度成本汇总 [全机构]</el-menu-item>
         </el-submenu>
         <el-submenu index="/financialManagement-2">
           <template slot="title">

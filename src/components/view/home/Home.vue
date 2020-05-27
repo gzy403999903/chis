@@ -1,7 +1,6 @@
 <template>
   <div>
     <div class="home-body">
-      <!--<img src="../../../assets/images/nurse.png" style="width: 240px;"/>-->
       <div class="home-bg"></div>
     </div> <!-- end home-body -->
   </div>
@@ -9,7 +8,7 @@
 
 <script>
 import jwtDecode from 'jwt-decode'
-import moment from 'moment'
+import accountPeriod from '../../../common/accountPeriod'
 export default {
   data () {
     return {
@@ -18,17 +17,32 @@ export default {
   }, // end data
 
   mounted () {
+    this.checkWorkMonthClose()
     // 获取推送消息
     this.getMessageList()
   }, // end mounted
 
   methods: {
+
     /**
-     * 解析时间戳
-     * @param timestamp
+     * 检查当前账期之前是否有未月结的账期
      */
-    parseTimestamp (timestamp) {
-      return moment(timestamp).format('YYYY-MM-DD HH:mm:ss')
+    checkWorkMonthClose () {
+      const url = `/chisAPI/workMonthClose/getUnClosedByYearAndMonth`
+      let params = {
+        year: accountPeriod.getYear(),
+        month: accountPeriod.getMonth()
+      }
+      this.$http.get(url, {params}).then((res) => {
+        if (!res.data) {
+          this.$loading({
+            lock: true,
+            text: '请先处理未月结的账期......',
+            spinner: 'el-icon-warning',
+            background: 'rgba(0, 0, 0, 0.5)'
+          })
+        }
+      })
     },
 
     /**

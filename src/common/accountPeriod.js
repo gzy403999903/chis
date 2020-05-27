@@ -52,9 +52,7 @@ export default {
    * @returns {string}
    */
   getCurrentDate () {
-    let year = this.getYear()
-    let month = this.getMonth()
-    return getDateString(year, month, currentDay)
+    return getDateString(currentYear, currentMonth, currentDay)
   },
 
   /**

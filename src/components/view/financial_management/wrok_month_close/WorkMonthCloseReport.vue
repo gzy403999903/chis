@@ -11,6 +11,7 @@
             style="width: 150px;"
             v-model="queryForm.apYear"
             type="year"
+            :clearable="false"
             placeholder="年度"/>
         </el-form-item>
         <el-form-item label="月度" prop="apMonth">
@@ -19,12 +20,13 @@
             v-model="queryForm.apMonth"
             type="month"
             format="M"
+            value-format="M"
+            :clearable="false"
             placeholder="月度"/>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" round icon="el-icon-search"  @click="dataGridLoadData">查 询</el-button>
           <el-button type="default" round icon="el-icon-refresh" @click="$refs.queryForm.resetFields()">重 置</el-button>
-          <el-button type="success" round icon="el-icon-link" @click="updateToClose">月 结</el-button>
         </el-form-item>
       </el-form>
     </el-card>
@@ -37,79 +39,63 @@
         :height="$store.getters.dataGridHeight"
         :data="dataGrid.data"
         border
+        stripe
         highlight-current-row
-        :row-class-name="tableRowClassName"
+        show-summary
         size="mini">
         <el-table-column fixed="left" type="index" width="50"/>
-        <el-table-column prop="apYear" label="年度" width="100" show-overflow-tooltip/>
-        <el-table-column prop="apMonth" label="月度" width="100" show-overflow-tooltip/>
-        <el-table-column label="月结状态" width="100" show-overflow-tooltip>
+        <el-table-column prop="sysClinicName" label="机构名称" min-width="420" show-overflow-tooltip/>
+        <el-table-column label="年度" width="100" show-overflow-tooltip>
           <template slot-scope="props">
-            {{props.row.closeState ? '已月结' : '未月结'}}
+            {{props.row.apYear}}
           </template>
         </el-table-column>
+        <el-table-column label="月度" width="100" show-overflow-tooltip>
+          <template slot-scope="props">
+            {{props.row.apMonth}}
+          </template>
+        </el-table-column>
+       <!--
+        <el-table-column label="月结状态" width="100" show-overflow-tooltip>
+           <template slot-scope="props">
+             {{props.row.closeState ? '已月结' : '未月结'}}
+           </template>
+         </el-table-column>
+       -->
         <el-table-column label="期初成本" align="center">
           <el-table-column prop="hsQccb" label="含税" width="100" show-overflow-tooltip/>
           <el-table-column prop="wsQccb" label="无税" width="100" show-overflow-tooltip/>
-          <el-table-column label="进项税" width="100" show-overflow-tooltip>
-            <template slot-scope="props">
-              {{(props.row.hsQccb - props.row.wsQccb).toFixed(2)}}
-            </template>
-          </el-table-column>
+          <el-table-column prop="seQccb" label="进项税" width="100" show-overflow-tooltip/>
         </el-table-column>
         <el-table-column label="采购成本" align="center">
           <el-table-column prop="hsCgcb" label="含税" width="100" show-overflow-tooltip/>
           <el-table-column prop="wsCgcb" label="无税" width="100" show-overflow-tooltip/>
-          <el-table-column label="进项税" width="100" show-overflow-tooltip>
-            <template slot-scope="props">
-              {{(props.row.hsCgcb - props.row.wsCgcb).toFixed(2)}}
-            </template>
-          </el-table-column>
+          <el-table-column prop="seCgcb" label="进项税" width="100" show-overflow-tooltip/>
         </el-table-column>
         <el-table-column label="退货成本" align="center">
           <el-table-column prop="hsThcb" label="含税" width="100" show-overflow-tooltip/>
           <el-table-column prop="wsThcb" label="无税" width="100" show-overflow-tooltip/>
-          <el-table-column label="进项税" width="100" show-overflow-tooltip>
-            <template slot-scope="props">
-              {{(props.row.hsThcb - props.row.wsThcb).toFixed(2)}}
-            </template>
-          </el-table-column>
+          <el-table-column prop="seThcb" label="进项税" width="100" show-overflow-tooltip/>
         </el-table-column>
         <el-table-column label="销售成本" align="center">
           <el-table-column prop="hsXscb" label="含税" width="100" show-overflow-tooltip/>
           <el-table-column prop="wsXscb" label="无税" width="100" show-overflow-tooltip/>
-          <el-table-column label="进项税" width="100" show-overflow-tooltip>
-            <template slot-scope="props">
-              {{(props.row.hsXscb - props.row.wsXscb).toFixed(2)}}
-            </template>
-          </el-table-column>
+          <el-table-column prop="seXscb" label="进项税" width="100" show-overflow-tooltip/>
         </el-table-column>
         <el-table-column label="领用成本" align="center">
           <el-table-column prop="hsLycb" label="含税" width="100" show-overflow-tooltip/>
           <el-table-column prop="wsLycb" label="无税" width="100" show-overflow-tooltip/>
-          <el-table-column label="进项税" width="100" show-overflow-tooltip>
-            <template slot-scope="props">
-              {{(props.row.hsLycb - props.row.wsLycb).toFixed(2)}}
-            </template>
-          </el-table-column>
+          <el-table-column prop="seLycb" label="进项税" width="100" show-overflow-tooltip/>
         </el-table-column>
         <el-table-column label="报损成本" align="center">
           <el-table-column prop="hsBscb" label="含税" width="100" show-overflow-tooltip/>
           <el-table-column prop="wsBscb" label="无税" width="100" show-overflow-tooltip/>
-          <el-table-column label="进项税" width="100" show-overflow-tooltip>
-            <template slot-scope="props">
-              {{(props.row.hsBscb - props.row.wsBscb).toFixed(2)}}
-            </template>
-          </el-table-column>
+          <el-table-column prop="seBscb" label="进项税" width="100" show-overflow-tooltip/>
         </el-table-column>
         <el-table-column label="期末成本" align="center">
           <el-table-column prop="hsQmcb" label="含税" width="100" show-overflow-tooltip/>
           <el-table-column prop="wsQmcb" label="无税" width="100" show-overflow-tooltip/>
-          <el-table-column label="进项税" width="100" show-overflow-tooltip>
-            <template slot-scope="props">
-              {{(props.row.hsQmcb - props.row.wsQmcb).toFixed(2)}}
-            </template>
-          </el-table-column>
+          <el-table-column prop="seQmcb" label="进项税" width="100" show-overflow-tooltip/>
         </el-table-column>
         <el-table-column prop="operatorName" label="操作人" width="100" show-overflow-tooltip/>
         <el-table-column prop="operateDate" label="月结时间" min-width="160" show-overflow-tooltip/>
@@ -129,7 +115,6 @@
 </template>
 
 <script>
-import moment from 'moment'
 import accountPeriod from '../../../../common/accountPeriod'
 export default {
   data () {
@@ -157,10 +142,6 @@ export default {
       }
     }
   }, // end data
-
-  mounted () {
-    console.log(moment().year())
-  },
 
   methods: {
     /**
@@ -215,7 +196,7 @@ export default {
      */
     dataGridLoadData () {
       this.$loading()
-      let url = '/chisAPI/workDayClose/getClinicListByCriteria'
+      let url = '/chisAPI/workMonthClose/getByCriteria'
       let params = this.queryForm
       params.pageNum = this.pagination.currentPage
       params.pageSize = this.pagination.pageSize
@@ -224,36 +205,10 @@ export default {
         if (res.data.code === 200) {
           this.pagination.total = res.data.resultSet.page.total
           this.dataGrid.data = res.data.resultSet.page.list
-          // this.adjustTableHeight()
+          this.adjustTableHeight()
         }
         this.$loading().close()
       })
-    },
-
-    /**
-     * 月结操作
-     */
-    updateToClose () {
-      this.$confirm(`当前逻辑日为
-        <span style="font-size: 20px; font-weight: 600; color: red; padding: 0 10px;">${moment(new Date()).format('YYYY-MM-DD')}</span>,
-        确认执行操作吗?`, '提示', {
-        dangerouslyUseHTMLString: true, confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning', showClose: false
-      }).then(() => {
-        this.$loading()
-        const url = `/chisAPI/workDayClose/updateToClose`
-        let method = 'PUT'
-        let params = {
-          userDate: moment(new Date()).format('YYYY-MM-DD')
-        }
-        this.$http({method, url, params}).then((res) => {
-          if (res.data.code === 200) {
-            this.$message.success(res.data.msg)
-            this.dataGridLoadData()
-          } else {
-            this.$loading().close()
-          }
-        }) // end http
-      }).catch(() => {}) // end confirm
     }
 
   } // end methods

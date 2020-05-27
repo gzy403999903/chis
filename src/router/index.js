@@ -98,6 +98,7 @@ import AllWorkGroupClose from '../components/view/financial_management/work_grou
 import ClinicWorkGroupClose from '../components/view/financial_management/work_group_close/ClinicWorkGroupClose'
 import WorkDayClose from '../components/view/financial_management/work_day_close/WorkDayClose'
 import WorkMonthClose from '../components/view/financial_management/wrok_month_close/WorkMonthClose'
+import WorkMonthCloseReport from '../components/view/financial_management/wrok_month_close/WorkMonthCloseReport'
 
 // data_report
 import AllSellRecord from '../components/view/data_report/sell_record/AllSellRecord'
@@ -558,6 +559,10 @@ export default new Router({
         {
           path: 'workMonthClose',
           component: WorkMonthClose
+        },
+        {
+          path: 'workMonthCloseReport',
+          component: WorkMonthCloseReport
         }
       ]
     },
