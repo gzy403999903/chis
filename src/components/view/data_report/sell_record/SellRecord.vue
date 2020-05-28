@@ -25,7 +25,7 @@
     <!-- 查询条件界面 -->
     <el-dialog
       top="2%"
-      width="45%"
+      width="60%"
       :show-close="false"
       :close-on-click-modal="false"
       :visible="dialog.visible">
@@ -41,38 +41,84 @@
         </el-col>
       </el-row>
 
-      <el-form :model="queryForm" ref="queryForm" :inline="false" size="mini" label-width="110px" label-position="left" style="padding: 0 20px;">
-        <el-form-item label="销售日期" prop="creationDate">
-          <el-date-picker
-            v-model="queryForm.creationDate"
-            type="daterange"
-            align="right"
-            unlink-panels
-            :clearable="false"
-            value-format="yyyy-MM-dd"
-            range-separator="-"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期"
-            :picker-options="pickerOptions"/>
-        </el-form-item>
-        <el-form-item label="开票日期" prop="invoiceDate">
-          <el-date-picker
-            v-model="queryForm.invoiceDate"
-            type="daterange"
-            align="right"
-            unlink-panels
-            value-format="yyyy-MM-dd"
-            range-separator="-"
-            start-placeholder="开始日期"
-            end-placeholder="结束日期"
-            :picker-options="pickerOptions"/>
-        </el-form-item>
-        <el-form-item label="机构名称" prop="sysClinicName" v-if="action === 'all'">
-          <el-input v-model.trim="queryForm.sysClinicName" placeholder="机构名称 / 助记码"/>
-        </el-form-item>
-        <el-form-item label="流水号" prop="lsh">
-          <el-input v-model.trim="queryForm.lsh" placeholder="流水号"/>
-        </el-form-item>
+      <el-form :model="queryForm" ref="queryForm" :inline="false" size="mini" label-width="100px" label-position="left" style="padding: 0 20px;">
+        <el-row :gutter="20">
+          <el-col :span="12">
+            <el-form-item label="销售日期" prop="creationDate">
+              <el-date-picker
+                style="width: 280px;"
+                v-model="queryForm.creationDate"
+                type="daterange"
+                align="right"
+                unlink-panels
+                :clearable="false"
+                value-format="yyyy-MM-dd"
+                range-separator="-"
+                start-placeholder="开始日期"
+                end-placeholder="结束日期"
+                :picker-options="pickerOptions"/>
+            </el-form-item>
+            <el-form-item label="开票日期" prop="invoiceDate">
+              <el-date-picker
+                style="width: 280px;"
+                v-model="queryForm.invoiceDate"
+                type="daterange"
+                align="right"
+                unlink-panels
+                value-format="yyyy-MM-dd"
+                range-separator="-"
+                start-placeholder="开始日期"
+                end-placeholder="结束日期"
+                :picker-options="pickerOptions"/>
+            </el-form-item>
+            <el-form-item label="机构名称" prop="sysClinicName" v-if="action === 'all'">
+              <el-input v-model.trim="queryForm.sysClinicName" placeholder="机构名称 / 助记码"/>
+            </el-form-item>
+            <el-form-item label="流水号" prop="lsh">
+              <el-input v-model.trim="queryForm.lsh" placeholder="流水号"/>
+            </el-form-item>
+            <el-form-item label="商品编码" prop="entityOid">
+              <el-input v-model.trim="queryForm.entityOid" placeholder="商品编码"/>
+            </el-form-item>
+            <el-form-item label="销售名称" prop="entityName">
+              <el-input v-model.trim="queryForm.entityName" placeholder="商品名称 / 项目名称 / 助记码"/>
+            </el-form-item>
+            <el-form-item label="主推分类" prop="sellClassifyId">
+              <el-select
+                ref="sellClassifyId"
+                v-model.trim="queryForm.sellClassifyId"
+                filterable
+                multiple
+                default-first-option
+                placeholder="请选择">
+                <el-option :value="null" label=""/>
+                <el-option v-for="item in sellClassifyList" :key="item.id" :value="item.id" :label="item.name + ' [' +item.code + ']'"/>
+              </el-select>
+            </el-form-item>
+          </el-col> <!-- end left -->
+
+          <el-col :span="12">
+            <el-form-item label="会员姓名" prop="mrmMemberName">
+              <el-input v-model.trim="queryForm.mrmMemberName" placeholder="会员姓名 / 助记码"/>
+            </el-form-item>
+            <el-form-item label="会员手机" prop="phone">
+              <el-input v-model.trim="queryForm.phone" placeholder="会员手机"/>
+            </el-form-item>
+            <el-form-item label="销售人ID" prop="sellerId">
+              <el-input v-model.trim="queryForm.sellerId" placeholder="销售人ID"/>
+            </el-form-item>
+            <el-form-item label="销售人" prop="sellerName">
+              <el-input v-model.trim="queryForm.sellerName" placeholder="销售人姓名 / 助记码"/>
+            </el-form-item>
+            <el-form-item label="供应商编码" prop="pemSupplierOid">
+              <el-input v-model.trim="queryForm.pemSupplierOid" placeholder="供应商编码"/>
+            </el-form-item>
+            <el-form-item label="供应商" prop="pemSupplierName">
+              <el-input v-model.trim="queryForm.pemSupplierName" placeholder="供应商名称 / 助记码"/>
+            </el-form-item>
+          </el-col> <!-- end right -->
+        </el-row> <!-- end row -->
+
         <el-form-item label="销售类型" prop="sysSellTypeId">
           <el-radio-group v-model="queryForm.sysSellTypeId" @change="sysSellTypeIdChange">
             <el-radio :label="null" border>全部</el-radio>
@@ -91,24 +137,6 @@
             <el-radio :label="itemType.ADJUVANT_ITEM" border v-if="queryForm.sysSellTypeId === sellType.ITEM">辅助项目</el-radio>
             <el-radio :label="itemType.OTHER_ITEM" border v-if="queryForm.sysSellTypeId === sellType.ITEM">其他项目</el-radio>
           </el-radio-group>
-        </el-form-item>
-        <el-form-item label="商品编码" prop="entityOid">
-          <el-input v-model.trim="queryForm.entityOid" placeholder="商品编码"/>
-        </el-form-item>
-        <el-form-item label="销售名称" prop="entityName">
-          <el-input v-model.trim="queryForm.entityName" placeholder="商品名称 / 项目名称 / 助记码"/>
-        </el-form-item>
-        <el-form-item label="会员姓名" prop="mrmMemberName">
-          <el-input v-model.trim="queryForm.mrmMemberName" placeholder="会员姓名 / 助记码"/>
-        </el-form-item>
-        <el-form-item label="会员手机" prop="phone">
-          <el-input v-model.trim="queryForm.phone" placeholder="会员手机"/>
-        </el-form-item>
-        <el-form-item label="销售人ID" prop="sellerId">
-          <el-input v-model.trim="queryForm.sellerId" placeholder="销售人ID"/>
-        </el-form-item>
-        <el-form-item label="销售人" prop="sellerName">
-          <el-input v-model.trim="queryForm.sellerName" placeholder="销售人姓名 / 助记码"/>
         </el-form-item>
       </el-form>
     </el-dialog>
@@ -167,6 +195,7 @@
         <el-table-column prop="invoiceTypeName" label="发票类型" width="120" show-overflow-tooltip/>
         <el-table-column prop="invoiceNo" label="发票号" width="100" show-overflow-tooltip/>
         <el-table-column prop="invoiceDate" label="开票日期" width="160" show-overflow-tooltip/>
+        <el-table-column prop="sellClassifyName" label="主推属性" width="110" show-overflow-tooltip/>
         <el-table-column prop="sellerId" label="销售人ID" width="100" show-overflow-tooltip/>
         <el-table-column prop="sellerName" label="销售人" width="100" show-overflow-tooltip/>
         <el-table-column prop="operatorId" label="出库人ID" width="100" show-overflow-tooltip/>
@@ -224,7 +253,10 @@ export default {
         mrmMemberName: null,
         phone: null,
         sellerId: null,
-        sellerName: null
+        sellerName: null,
+        pemSupplierOid: null,
+        pemSupplierName: null,
+        sellClassifyId: null
       },
       dataGrid: {
         data: [],
@@ -240,6 +272,12 @@ export default {
       }
     }
   }, // end data
+
+  computed: {
+    sellClassifyList: function () {
+      return this.$store.getters.sellClassifyList
+    }
+  }, // end computed
 
   methods: {
     /**

@@ -59,7 +59,7 @@
         <el-table-column prop="ybk" label="亿保卡" width="100" show-overflow-tooltip/>
         <el-table-column prop="bgflk" label="北国福礼卡" width="120" show-overflow-tooltip/>
         <el-table-column prop="yky" label="一卡易" width="100" show-overflow-tooltip/>
-        <el-table-column prop="actualAmount" label="小计" width="100" show-overflow-tooltip/>
+        <el-table-column prop="actualAmount" label="实收金额" width="100" show-overflow-tooltip/>
         <el-table-column prop="disparityAmount" label="差额" width="100" show-overflow-tooltip/>
         <el-table-column label="收银员ID" width="120" show-overflow-tooltip v-if="groupBy === 'creatorId'">
           <template slot-scope="props">

@@ -476,7 +476,7 @@
           <el-menu-item index="/main/systemManagement/drugUsage">给药途径</el-menu-item>
           <el-menu-item index="/main/systemManagement/goodsClassify">商品分类</el-menu-item>
           <el-menu-item index="/main/systemManagement/secondClassify">二级分类</el-menu-item>
-          <el-menu-item index="/main/systemManagement/sellClassify">销售分类</el-menu-item>
+          <el-menu-item index="/main/systemManagement/sellClassify">主推分类</el-menu-item>
           <el-menu-item index="/main/systemManagement/specialDrug">特殊药品</el-menu-item>
           <el-menu-item index="/main/systemManagement/storageTemperature">存储条件</el-menu-item>
           <el-menu-item index="/main/systemManagement/prescriptionType">处方类型</el-menu-item>

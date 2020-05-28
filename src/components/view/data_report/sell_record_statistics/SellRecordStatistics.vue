@@ -77,6 +77,11 @@
           </el-table-column>
           <el-table-column prop="goodsCbHj" label="成本合计" align="center" width="120" show-overflow-tooltip/>
         </el-table-column>
+        <el-table-column label="商品出库合计" width="120" show-overflow-tooltip>
+          <template slot-scope="props">
+            {{(props.row.goodsKpWscb + props.row.goodsWkpWscb).toFixed(2)}}
+          </template>
+        </el-table-column>
         <el-table-column label="毛利额" width="120" show-overflow-tooltip>
           <template slot-scope="props">
             {{(props.row.wsxsHj - props.row.goodsCbHj).toFixed(2)}}

@@ -17,24 +17,33 @@ export default {
   }, // end data
 
   mounted () {
-    this.checkWorkMonthClose()
-    // 获取推送消息
-    this.getMessageList()
+    this.executeRequest()
   }, // end mounted
 
   methods: {
+    /**
+     * 发起请求
+     */
+    executeRequest () {
+      // 检查是否月结 (如果是总部就不进行检查了)
+      if (this.payload.clinicId !== this.$store.getters.HQID) {
+        this.hasUnClosedWorkMonthClose()
+      }
+      // 获取推送消息
+      this.getMessageList()
+    },
 
     /**
-     * 检查当前账期之前是否有未月结的账期
+     * 当前账期之前是否有未月结的账期
      */
-    checkWorkMonthClose () {
+    hasUnClosedWorkMonthClose () {
       const url = `/chisAPI/workMonthClose/getUnClosedByYearAndMonth`
       let params = {
         year: accountPeriod.getYear(),
         month: accountPeriod.getMonth()
       }
       this.$http.get(url, {params}).then((res) => {
-        if (!res.data) {
+        if (res.data) {
           this.$loading({
             lock: true,
             text: '请先处理未月结的账期......',
