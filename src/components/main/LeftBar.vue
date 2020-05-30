@@ -175,6 +175,10 @@
           <el-menu-item index="/main/goodsManagement/goodsAdjustPriceApply">调价申请</el-menu-item>
           <el-menu-item index="/main/goodsManagement/goodsAdjustPriceApprove">调价审批</el-menu-item>
         </el-submenu>
+        <el-menu-item index="/main/goodsManagement/equivalent">
+          <i class="el-icon-c-scale-to-original"></i>
+          <span slot="title">当量参照维护</span>
+        </el-menu-item>
       </template>
       <!-------------------------------------------------采购管理------------------------------------------------------->
       <template v-if="moduleName==='purchaseManagement'">

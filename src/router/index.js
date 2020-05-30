@@ -48,6 +48,7 @@ import ChineseDrugs from '../components/view/goods_management/goods/ChineseDrugs
 import HygienicMaterial from '../components/view/goods_management/goods/HygienicMaterial'
 import GoodsAdjustPriceApply from '../components/view/goods_management/goods_adjust_price/GoodsAdjustPriceApply'
 import GoodsAdjustPriceApprove from '../components/view/goods_management/goods_adjust_price/GoodsAdjustPriceApprove'
+import Equivalent from '../components/view/goods_management/goods_equivalent/Equivalent'
 
 import GoodsApply from '../components/view/goods_management/goods_apply/GoodsApply'
 
@@ -367,6 +368,10 @@ export default new Router({
         {
           path: 'goodsApply',
           component: GoodsApply
+        },
+        {
+          path: 'equivalent',
+          component: Equivalent
         }
       ]
     },

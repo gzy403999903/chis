@@ -42,7 +42,7 @@
       </el-row>
 
       <el-form :model="queryForm" ref="queryForm" :inline="false" size="mini" label-width="100px" label-position="left" style="padding: 0 20px;">
-        <el-row :gutter="20">
+        <el-row :gutter="40">
           <el-col :span="12">
             <el-form-item label="销售日期" prop="creationDate">
               <el-date-picker
@@ -89,9 +89,9 @@
                 v-model.trim="queryForm.sellClassifyId"
                 filterable
                 multiple
+                clearable
                 default-first-option
                 placeholder="请选择">
-                <el-option :value="null" label=""/>
                 <el-option v-for="item in sellClassifyList" :key="item.id" :value="item.id" :label="item.name + ' [' +item.code + ']'"/>
               </el-select>
             </el-form-item>
@@ -165,20 +165,20 @@
         <!--<el-table-column prop="sysSellTypeName" label="销售类型" width="100" show-overflow-tooltip/>-->
         <el-table-column prop="entityTypeName" label="销售类型" width="110" show-overflow-tooltip/>
         <el-table-column prop="entityOid" label="编码" width="120" show-overflow-tooltip/>
-        <el-table-column prop="entityName" label="名称" width="200" show-overflow-tooltip/>
+        <el-table-column prop="entityName" label="名称" width="200" sortable show-overflow-tooltip/>
         <el-table-column prop="specs" label="规格" width="150" show-overflow-tooltip/>
         <el-table-column prop="unitsName" label="销售单位" width="100" show-overflow-tooltip/>
         <el-table-column prop="originName" label="产地" width="100" show-overflow-tooltip/>
         <el-table-column prop="manufacturerName" label="生产厂家" width="300" show-overflow-tooltip/>
-        <el-table-column prop="retailPrice" label="零售单价" width="100" show-overflow-tooltip/>
-        <el-table-column prop="quantity" label="销售数量" width="100" show-overflow-tooltip/>
-        <el-table-column prop="actualRetailPrice" label="实收单价" width="100" show-overflow-tooltip/>
+        <el-table-column prop="retailPrice" label="零售单价" width="120" sortable show-overflow-tooltip/>
+        <el-table-column prop="quantity" label="销售数量" width="120" sortable show-overflow-tooltip/>
+        <el-table-column prop="actualRetailPrice" label="实收单价" sortable width="120" show-overflow-tooltip/>
         <el-table-column label="实收小计" width="100" show-overflow-tooltip>
           <template slot-scope="props">
             {{(props.row.actualRetailPrice * props.row.quantity).toFixed(2)}}
           </template>
         </el-table-column>
-        <el-table-column prop="costPrice" label="成本价" width="100" show-overflow-tooltip/>
+        <el-table-column prop="costPrice" label="成本价" width="120" sortable show-overflow-tooltip/>
         <el-table-column label="成本小计(含税)" width="120" show-overflow-tooltip>
           <template slot-scope="props">
             {{(props.row.costPrice * props.row.quantity).toFixed(2)}}
@@ -186,9 +186,9 @@
         </el-table-column>
         <el-table-column prop="ph" label="批号" width="150" show-overflow-tooltip/>
         <el-table-column prop="pch" label="批次号" width="150" show-overflow-tooltip/>
-        <el-table-column prop="billingTypeName" label="计费类型" width="120" show-overflow-tooltip/>
-        <el-table-column prop="goodsClassifyName" label="商品分类" width="150" show-overflow-tooltip/>
-        <el-table-column prop="expiryDate" label="有效期至" width="120" show-overflow-tooltip/>
+        <el-table-column prop="billingTypeName" label="计费类型" width="120" sortable show-overflow-tooltip/>
+        <el-table-column prop="goodsClassifyName" label="商品分类" width="150" sortable show-overflow-tooltip/>
+        <el-table-column prop="expiryDate" label="有效期至" width="120" sortable show-overflow-tooltip/>
         <el-table-column prop="mrmMemberOid" label="会员编码" width="150" show-overflow-tooltip/>
         <el-table-column prop="mrmMemberName" label="会员姓名" width="100" show-overflow-tooltip/>
         <el-table-column prop="phone" label="会员电话" width="150" show-overflow-tooltip/>

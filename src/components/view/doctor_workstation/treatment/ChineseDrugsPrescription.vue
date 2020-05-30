@@ -77,7 +77,7 @@
         </el-table-column>
         <el-table-column fixed="left" prop="goodsUnitsName" label="单位" width="70" show-overflow-tooltip/>
         <el-table-column fixed="left" prop="specs" label="规格" width="150" show-overflow-tooltip/>
-        <el-table-column fixed="left" prop="originName" label="产地" width="200" show-overflow-tooltip/>
+        <el-table-column fixed="left" prop="originName" label="产地" width="120" show-overflow-tooltip/>
         <el-table-column fixed="left" prop="drugsPrepareMethodId" label="炮制" width="150" show-overflow-tooltip>
           <template slot-scope="props">
             <el-select
@@ -96,7 +96,11 @@
             <span v-show="!props.row.editable">{{getNameById(drugsPrepareMethodList, props.row.drugsPrepareMethodId)}}</span>
           </template>
         </el-table-column>
-        <el-table-column min-width="1"/>
+        <el-table-column label="当量参照" min-width="150" show-overflow-tooltip>
+          <template slot-scope="props">
+            {{equivalentRefer(props.row)}}
+          </template>
+        </el-table-column>
       </el-table>
 
       <div style="float: left;height: 50px; line-height: 50px; min-width: 60%;">
@@ -245,6 +249,20 @@ export default {
       if (this.$refs.editForm !== undefined) {
         this.$refs.editForm.resetFields()
       }
+    },
+
+    /**
+     * 当量参照
+     */
+    equivalentRefer (row) {
+      if (!row.uuid || !row.referQuantity) {
+        return ''
+      }
+
+      let referQuantity = row.quantity ? (row.quantity * row.referQuantity / row.splitQuantity) : (row.referQuantity / row.splitQuantity)
+      referQuantity = referQuantity < 1 ? referQuantity.toFixed(4) : referQuantity.toFixed(0)
+
+      return row.referGsmGoodsName + referQuantity + row.referGoodsUnitsName
     },
 
     /**
@@ -450,6 +468,11 @@ export default {
       this.dataGrid.currentRow.goodsUnitsName = goods.goodsUnitsName // 销售单位
       this.dataGrid.currentRow.inventoryQuantity = goods.quantity // 库存数量
 
+      // 当量参照
+      this.dataGrid.currentRow.referGsmGoodsName = goods.referGsmGoodsName
+      this.dataGrid.currentRow.referQuantity = goods.referQuantity
+      this.dataGrid.currentRow.referGoodsUnitsName = goods.referGoodsUnitsName
+
       // 计算处方总价
       this.sumRetailPrice()
     },
@@ -589,6 +612,12 @@ export default {
         sig.drugsPrepareMethodId = item.drugsPrepareMethodId // 药品炮制方法Id
         sig.drugsPrepareMethodName = this.getNameById(this.drugsPrepareMethodList, item.drugsPrepareMethodId) // 药品炮制方法名称
         sig.sig = this.editForm.sig // 用法
+
+        // 当量参照
+        sig.referGsmGoodsName = item.referGsmGoodsName
+        sig.referQuantity = item.referQuantity
+        sig.referGoodsUnitsName = item.referGoodsUnitsName
+
         prescription.sigJson = JSON.stringify(sig)
 
         prescriptionArray.push(prescription)
@@ -669,6 +698,11 @@ export default {
         this.dataGrid.currentRow.drugsPrepareMethodId = sig.drugsPrepareMethodId // 药品炮制方法Id
         // this.dataGrid.currentRow.drugsPrepareMethodName = sig.drugsPrepareMethodName // 药品炮制方法名称(select组件自动根据ID选择)
         this.editForm.sig = sig.sig // 用法
+
+        // 当量参照
+        this.dataGrid.currentRow.referGsmGoodsName = sig.referGsmGoodsName
+        this.dataGrid.currentRow.referQuantity = sig.referQuantity
+        this.dataGrid.currentRow.referGoodsUnitsName = sig.referGoodsUnitsName
       })
 
       // 计算处方总价
@@ -677,21 +711,21 @@ export default {
 
     /* -------------------------------------------------------------------------------------------------------------- */
     /**
-     * 打开病例模板界面
+     * 打开历史界面
      */
     templateDialogOpen () {
       this.dialog.templateVisible = true
     },
 
     /**
-     * 关闭病例模板界面
+     * 关闭历史处方界面
      */
     templateDialogClose () {
       this.dialog.templateVisible = false
     },
 
     /**
-     * 载入选中病例
+     * 载入历史处方
      * 此方法由  PrescriptionTemplatePreload 调用
      * @param prescriptionData
      */
@@ -724,6 +758,11 @@ export default {
         this.dataGrid.currentRow.drugsPrepareMethodId = sig.drugsPrepareMethodId // 药品炮制方法Id
         // this.dataGrid.currentRow.drugsPrepareMethodName = sig.drugsPrepareMethodName // 药品炮制方法名称(select组件自动根据ID选择)
         this.editForm.sig = sig.sig // 用法
+
+        // 当量参照
+        this.dataGrid.currentRow.referGsmGoodsName = sig.referGsmGoodsName
+        this.dataGrid.currentRow.referQuantity = sig.referQuantity
+        this.dataGrid.currentRow.referGoodsUnitsName = sig.referGoodsUnitsName
       })
 
       // 计算处方总价
