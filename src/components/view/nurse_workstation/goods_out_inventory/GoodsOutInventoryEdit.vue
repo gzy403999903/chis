@@ -281,6 +281,8 @@ export default {
       row.pchSplitQuantity = inventory.splitQuantity // 库存拆分数量 * 用于比对销售单位是否相同
       row.pchQuantity = inventory.quantity // 库存数量(可销数量) * 用于显示库存数量
       row.costPrice = inventory.costPrice // 成本价
+      row.firstCostPrice = inventory.firstCostPrice // 一成本价
+      row.secondCostPrice = inventory.secondCostPrice // 二成本价
       row.producedDate = inventory.producedDate // 生产日期
       row.expiryDate = inventory.expiryDate // 有效期至
       row.pemSupplierId = inventory.pemSupplierId // 供应商ID
@@ -410,6 +412,8 @@ export default {
         copyRow.pch = ''
         copyRow.pchQuantity = ''
         copyRow.costPrice = ''
+        copyRow.firstCostPrice = ''
+        copyRow.secondCostPrice = ''
         copyRow.producedDate = ''
         copyRow.expiryDate = ''
         copyRow.pemSupplierId = ''

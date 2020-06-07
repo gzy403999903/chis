@@ -1,7 +1,7 @@
 <template>
   <div class="user-panel">
     <div class="user-image">
-      <img src="../../../assets/images/butterfly.png"/>
+      <img src="../../../assets/images/avatar1.png"/>
     </div>
     <div class="user-info">
       <div>姓名: <b>{{'[' + payload.userId + '] &nbsp;' + payload.userName}}</b></div><hr/>
@@ -62,15 +62,14 @@ export default {
     padding: 10px;
   }
   .user-image {
-    width: 90px;
+    width: 70px;
     position: absolute;
-    /*
-    top: -10px;
-    left: -10px;
-    */
+    left: 25px;
+    top: 25px;
   }
   .user-image img {
     width: 100%;
+    border-radius: 45px;
   }
   .user-info {
     font-size: 14px;

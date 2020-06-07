@@ -189,6 +189,8 @@
         <el-table-column prop="billingTypeName" label="计费类型" width="120" sortable show-overflow-tooltip/>
         <el-table-column prop="goodsClassifyName" label="商品分类" width="150" sortable show-overflow-tooltip/>
         <el-table-column prop="expiryDate" label="有效期至" width="120" sortable show-overflow-tooltip/>
+        <el-table-column prop="pemSupplierOid" label="供应商编码" width="120" sortable show-overflow-tooltip/>
+        <el-table-column prop="pemSupplierName" label="供应商名称" width="250" sortable show-overflow-tooltip/>
         <el-table-column prop="mrmMemberOid" label="会员编码" width="150" show-overflow-tooltip/>
         <el-table-column prop="mrmMemberName" label="会员姓名" width="100" show-overflow-tooltip/>
         <el-table-column prop="phone" label="会员电话" width="150" show-overflow-tooltip/>

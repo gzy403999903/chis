@@ -478,9 +478,9 @@ export default {
       }
 
       // 判断商品是否低于成本价
-      if (!row.lossable && (row.actualRetailPrice < row.costPrice)) {
+      if (!row.lossable && (row.actualRetailPrice < row.firstCostPrice)) {
         if (showMsg === undefined) {
-          this.$message.error('【' + row.oid + ' ' + row.name + '】实收单价不能低于成本价: ' + row.costPrice)
+          this.$message.error('【' + row.oid + ' ' + row.name + '】实收单价不能低于一成本价: ' + row.firstCostPrice)
         }
         return false
       }
@@ -585,6 +585,8 @@ export default {
       // this.dataGrid.currentRow.quantity = 0 // 销售数量 [编辑表单已赋值]
       this.dataGrid.currentRow.inventoryQuantity = inventory.quantity // 库存数量
       this.dataGrid.currentRow.costPrice = inventory.costPrice // 成本价
+      this.dataGrid.currentRow.firstCostPrice = inventory.firstCostPrice // 一成本价
+      this.dataGrid.currentRow.secondCostPrice = inventory.secondCostPrice // 二成本价
       this.dataGrid.currentRow.producedDate = inventory.producedDate // 生产日期
       this.dataGrid.currentRow.expiryDate = inventory.expiryDate // 有效期至
       this.dataGrid.currentRow.pemSupplierId = inventory.pemSupplierId // 供应商ID
@@ -717,7 +719,7 @@ export default {
       this.dataGrid.data.forEach(row => {
         if (row.discountable) {
           const discountPrice = row.retailPrice * (this.discountRate < 10 ? (this.discountRate / 10) : (this.discountRate / 100))
-          if ((discountPrice > row.costPrice) || row.lossable) {
+          if ((discountPrice > row.firstCostPrice) || row.lossable) {
             row.actualRetailPrice = discountPrice.toFixed(4)
           }
         }

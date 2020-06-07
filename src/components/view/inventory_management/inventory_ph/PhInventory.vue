@@ -50,6 +50,7 @@
         :height="$store.getters.dataGridHeight"
         :data="dataGrid.data"
         stripe
+        border
         highlight-current-row
         size="mini">
         <el-table-column fixed="left" type="index" width="50"/>
@@ -59,14 +60,23 @@
         <el-table-column prop="gsmGoodsName" label="商品名称" width="150" show-overflow-tooltip/>
         <el-table-column prop="gsmGoodsSpecs" label="整装规格" width="150" show-overflow-tooltip/>
         <el-table-column prop="goodsUnitsName" label="单位" width="70" show-overflow-tooltip/>
-        <el-table-column prop="retailPrice" label="零售价" width="100" show-overflow-tooltip/>
+        <!--<el-table-column prop="retailPrice" label="零售价" width="100" show-overflow-tooltip/>-->
+        <el-table-column prop="retailPrice" label="零售价" width="100" show-overflow-tooltip>
+          <template slot-scope="props">
+            {{
+              props.row.retailPrice > (props.row.costPrice * 1.15)
+              ? (props.row.gsmGoodsTypeName === '中药'? (props.row.costPrice * 1.15).toFixed(4): (props.row.costPrice * 1.15).toFixed(0))
+              : props.row.retailPrice
+            }}
+          </template>
+        </el-table-column>
         <el-table-column prop="quantity" label="库存数量" width="100" show-overflow-tooltip/>
         <el-table-column prop="ph" label="批号" width="150" show-overflow-tooltip/>
         <!--<el-table-column prop="costPrice" label="批次进价" width="100" show-overflow-tooltip/>-->
         <el-table-column prop="expiryDate" label="有效期至" width="100" show-overflow-tooltip/>
         <el-table-column prop="originName" label="产地" width="120" show-overflow-tooltip/>
         <el-table-column prop="manufacturerName" label="生产厂家" width="300" show-overflow-tooltip/>
-        <el-table-column prop="sysClinicName" label="机构名称" width="400" show-overflow-tooltip/>
+        <el-table-column prop="sysClinicName" label="机构名称" min-width="400" show-overflow-tooltip/>
         <el-table-column/>
       </el-table>
       <el-pagination

@@ -6,21 +6,17 @@
       body-style="padding: 5px;"
       class="el-card-menus">
       <el-form :model="queryForm" ref="queryForm" :inline="true" size="mini">
-        <el-form-item label="供应商编码" prop="oid">
-          <el-input v-model.trim="queryForm.oid" placeholder="供应商编码" style="width: 150px;"/>
+        <el-form-item label="供应商编码" prop="pemSupplierOid">
+          <el-input v-model.trim="queryForm.pemSupplierOid" placeholder="供应商编码" style="width: 150px;"/>
         </el-form-item>
-        <el-form-item label="供应商名称" prop="name">
-          <el-input v-model.trim="queryForm.name" placeholder="供应商名称 / 助记码" style="width: 150px;"/>
+        <el-form-item label="供应商名称" prop="pemSupplierName">
+          <el-input v-model.trim="queryForm.pemSupplierName" placeholder="供应商名称 / 助记码" style="width: 150px;"/>
         </el-form-item>
-        <el-form-item label="联系人电话" prop="contacterPhone">
-          <el-input v-model.trim="queryForm.contacterPhone" placeholder="联系人电话" style="width: 150px;"/>
+        <el-form-item label="商品编码" prop="gsmGoodsOid">
+          <el-input v-model.trim="queryForm.gsmGoodsOid" placeholder="商品编码" style="width: 150px;"/>
         </el-form-item>
-        <el-form-item label="状态" prop="state">
-          <el-select v-model="queryForm.state" placeholder="请选择" style="width: 100px;">
-            <el-option label="全部" :value="null"/>
-            <el-option label="启用" :value="true"/>
-            <el-option label="禁用" :value="false"/>
-          </el-select>
+        <el-form-item label="商品名称" prop="gsmGoodsName">
+          <el-input v-model.trim="queryForm.gsmGoodsName" placeholder="商品名称 / 助记码" style="width: 150px;"/>
         </el-form-item>
         <el-form-item>
           <el-button type="primary" round icon="el-icon-search"  @click="dataGridLoadData">查询</el-button>
@@ -37,7 +33,8 @@
       <el-table
         :height="$store.getters.dataGridHeight"
         :data="dataGrid.data"
-        :stripe="true"
+        strip
+        border
         size="mini">
         <el-table-column fixed="left" type="index"/>
         <el-table-column fixed="left" label="操作" align="center" width="140">
@@ -46,15 +43,17 @@
             <el-button size="mini" type="danger" icon="el-icon-delete" @click="dataGridDelete(scope.row)"/>
           </template>
         </el-table-column>
-        <el-table-column prop="oid" label="供应商编码" width="100" show-overflow-tooltip/>
-        <el-table-column prop="name" label="供应商名称" width="300" show-overflow-tooltip/>
-        <el-table-column prop="legalPerson" label="公司法人" width="100" show-overflow-tooltip/>
-        <el-table-column prop="tel" label="联系电话" width="120" show-overflow-tooltip/>
-        <el-table-column prop="fax" label="传真" width="120" show-overflow-tooltip/>
-        <el-table-column prop="contacter" label="联系人" width="100" show-overflow-tooltip/>
-        <el-table-column prop="contacterPhone" label="联系人电话" width="150" show-overflow-tooltip/>
-        <el-table-column prop="address" label="地址" min-width="300" show-overflow-tooltip/>
-        <el-table-column prop="state" label="状态" :formatter="dataGridFormatterState" width="100" show-overflow-tooltip/>
+        <el-table-column prop="pemSupplierOid" label="供应商编码" width="100" show-overflow-tooltip/>
+        <el-table-column prop="pemSupplierName" label="供应商名称" width="250" show-overflow-tooltip/>
+        <el-table-column prop="gsmGoodsOid" label="商品编码" width="100" show-overflow-tooltip/>
+        <el-table-column prop="gsmGoodsName" label="商品名称" width="200" show-overflow-tooltip/>
+        <el-table-column prop="goodsUnitsName" label="单位" width="100" show-overflow-tooltip/>
+        <el-table-column prop="specs" label="规格" width="150" show-overflow-tooltip/>
+        <el-table-column prop="retailPrice" label="零售单价" width="100" show-overflow-tooltip/>
+        <el-table-column prop="firstCostPrice" label="一成本价" width="100" show-overflow-tooltip/>
+        <el-table-column prop="secondCostPrice" label="二成本价" width="100" show-overflow-tooltip/>
+        <el-table-column prop="originName" label="产地" width="100" show-overflow-tooltip/>
+        <el-table-column prop="manufacturerName" label="生产厂家" min-width="250" show-overflow-tooltip/>
       </el-table>
       <el-pagination
         :page-size="pagination.pageSize"
@@ -68,29 +67,26 @@
       </el-pagination>
     </el-card>
 
-    <!-- 添加编辑功能 -->
-    <Edit :row="dataGrid.row" :visible="dialog.visible"
-          :dialogClose="dialogClose" :dataGridLoadData="dataGridLoadData"/>
-
+    <!-- 添加/编辑界面 -->
+    <AssessCostEdit ref="supplierRebateEdit" :row="dataGrid.row"
+                        :dataGridLoadData="dataGridLoadData"/>
   </div>
 </template>
 
 <script>
-import Edit from './Edit'
-
+import AssessCostEdit from './AssessCostEdit'
 export default {
-
   components: {
-    Edit
+    AssessCostEdit
   },
 
   data () {
     return {
       queryForm: {
-        oid: null,
-        name: null,
-        contacterPhone: null,
-        state: null
+        pemSupplierOid: null,
+        pemSupplierName: null,
+        gsmGoodsOid: null,
+        gsmGoodsName: null
       },
       dataGrid: {
         data: [],
@@ -103,9 +99,6 @@ export default {
         pagerCount: this.$store.getters.pagination.pagerCount, /* 分页页码按钮的数量 */
         pageSizes: this.$store.getters.pagination.pageSizes, /* 选取每页显示的行数 */
         layout: this.$store.getters.pagination.layout
-      },
-      dialog: {
-        visible: false
       }
     }
   },
@@ -123,13 +116,12 @@ export default {
     },
 
     /* -------------------------------------------------------------------------------------------------------------- */
-    dataGridFormatterState (row, column, cellValue) {
-      return cellValue ? '启用' : '禁用'
-    },
-
+    /**
+     * 载入报表数据
+     */
     dataGridLoadData () {
       this.$loading()
-      const url = `/chisAPI/supplier/getByCriteria`
+      const url = `/chisAPI/assessCost/getByCriteria`
       let params = this.queryForm
       params.pageNum = this.pagination.currentPage
       params.pageSize = this.pagination.pageSize
@@ -143,12 +135,15 @@ export default {
       })
     },
 
+    /**
+     * 删除操作
+     */
     dataGridDelete (row) {
       this.$confirm('确认删除吗? 该操作不可恢复！', '提示', {
         confirmButtonText: '确定', cancelButtonText: '取消', type: 'warning', showClose: false
       }).then(() => {
         this.$loading()
-        const url = `/chisAPI/supplier/delete`
+        const url = `/chisAPI/assessCost/delete`
         let method = 'DELETE'
         let params = {
           id: row.id
@@ -165,13 +160,13 @@ export default {
     },
 
     /* -------------------------------------------------------------------------------------------------------------- */
+    /**
+     * 打开编辑界面
+     * @param row
+     */
     dialogOpen (row) {
       this.dataGrid.row = row
-      this.dialog.visible = true
-    },
-
-    dialogClose () {
-      this.dialog.visible = false
+      this.$refs.supplierRebateEdit.visible = true
     }
   }
 

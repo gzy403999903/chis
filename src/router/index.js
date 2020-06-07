@@ -66,6 +66,7 @@ import PurchaseAddApprove from '../components/view/purchase_management/purchase_
 import PurchaseSubtractApply from '../components/view/purchase_management/purchase_subtract/PurchaseSubtractApply'
 import PurchaseSubtractApprove from '../components/view/purchase_management/purchase_subtract/PurchaseSubtractApprove'
 import PurchaseSubtractApproveHQ from '../components/view/purchase_management/purchase_subtract/PurchaseSubtractApproveHQ'
+import AssessCost from '../components/view/purchase_management/assess_cost/AssessCost'
 
 // items_management
 import MedicalItem from '../components/view/items_management/item/MedicalItem'
@@ -136,6 +137,8 @@ import ClinicPurchaseCostAmount from '../components/view/data_report/purchase_co
 import MemberAnalysis from '../components/view/data_report/member_analysis/MemberAnalysis'
 import AllSellRecordCommission from '../components/view/data_report/sell_record_commission/AllSellRecordCommission'
 import ClinicSellRecordCommission from '../components/view/data_report/sell_record_commission/ClinicSellRecordCommission'
+import InventoryRebateGroupByClinic from '../components/view/data_report/inventory_rebate_report/InventoryRebateGroupByClinic'
+import InventoryRebateGroupByGoods from '../components/view/data_report/inventory_rebate_report/InventoryRebateGroupByGoods'
 
 // system_management
 import Clinic from '../components/view/system_management/sys_setup/Clinic'
@@ -432,6 +435,10 @@ export default new Router({
         {
           path: 'purchaseSubtractApproveHQ',
           component: PurchaseSubtractApproveHQ
+        },
+        {
+          path: 'assessCost',
+          component: AssessCost
         }
       ]
     },
@@ -712,6 +719,14 @@ export default new Router({
         {
           path: 'clinicSellRecordCommission',
           component: ClinicSellRecordCommission
+        },
+        {
+          path: 'inventoryRebateGroupByClinic',
+          component: InventoryRebateGroupByClinic
+        },
+        {
+          path: 'inventoryRebateGroupByGoods',
+          component: InventoryRebateGroupByGoods
         }
       ]
     },

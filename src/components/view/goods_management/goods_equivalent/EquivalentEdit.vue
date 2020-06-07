@@ -34,7 +34,7 @@
               ref="useGsmGoodsId"
               @keyup.enter.native="validateToNextFocus('useGsmGoodsId', 'referGsmGoodsId')"
               v-model.trim="editForm.useGsmGoodsId"
-              placeholder="输入 商品名称 / 助记码"
+              placeholder="输入 使用商品名称 / 助记码"
               :remote-method="queryGoods"
               :loading="selectData.loading"
               remote
@@ -80,7 +80,7 @@
               ref="referGsmGoodsId"
               @keyup.enter.native="validateToNextFocus('referGsmGoodsId', 'referQuantity')"
               v-model.trim="editForm.referGsmGoodsId"
-              placeholder="输入 参照名称 / 助记码"
+              placeholder="输入 参照商品名称 / 助记码"
               :remote-method="queryGoods"
               :loading="selectData.loading"
               remote

@@ -303,11 +303,11 @@ export default {
         return false
       }
 
-      // 判断商品是否低于成本价
+      // 判断商品是否低于一成本价
       if ((row.sysSellTypeId === this.sellType.GOODS) &&
           (!row.lossable) &&
-          (row.actualRetailPrice < row.costPrice)) {
-        this.$message.error('【' + row.oid + ' ' + row.name + '】 实收单价不能低于成本价:' + row.costPrice)
+          (row.actualRetailPrice < row.firstCostPrice)) {
+        this.$message.error('【' + row.oid + ' ' + row.name + '】 实收单价不能低于一成本价:' + row.firstCostPrice)
         return false
       }
 
@@ -393,7 +393,7 @@ export default {
       this.dataGrid.selectedData.forEach(row => {
         if (row.discountable) {
           const discountPrice = row.retailPrice * (this.discountRate < 10 ? (this.discountRate / 10) : (this.discountRate / 100))
-          if ((discountPrice > row.costPrice) || row.lossable) {
+          if ((discountPrice > row.firstCostPrice) || row.lossable) {
             row.actualRetailPrice = discountPrice.toFixed(4)
           }
         }
