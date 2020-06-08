@@ -137,8 +137,10 @@ import ClinicPurchaseCostAmount from '../components/view/data_report/purchase_co
 import MemberAnalysis from '../components/view/data_report/member_analysis/MemberAnalysis'
 import AllSellRecordCommission from '../components/view/data_report/sell_record_commission/AllSellRecordCommission'
 import ClinicSellRecordCommission from '../components/view/data_report/sell_record_commission/ClinicSellRecordCommission'
-import InventoryRebateGroupByClinic from '../components/view/data_report/inventory_rebate_report/InventoryRebateGroupByClinic'
-import InventoryRebateGroupByGoods from '../components/view/data_report/inventory_rebate_report/InventoryRebateGroupByGoods'
+import InventoryAssessCost1 from '../components/view/data_report/assess_cost/InventoryAssessCost1'
+import InventoryAssessCost2 from '../components/view/data_report/assess_cost/InventoryAssessCost2'
+import SellAssessCost1 from '../components/view/data_report/assess_cost/SellAssessCost1'
+import SellAssessCost2 from '../components/view/data_report/assess_cost/SellAssessCost2'
 
 // system_management
 import Clinic from '../components/view/system_management/sys_setup/Clinic'
@@ -721,12 +723,20 @@ export default new Router({
           component: ClinicSellRecordCommission
         },
         {
-          path: 'inventoryRebateGroupByClinic',
-          component: InventoryRebateGroupByClinic
+          path: 'inventoryAssessCost1',
+          component: InventoryAssessCost1
         },
         {
-          path: 'inventoryRebateGroupByGoods',
-          component: InventoryRebateGroupByGoods
+          path: 'inventoryAssessCost2',
+          component: InventoryAssessCost2
+        },
+        {
+          path: 'sellAssessCost1',
+          component: SellAssessCost1
+        },
+        {
+          path: 'sellAssessCost2',
+          component: SellAssessCost2
         }
       ]
     },

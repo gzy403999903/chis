@@ -9,7 +9,7 @@
     <!-- 模态框标题栏与功能按钮-->
     <el-row slot="title">
       <el-col :span="6" style="font-size: 20px;">
-        <span>供应商返利</span>
+        <span>考核成本</span>
       </el-col>
       <el-col :span="18" style="text-align: right;">
         <el-button size="mini" type="primary" icon="el-icon-check" @click="submitData">提 交</el-button>

@@ -29,6 +29,19 @@
       </el-row>
 
       <el-form :model="queryForm" ref="queryForm" size="mini" label-width="110px" label-position="left" style="padding: 0 20px;">
+        <el-form-item label="销售日期" prop="creationDate" v-if="action === 'sellRecordReport'">
+          <el-date-picker
+            v-model="queryForm.creationDate"
+            type="daterange"
+            align="right"
+            unlink-panels
+            :clearable="false"
+            value-format="yyyy-MM-dd"
+            range-separator="-"
+            start-placeholder="开始日期"
+            end-placeholder="结束日期"
+            :picker-options="pickerOptions"/>
+        </el-form-item>
         <el-form-item label="商品编码" prop="gsmGoodsOid">
           <el-input v-model.trim="queryForm.gsmGoodsOid" placeholder="商品编码"/>
         </el-form-item>
@@ -66,7 +79,7 @@
         <el-table-column prop="quantity" label="库存数量" width="100" show-overflow-tooltip/>
         <el-table-column prop="goodsUnitsName" label="单位" width="100" show-overflow-tooltip/>
         <el-table-column prop="retailPrice" label="零售单价" width="100" show-overflow-tooltip/>
-        <el-table-column prop="costPrice" label="开票成本价" width="120" show-overflow-tooltip/>
+        <el-table-column prop="costPrice" label="发票成本价" width="120" show-overflow-tooltip/>
         <el-table-column prop="firstCostPrice" label="一成本价" width="100" show-overflow-tooltip/>
         <el-table-column prop="secondCostPrice" label="二成本价" width="100" show-overflow-tooltip/>
         <el-table-column prop="originName" label="产地" width="100" show-overflow-tooltip/>
@@ -93,6 +106,10 @@
 <script>
 export default {
   props: {
+    action: {
+      type: String,
+      required: true
+    },
     groupBy: {
       type: String,
       required: true
@@ -101,8 +118,14 @@ export default {
 
   data () {
     return {
+      pickerOptions: {
+        disabledDate (time) {
+          return time.getTime() > Date.now()
+        }
+      },
       visible: false,
       queryForm: {
+        creationDate: this.$store.getters.queryDate,
         gsmGoodsOid: '',
         gsmGoodsName: '',
         pemSupplierOid: '',
@@ -166,7 +189,9 @@ export default {
      */
     dataGridLoadData () {
       this.$loading()
-      let url = '/chisAPI/supplierRebateReport/getInventoryRebateByCriteria'
+      let url = this.action === 'inventoryReport'
+        ? '/chisAPI/inventoryReport/getInventoryAssessCostByCriteria'
+        : '/chisAPI/sellRecordReport/getSellAssessCostByCriteria'
       let params = this.queryForm
       params.pageNum = this.pagination.currentPage
       params.pageSize = this.pagination.pageSize

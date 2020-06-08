@@ -387,12 +387,10 @@
           <el-menu-item index="/main/dataReport/allSellFrequency" v-if="hqReport">库存动销分析(按门店)</el-menu-item>
           <el-menu-item index="/main/dataReport/clinicSellFrequency" v-if="!hqReport">库存动销分析(按门店)</el-menu-item>
           <el-menu-item index="/main/dataReport/sellRecordDaily" v-if="hqReport">日销售报表(含税)</el-menu-item>
-          <!--
-          <el-menu-item index="/main/dataReport/inventoryRebateGroupByClinic" v-if="hqReport">库存返利明细(按门店)</el-menu-item>
-          <el-menu-item index="/main/dataReport/inventoryRebateGroupByGoods" v-if="hqReport">库存返利明细(按商品)</el-menu-item>
-          <el-menu-item index="/main/dataReport/allPurchaseCostAmount" v-if="hqReport">销售返利明细(按门店)</el-menu-item>
-          <el-menu-item index="/main/dataReport/allPurchaseCostAmount" v-if="hqReport">销售返利明细(按商品)</el-menu-item>
-          -->
+          <el-menu-item index="/main/dataReport/inventoryAssessCost1" v-if="hqReport">库存协定成本(按门店)</el-menu-item>
+          <el-menu-item index="/main/dataReport/inventoryAssessCost2" v-if="hqReport">库存协定成本(按商品)</el-menu-item>
+          <el-menu-item index="/main/dataReport/sellAssessCost1" v-if="hqReport">销售协定成本(按门店)</el-menu-item>
+          <el-menu-item index="/main/dataReport/sellAssessCost2" v-if="hqReport">销售协定成本(按商品)</el-menu-item>
           <el-menu-item index="/main/dataReport/memberAnalysis">会员分析</el-menu-item>
           <el-menu-item index="/main/dataReport/allExpirydateWarning" v-if="hqReport">效期预警</el-menu-item>
           <el-menu-item index="/main/dataReport/ClinicExpirydateWarning" v-if="!hqReport">效期预警</el-menu-item>
