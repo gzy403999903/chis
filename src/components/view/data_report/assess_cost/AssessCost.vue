@@ -79,9 +79,17 @@
         <el-table-column prop="quantity" label="库存数量" width="100" show-overflow-tooltip/>
         <el-table-column prop="goodsUnitsName" label="单位" width="100" show-overflow-tooltip/>
         <el-table-column prop="retailPrice" label="零售单价" width="100" show-overflow-tooltip/>
-        <el-table-column prop="costPrice" label="发票成本价" width="120" show-overflow-tooltip/>
+        <el-table-column prop="costPrice" label="开票成本价" width="120" show-overflow-tooltip/>
         <el-table-column prop="firstCostPrice" label="一成本价" width="100" show-overflow-tooltip/>
         <el-table-column prop="secondCostPrice" label="二成本价" width="100" show-overflow-tooltip/>
+        <!--
+        <el-table-column prop="secondMle" label="二成本毛利额" width="120" show-overflow-tooltip/>
+        <el-table-column label="二成本毛利率" width="120" show-overflow-tooltip>
+          <template slot-scope="props">
+            {{props.row.secondMll + '%'}}
+          </template>
+        </el-table-column>
+        -->
         <el-table-column prop="originName" label="产地" width="100" show-overflow-tooltip/>
         <el-table-column prop="manufacturerName" label="生产厂家" width="250" show-overflow-tooltip/>
         <el-table-column prop="pemSupplierOid" label="供应商编码" width="100" show-overflow-tooltip/>
