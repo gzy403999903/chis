@@ -407,21 +407,9 @@ export default {
      * 删除签名
      */
     deleteSignature () {
-      if (!this.editForm.signatureUrl) {
-        return
+      if (this.editForm.signatureUrl) {
+        this.editForm.signatureUrl = ''
       }
-      const url = '/chisAPI/doctor/fileDeleteSignature'
-      let params = {
-        virtualDir: this.editForm.signatureUrl
-      }
-      this.$http.delete(url, {params}).then(res => {
-        if (res.data) {
-          // this.$message.success('删除成功')
-          this.editForm.signatureUrl = ''
-        } else {
-          this.$message.error('删除失败')
-        }
-      })
     },
 
     /* 医生头像上传 -------------------------------------------------------------------------------------------------- */
@@ -467,21 +455,9 @@ export default {
      * 删除头像
      */
     deleteAvatar () {
-      if (!this.editForm.avatarUrl) {
-        return
+      if (this.editForm.avatarUrl) {
+        this.editForm.avatarUrl = ''
       }
-      const url = '/chisAPI/doctor/fileDeleteAvatar'
-      let params = {
-        virtualDir: this.editForm.avatarUrl
-      }
-      this.$http.delete(url, {params}).then(res => {
-        if (res.data) {
-          // this.$message.success('删除成功')
-          this.editForm.avatarUrl = ''
-        } else {
-          this.$message.error('删除失败')
-        }
-      })
     }
 
   } // end methods
