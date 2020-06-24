@@ -1,6 +1,6 @@
 <template>
   <div id="print-body" style="display: none;">
-    <div style=" width: 193mm; height: 148mm;">
+    <div style="width: 193mm; height: 148mm;">
       <div style="margin-top: 5px; text-align: center; font-size: 20px; font-weight: 600;">
         <div>{{payload.clinicName}}</div>
         <div>处方笺</div>
@@ -40,16 +40,26 @@
       </div>
 
       <div style="border-left: black 2px solid; border-right: black 2px solid; border-bottom: black 2px solid;
-                  line-height: 30px; display: flex; flex-direction: row;">
-        <div style="width: 30mm; padding-left: 5px;">医师: {{prescriptionList.length > 0 ? prescriptionList[0].sysDoctorName : ''}}</div>
+                  line-height: 40px; display: flex; flex-direction: row;">
+        <!--<div style="width: 30mm; padding-left: 5px;">医师: {{prescriptionList.length > 0 ? prescriptionList[0].sysDoctorName : ''}}</div>-->
+        <div style="width: 30mm; padding-left: 5px;">医师: </div>
         <div style="width: 30mm; border-right: black 2px solid;">识别码: {{prescriptionList.length > 0 ? prescriptionList[0].sysDoctorId : ''}}</div>
         <div style="width: 30mm; padding-left: 20px;">审核:</div>
         <div style="width: 30mm;">调配:</div>
         <div style="width: 30mm;">复核:</div>
         <div>发药:</div>
       </div>
+      <!-- 医生签名: 如果有签名就显示图片, 没有就显示字体 -->
+      <div v-if="prescriptionList.length > 0" style="position: relative; bottom: 41px; left: 42px;">
+        <span v-if="prescriptionList[0].signatureUrl">
+          <img :src="signatureBase64" style="width: 75px; height: 38px;"/>
+        </span>
+        <span v-else>
+          {{prescriptionList[0].sysDoctorName}}
+        </span>
+      </div> <!-- end 医生签名 -->
     </div>
-  </div>
+  </div> <!-- end print-body -->
 </template>
 
 <script>
@@ -60,6 +70,10 @@ export default {
   props: {
     prescriptionList: {
       type: Array,
+      required: true
+    },
+    signatureBase64: {
+      type: String,
       required: true
     }
   },
@@ -72,14 +86,14 @@ export default {
   },
 
   mounted () {
-    PubSub.subscribe('printWesternDrugsPrescription', (msg) => {
+    PubSub.subscribe('previewDrugsPrescription', (msg) => {
       this.printPage()
     })
   }, // end computed
 
   destroyed () {
     // 当页面销毁时取消订阅
-    PubSub.unsubscribe('printWesternDrugsPrescription')
+    PubSub.unsubscribe('previewDrugsPrescription')
   }, // end destroyed
 
   methods: {

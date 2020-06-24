@@ -46,6 +46,7 @@
       <el-table
         :height="$store.getters.dataGridHeight"
         :data="dataGrid.data"
+        highlight-current-row
         stripe
         size="mini">
         <el-table-column fixed="left" type="index" width="50"/>
@@ -80,7 +81,7 @@
     </el-card>
 
     <!-- 打印西药处方 -->
-    <DrugsPrescription :prescriptionList="dataGrid.prescriptionList"/>
+    <DrugsPrescription :prescriptionList="dataGrid.prescriptionList" :signatureBase64="dataGrid.signatureBase64"/>
   </div>
 </template>
 
@@ -108,7 +109,8 @@ export default {
       },
       dataGrid: {
         data: [],
-        prescriptionList: []
+        prescriptionList: [],
+        signatureBase64: ''
       },
       pagination: {
         total: this.$store.getters.pagination.total, /* 总记录数 */
@@ -190,13 +192,42 @@ export default {
       }
 
       // this.$loading() // 在 loadPrescriptionListByLsh 方法中开始
+      // 请求权限
       let url = '/chisAPI/sellPrescription/printPrescription'
       this.$http.get(url).then((res) => {
         if (res.data.code === 200) {
-          PubSub.publish('printWesternDrugsPrescription')
+          let signatureUrl = this.dataGrid.prescriptionList[0].signatureUrl
+          if (signatureUrl) {
+            this.loadSignatureBase64AndPreview(signatureUrl)
+          } else {
+            PubSub.publish('previewDrugsPrescription')
+          }
         }
         this.$loading().close()
       })
+    },
+
+    /**
+     * 加载签名的 base64 编码然后进行预览
+     */
+    loadSignatureBase64AndPreview (signatureUrl) {
+      let image = new Image()
+      image.src = '/chisAPI' + signatureUrl
+
+      // image.onload为异步加载
+      image.onload = () => {
+        const canvas = document.createElement('canvas')
+        canvas.width = image.width
+        canvas.height = image.height
+        let context = canvas.getContext('2d')
+        context.drawImage(image, 0, 0, image.width, image.height)
+
+        let ext = image.src.substring(image.src.lastIndexOf('.') + 1).toLowerCase()
+        // 获取签名图片的 base64 编码
+        this.dataGrid.signatureBase64 = canvas.toDataURL('image/' + ext)
+        // 开启预览
+        PubSub.publish('previewDrugsPrescription')
+      }
     }
 
   } // end methods

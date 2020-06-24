@@ -401,15 +401,11 @@ export default {
           return false
         }
 
-        // 如果是添加 则将诊断转成 JSON 赋值到 editForm
-        if (this.method === 'POST') {
-          this.editForm.diagnoseJson = JSON.stringify(this.commonDiagnose.data)
-        }
-
         this.$loading()
         let url = this.url
         let method = this.method
         let params = this.editForm
+        params.diagnoseJson = JSON.stringify(this.commonDiagnose.data) // 添加诊断参数
 
         this.$http({method, url, params}).then((res) => {
           if (res.data.code === 200) {

@@ -178,17 +178,16 @@ export default {
       this.$http.get(url, {params}).then((res) => {
         if (res.data.code === 200) {
           this.pagination.total = res.data.resultSet.page.total
-          // 不可直接赋值给 data 要使用 push 否则无法开启编辑
-          this.dataGrid.data = []
-          // 载入数据 并添加编辑属性
+          // 添加编辑属性 在赋值给 data, 否则无法开启编辑功能
           res.data.resultSet.page.list.forEach(item => {
             item.editable = false
             item.iymShelfPositionIdRecord = item.iymShelfPositionId
             item.iymShelfPositionNameRecord = item.iymShelfPositionName
             item.maxQuantityRecord = item.maxQuantity
             item.minQuantityRecord = item.minQuantity
-            this.dataGrid.data.push(item)
           })
+
+          this.dataGrid.data = res.data.resultSet.page.list
         }
         this.$loading().close()
       })
@@ -283,7 +282,7 @@ export default {
       this.dataGrid.data.forEach(row => {
         // 如果当前行有效
         if (this.validateRow(row)) {
-          // 并且当前行任何一个提交的参数与记录不相符
+          // 只要当前行任意一个参数与记录不相符就进行提交
           if (row.iymShelfPositionId !== row.iymShelfPositionIdRecord ||
               row.maxQuantity !== row.maxQuantityRecord ||
               row.minQuantity !== row.minQuantityRecord) {

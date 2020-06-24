@@ -33,7 +33,7 @@
 
         <el-col :span="7">
           <el-form-item label="现金" prop="cash">
-            <el-input-number v-model="editForm.cash" :controls="false" :max="99999" :precision="2"
+            <el-input-number v-model="editForm.cash" :controls="false" :max="999999" :precision="2"
                              ref="cash"
                              @keyup.enter.native="editFormValidateToNextFocus('cash', 'unionpay')"
                              @focus="editForm.cash = editForm.cash !== 0 ? editForm.cash : undefined"
@@ -41,7 +41,7 @@
                              @change="sumActualAmount"/>
           </el-form-item>
           <el-form-item label="银联" prop="unionpay">
-            <el-input-number v-model="editForm.unionpay" :controls="false" :max="99999" :precision="2"
+            <el-input-number v-model="editForm.unionpay" :controls="false" :max="999999" :precision="2"
                              ref="unionpay"
                              @keyup.enter.native="editFormValidateToNextFocus('unionpay', 'wechatpay')"
                              @focus="editForm.unionpay = editForm.unionpay !== 0 ? editForm.unionpay : undefined"
@@ -49,7 +49,7 @@
                              @change="sumActualAmount"/>
           </el-form-item>
           <el-form-item label="微信" prop="wechatpay">
-            <el-input-number v-model="editForm.wechatpay" :controls="false" :max="99999" :precision="2"
+            <el-input-number v-model="editForm.wechatpay" :controls="false" :max="999999" :precision="2"
                              ref="wechatpay"
                              @keyup.enter.native="editFormValidateToNextFocus('wechatpay', 'alipay')"
                              @focus="editForm.wechatpay = editForm.wechatpay !== 0 ? editForm.wechatpay : undefined"
@@ -57,7 +57,7 @@
                              @change="sumActualAmount"/>
           </el-form-item>
           <el-form-item label="支付宝" prop="alipay">
-            <el-input-number v-model="editForm.alipay" :controls="false" :max="99999" :precision="2"
+            <el-input-number v-model="editForm.alipay" :controls="false" :max="999999" :precision="2"
                              ref="alipay"
                              @keyup.enter.native="editFormValidateToNextFocus('alipay', 'cmedicare')"
                              @focus="editForm.alipay = editForm.alipay !== 0 ? editForm.alipay : undefined"
@@ -65,7 +65,7 @@
                              @change="sumActualAmount"/>
           </el-form-item>
           <el-form-item label="市医保" prop="cmedicare">
-            <el-input-number v-model="editForm.cmedicare" :controls="false" :max="99999" :precision="2"
+            <el-input-number v-model="editForm.cmedicare" :controls="false" :max="999999" :precision="2"
                              ref="cmedicare"
                              @keyup.enter.native="editFormValidateToNextFocus('cmedicare', 'pmedicare')"
                              @focus="editForm.cmedicare = editForm.cmedicare !== 0 ? editForm.cmedicare : undefined"
@@ -76,7 +76,7 @@
 
         <el-col :span="7">
           <el-form-item label="省医保" prop="pmedicare">
-            <el-input-number v-model="editForm.pmedicare" :controls="false" :max="99999" :precision="2"
+            <el-input-number v-model="editForm.pmedicare" :controls="false" :max="999999" :precision="2"
                              ref="pmedicare"
                              @keyup.enter.native="editFormValidateToNextFocus('pmedicare', 'memberBalance')"
                              @focus="editForm.pmedicare = editForm.pmedicare !== 0 ? editForm.pmedicare : undefined"
@@ -84,7 +84,7 @@
                              @change="sumActualAmount"/>
           </el-form-item>
           <el-form-item label="会员卡" prop="memberBalance">
-            <el-input-number v-model="editForm.memberBalance" :controls="false" :max="99999" :precision="2"
+            <el-input-number v-model="editForm.memberBalance" :controls="false" :max="999999" :precision="2"
                              ref="memberBalance"
                              @keyup.enter.native="editFormValidateToNextFocus('memberBalance', 'creditpay')"
                              @focus="editForm.memberBalance = editForm.memberBalance !== 0 ? editForm.memberBalance : undefined"
@@ -92,7 +92,7 @@
                              @change="sumActualAmount"/>
           </el-form-item>
           <el-form-item label="信用卡" prop="creditpay">
-            <el-input-number v-model="editForm.creditpay" :controls="false" :max="99999" :precision="2"
+            <el-input-number v-model="editForm.creditpay" :controls="false" :max="999999" :precision="2"
                              ref="creditpay"
                              @keyup.enter.native="editFormValidateToNextFocus('creditpay', 'coupon')"
                              @focus="editForm.creditpay = editForm.creditpay !== 0 ? editForm.creditpay : undefined"
@@ -100,7 +100,7 @@
                              @change="sumActualAmount"/>
           </el-form-item>
           <el-form-item label="抵扣券" prop="coupon">
-            <el-input-number v-model="editForm.coupon" :controls="false" :max="99999" :precision="2"
+            <el-input-number v-model="editForm.coupon" :controls="false" :max="999999" :precision="2"
                              ref="coupon"
                              @keyup.enter.native="editFormValidateToNextFocus('coupon', 'otherAmount')"
                              @focus="editForm.coupon = editForm.coupon !== 0 ? editForm.coupon : undefined"
@@ -108,7 +108,7 @@
                              @change="sumActualAmount"/>
           </el-form-item>
           <el-form-item label="其他金额" prop="otherAmount">
-            <el-input-number v-model="editForm.otherAmount" :controls="false" :max="99999" :precision="2"
+            <el-input-number v-model="editForm.otherAmount" :controls="false" :max="999999" :precision="2"
                              ref="otherAmount"
                              @keyup.enter.native="editFormValidateToNextFocus('otherAmount', 'cash')"
                              @focus="editForm.otherAmount = editForm.otherAmount !== 0 ? editForm.otherAmount : undefined"
