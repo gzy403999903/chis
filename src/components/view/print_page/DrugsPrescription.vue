@@ -50,13 +50,13 @@
         <div>发药:</div>
       </div>
       <!-- 医生签名: 如果有签名就显示图片, 没有就显示字体 -->
-      <div v-if="prescriptionList.length > 0" style="position: relative; bottom: 41px; left: 42px;">
-        <span v-if="prescriptionList[0].signatureUrl">
+      <div v-if="prescriptionList.length > 0" >
+        <div v-if="prescriptionList[0].signatureUrl" style="position: relative; bottom: 41px; left: 42px;">
           <img :src="signatureBase64" style="width: 75px; height: 38px;"/>
-        </span>
-        <span v-else>
+        </div>
+        <div v-else style="position: relative; bottom: 27px; left: 50px;">
           {{prescriptionList[0].sysDoctorName}}
-        </span>
+        </div>
       </div> <!-- end 医生签名 -->
     </div>
   </div> <!-- end print-body -->
